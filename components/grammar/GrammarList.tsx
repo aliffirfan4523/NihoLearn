@@ -1,0 +1,87 @@
+"use client";
+
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import type { GrammarPoint, ProgressStatus } from "@/types";
+
+const statusOrder: ProgressStatus[] = ["unlearned", "reviewing", "mastered"];
+
+const statusStyles: Record<ProgressStatus, string> = {
+  unlearned: "bg-[#F0F0F0] text-[#6B6B6B]",
+  reviewing: "bg-[#FFF3CD] text-[#856404]",
+  mastered: "bg-[#D4EDDA] text-[#155724]",
+};
+
+type GrammarWithProgress = GrammarPoint & { status: ProgressStatus };
+
+export function GrammarList({ points, progressMap }: { points: GrammarPoint[]; progressMap: Record<string, ProgressStatus> }) {
+  const [items, setItems] = useState<GrammarWithProgress[]>(
+    points.map((p) => ({ ...p, status: progressMap[p.id] ?? "unlearned" }))
+  );
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  function cycleStatus(grammarId: string) {
+    setItems((current) =>
+      current.map((item) => {
+        if (item.id !== grammarId) return item;
+        const nextStatus = statusOrder[(statusOrder.indexOf(item.status) + 1) % statusOrder.length];
+        fetch("/api/grammar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ grammarId: item.id, level: item.level, status: nextStatus }),
+        }).catch(() => {});
+        return { ...item, status: nextStatus };
+      })
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {items.map((item) => {
+        const isOpen = expanded === item.id;
+        return (
+          <article key={item.id} className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
+            <button
+              onClick={() => setExpanded(isOpen ? null : item.id)}
+              className="flex w-full items-center gap-4 p-5 text-left"
+            >
+              <div className="flex-1">
+                <h3 className="font-serif text-xl font-bold text-[#1A1A1A]">{item.title}</h3>
+                <p className="mt-1 text-sm text-[#6B6B6B]">{item.meaning}</p>
+              </div>
+              <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${statusStyles[item.status]}`}>{item.status}</span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  cycleStatus(item.id);
+                }}
+                className="rounded-lg border border-black/10 px-3 py-1 text-xs text-[#6B6B6B] hover:bg-[#FAFAF8]"
+              >
+                Cycle
+              </button>
+              <ChevronDown size={20} className={`text-[#6B6B6B] transition ${isOpen ? "rotate-180" : ""}`} />
+            </button>
+
+            {isOpen && (
+              <div className="border-t border-black/5 p-5">
+                <div className="mb-4 rounded-xl bg-[#FAFAF8] p-3">
+                  <span className="text-xs font-semibold uppercase text-[#2D5F8A]">Structure</span>
+                  <p className="mt-1 font-mono text-sm text-[#1A1A1A]">{item.structure}</p>
+                </div>
+                <div className="space-y-3">
+                  {item.examples.map((ex, i) => (
+                    <div key={i} className="rounded-xl border border-black/5 p-3">
+                      <p className="font-serif text-lg text-[#1A1A1A]">{ex.japanese}</p>
+                      <p className="mt-1 text-sm text-[#6B6B6B]">{ex.reading}</p>
+                      <p className="mt-1 text-sm text-[#2D5F8A]">{ex.english}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </article>
+        );
+      })}
+    </div>
+  );
+}

@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model KanaProgress {
+  id         String   @id
+  character  String
+  type       String
+  romaji     String
+  row        String
+  status     String   @default("unlearned")
+  masteredAt DateTime?
+  updatedAt  DateTime @updatedAt
+}
+
+model VocabProgress {
+  id           String    @id @default(cuid())
+  wordId       String    @unique
+  level        String
+  status       String    @default("unlearned")
+  notes        String?
+  nextReviewAt DateTime?
+  masteredAt   DateTime?
+  addedAt      DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model KanjiProgress {
+  id          String    @id @default(cuid())
+  kanjiId     String    @unique
+  level       String
+  status      String    @default("unlearned")
+  notes       String?
+  masteredAt  DateTime?
+  updatedAt   DateTime  @updatedAt
+}
+
+model GrammarProgress {
+  id          String    @id @default(cuid())
+  grammarId   String    @unique
+  level       String
+  status      String    @default("unlearned")
+  notes       String?
+  masteredAt  DateTime?
+  updatedAt   DateTime  @updatedAt
+}
+
+model StudySession {
+  id              String   @id @default(cuid())
+  date            DateTime @default(now())
+  durationMinutes Int
+  level           String
+  activities      String
+  wordsReviewed   Int?
+  kanjiReviewed   Int?
+  notes           String?
+  createdAt       DateTime @default(now())
+}
