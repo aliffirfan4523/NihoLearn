@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Play, RotateCcw, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Play, Sparkles } from "lucide-react";
 
 interface StrokeInfo {
   path: string;
@@ -57,7 +57,6 @@ export function KanjiStrokeAnimator({
       .then((svgText) => {
         if (!isMounted) return;
 
-        // Parse SVG to extract paths and numbers
         const parser = new DOMParser();
         const doc = parser.parseFromString(svgText, "image/svg+xml");
 
@@ -68,7 +67,6 @@ export function KanjiStrokeAnimator({
           const d = p.getAttribute("d") || "";
           const color = STROKE_COLORS[idx % STROKE_COLORS.length];
 
-          // Match corresponding stroke number text element if available
           const numNode = textNodes[idx];
           let numberInfo: { x: number; y: number; num: string } | undefined = undefined;
 
@@ -102,7 +100,6 @@ export function KanjiStrokeAnimator({
         }
       })
       .catch(() => {
-        // Fallback: create empty stroke list
         if (isMounted) setStrokes([]);
       })
       .finally(() => {
@@ -138,7 +135,7 @@ export function KanjiStrokeAnimator({
     <div className="flex flex-col items-center justify-center">
       <div
         onClick={handleStartAnimation}
-        className="group relative flex h-36 w-36 cursor-pointer items-center justify-center rounded-3xl border border-white/10 bg-[#12151B] p-3 shadow-inner transition hover:border-[#C84B31]/50 hover:bg-[#181C24]"
+        className="group relative flex h-36 w-36 cursor-pointer items-center justify-center rounded-3xl border border-black/10 bg-[#FAFAF8] p-3 shadow-inner transition hover:border-[#C84B31]/50 hover:bg-[#F4F4F0] dark:border-white/10 dark:bg-[#12151B] dark:hover:border-[#E85C40]/50 dark:hover:bg-[#181C24]"
       >
         {strokes.length > 0 ? (
           <svg
@@ -147,8 +144,8 @@ export function KanjiStrokeAnimator({
             xmlns="http://www.w3.org/2000/svg"
           >
             {/* Background grid lines for calligraphy precision */}
-            <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#ffffff10" strokeDasharray="2,2" />
-            <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#ffffff10" strokeDasharray="2,2" />
+            <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="currentColor" className="text-black/10 dark:text-white/10" strokeDasharray="2,2" />
+            <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="currentColor" className="text-black/10 dark:text-white/10" strokeDasharray="2,2" />
 
             {/* Stroke paths */}
             {strokes.map((s, idx) => {
@@ -185,10 +182,10 @@ export function KanjiStrokeAnimator({
                     x={s.number.x}
                     y={s.number.y}
                     fontSize="7"
-                    fill="#94A3B8"
+                    fill="currentColor"
                     fontWeight="bold"
                     fontFamily="sans-serif"
-                    className="select-none opacity-80"
+                    className="select-none text-[#64748B] dark:text-[#94A3B8] opacity-80"
                   >
                     {s.number.num}
                   </text>
@@ -196,13 +193,13 @@ export function KanjiStrokeAnimator({
               })}
           </svg>
         ) : (
-          <div className="font-serif text-7xl font-bold text-white transition group-hover:scale-105">
+          <div className="font-serif text-7xl font-bold text-[#1A1A1A] transition group-hover:scale-105 dark:text-white">
             {character}
           </div>
         )}
 
         {/* Play Overlay Indicator */}
-        <div className="absolute bottom-2 right-2 rounded-full bg-black/60 p-1 text-gray-300 opacity-0 transition group-hover:opacity-100">
+        <div className="absolute bottom-2 right-2 rounded-full bg-black/10 p-1 text-gray-700 opacity-0 transition group-hover:opacity-100 dark:bg-black/60 dark:text-gray-300">
           <Play size={10} className="fill-current" />
         </div>
       </div>
@@ -210,7 +207,7 @@ export function KanjiStrokeAnimator({
       <button
         type="button"
         onClick={handleStartAnimation}
-        className="mt-2.5 flex items-center gap-1.5 text-xs italic text-[#7E8B9B] transition hover:text-[#C84B31] dark:text-[#8E9CAE] dark:hover:text-[#E85C40]"
+        className="mt-2.5 flex items-center gap-1.5 text-xs italic text-[#64748B] transition hover:text-[#C84B31] dark:text-[#8E9CAE] dark:hover:text-[#E85C40]"
       >
         <Sparkles size={12} className="text-[#C84B31] dark:text-[#E85C40]" />
         <span>Click to see stroke order animation</span>

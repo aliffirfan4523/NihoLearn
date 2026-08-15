@@ -11,10 +11,13 @@ export async function middleware(request: NextRequest) {
 
   const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
 
-  // Create a Supabase client that can refresh the session via cookies.
-  const response = NextResponse.next({
+  // Forward mutated headers to Server Components
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", pathname);
+
+  let response = NextResponse.next({
     request: {
-      headers: request.headers,
+      headers: requestHeaders,
     },
   });
 
@@ -37,8 +40,31 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Set pathname header for AppShell.
-  response.headers.set("x-pathname", pathname);
+  if (user) {
+    // Forward user auth claims directly to Server Components to eliminate duplicate network auth calls
+    requestHeaders.set("x-user-id", user.id);
+    requestHeaders.set("x-user-email", user.email ?? "");
+    requestHeaders.set(
+      "x-user-name",
+      encodeURIComponent(
+        (user.user_metadata?.full_name as string) ??
+          (user.user_metadata?.name as string) ??
+          ""
+      )
+    );
+    requestHeaders.set(
+      "x-user-avatar",
+      encodeURIComponent((user.user_metadata?.avatar_url as string) ?? "")
+    );
+    requestHeaders.set("x-user-provider", user.app_metadata?.provider ?? "email");
+
+    // Re-create response with the enriched headers
+    response = NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      },
+    });
+  }
 
   if (isPublic) {
     // If already logged in and visiting /login, redirect to home.

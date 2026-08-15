@@ -37,3 +37,5 @@ next-env.d.ts
 # hermes
 .hermes/
 
+/public/jlpt-kanji-dictionary
+/public/jlpt-word-list

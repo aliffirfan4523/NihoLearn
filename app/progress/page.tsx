@@ -45,10 +45,10 @@ const progressLinks = [
   },
   {
     title: "Vocabulary Progress",
-    description: "N5 core vocabulary words, audio pronunciation, and JLPT study tracker.",
-    href: "/n5/vocabulary",
+    description: "7,972 core vocabulary words across N5 to N1, audio pronunciation, and JLPT study tracker.",
+    href: "/progress/vocabulary",
     icon: BookMarked,
-    badge: "N5 Words",
+    badge: "7,972 Words",
     color: "text-amber-600 dark:text-amber-400",
     bg: "bg-amber-500/10 dark:bg-amber-500/20",
   },

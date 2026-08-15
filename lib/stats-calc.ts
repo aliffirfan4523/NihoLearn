@@ -1,10 +1,10 @@
 export interface StudySessionItem {
-  id: string;
-  userId: string;
+  id?: string;
+  userId?: string;
   date: Date | string;
-  durationMinutes: number;
-  level: string;
-  activities: string;
+  durationMinutes?: number | null;
+  level?: string | null;
+  activities?: string | string[] | null;
   wordsReviewed?: number | null;
   kanjiReviewed?: number | null;
   notes?: string | null;
@@ -42,12 +42,16 @@ export function calculateUserStreakAndStats(
   // Get unique local dates (YYYY-MM-DD)
   const uniqueDates = Array.from(
     new Set(
-      sessions.map((s) => {
-        const d = new Date(s.date);
-        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
-          d.getDate()
-        ).padStart(2, "0")}`;
-      })
+      sessions
+        .filter((s) => s && s.date)
+        .map((s) => {
+          const d = new Date(s.date);
+          if (isNaN(d.getTime())) return "";
+          return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+            d.getDate()
+          ).padStart(2, "0")}`;
+        })
+        .filter(Boolean)
     )
   ).sort((a, b) => (a > b ? -1 : 1)); // newest first
 
@@ -101,15 +105,25 @@ export function calculateUserStreakAndStats(
   let kanaCorrect = 0;
 
   for (const s of sessions) {
-    totalStudiedMinutes += s.durationMinutes || 0;
+    if (!s) continue;
+    totalStudiedMinutes += Number(s.durationMinutes || 0);
+
+    const actStr = Array.isArray(s.activities)
+      ? s.activities.join(" ").toLowerCase()
+      : typeof s.activities === "string"
+      ? s.activities.toLowerCase()
+      : "";
+
+    const levelStr = typeof s.level === "string" ? s.level.toLowerCase() : "";
+
     const isKanaSession =
-      s.level === "Kana" ||
-      s.activities.toLowerCase().includes("kana") ||
-      s.activities.toLowerCase().includes("kana-practice");
+      levelStr === "kana" ||
+      actStr.includes("kana") ||
+      actStr.includes("kana-practice");
 
     if (isKanaSession) {
       kanaAttempts += 1;
-      const count = s.wordsReviewed || 0;
+      const count = Number(s.wordsReviewed || 0);
       kanaAnswers += count;
       kanaReviews += count;
 
@@ -118,9 +132,9 @@ export function calculateUserStreakAndStats(
         try {
           const parsed = JSON.parse(s.notes);
           if (parsed.score !== undefined) {
-            kanaCorrect += parsed.score;
+            kanaCorrect += Number(parsed.score);
           } else if (parsed.accuracy !== undefined) {
-            kanaCorrect += Math.round((parsed.accuracy / 100) * count);
+            kanaCorrect += Math.round((Number(parsed.accuracy) / 100) * count);
           } else {
             kanaCorrect += Math.round(count * 0.85); // fallback estimate
           }
@@ -138,13 +152,13 @@ export function calculateUserStreakAndStats(
       ? Number(((kanaCorrect / kanaAnswers) * 100).toFixed(1))
       : kanaAttempts > 0
       ? 100.0
-      : 0.0;
+      : 0;
 
   return {
     streak,
     totalStudiedMinutes,
     totalSessions: sessions.length,
-    kanaReviews: Math.max(kanaReviews, kanaProgressCount),
+    kanaReviews,
     kanaAttempts,
     kanaAnswers,
     kanaAccuracy,

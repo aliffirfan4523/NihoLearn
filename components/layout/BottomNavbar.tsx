@@ -102,6 +102,7 @@ export function BottomNavbar() {
                 <Link
                   key={item.label}
                   href={item.href}
+                  prefetch={true}
                   className="flex-1 text-center transition hover:opacity-80 focus:outline-none"
                 >
                   {content}
@@ -157,6 +158,7 @@ export function BottomNavbar() {
               <div className="space-y-1">
                 <Link
                   href="/sessions"
+                  prefetch={true}
                   onClick={() => setMoreOpen(false)}
                   className="flex items-center justify-between rounded-2xl p-3.5 transition hover:bg-black/5 dark:hover:bg-white/5"
                 >
@@ -174,6 +176,7 @@ export function BottomNavbar() {
 
                 <Link
                   href="/data"
+                  prefetch={true}
                   onClick={() => setMoreOpen(false)}
                   className="flex items-center justify-between rounded-2xl p-3.5 transition hover:bg-black/5 dark:hover:bg-white/5"
                 >
@@ -191,6 +194,7 @@ export function BottomNavbar() {
 
                 <Link
                   href="/profile"
+                  prefetch={true}
                   onClick={() => setMoreOpen(false)}
                   className="flex items-center justify-between rounded-2xl p-3.5 transition hover:bg-black/5 dark:hover:bg-white/5"
                 >
@@ -215,6 +219,7 @@ export function BottomNavbar() {
                 <div className="mt-2.5 grid grid-cols-2 gap-2">
                   <Link
                     href="/progress/kana"
+                    prefetch={true}
                     onClick={() => setMoreOpen(false)}
                     className="flex items-center justify-between rounded-xl bg-white p-3 text-sm font-medium text-[#1A1A1A] shadow-xs hover:border-[#C84B31] hover:text-[#C84B31] dark:bg-[#1A1A1A] dark:text-[#FAFAFA] dark:hover:text-[#E85C40]"
                   >
@@ -223,6 +228,7 @@ export function BottomNavbar() {
                   </Link>
                   <Link
                     href="/progress/kanji"
+                    prefetch={true}
                     onClick={() => setMoreOpen(false)}
                     className="flex items-center justify-between rounded-xl bg-white p-3 text-sm font-medium text-[#1A1A1A] shadow-xs hover:border-[#C84B31] hover:text-[#C84B31] dark:bg-[#1A1A1A] dark:text-[#FAFAFA] dark:hover:text-[#E85C40]"
                   >

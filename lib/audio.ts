@@ -29,9 +29,11 @@ export function cleanJapaneseText(raw: string): string {
 }
 
 let activeAudioElement: HTMLAudioElement | null = null;
+let lastPlayTimestamp = 0;
+let lastPlayText = "";
 
 /**
- * Plays clean Japanese pronunciation with multi-tier fallback.
+ * Plays clean Japanese pronunciation with multi-tier fallback and duplicate prevention.
  */
 export function playJapaneseAudio(
   text: string,
@@ -41,6 +43,14 @@ export function playJapaneseAudio(
 
   const cleanText = cleanJapaneseText(text);
   if (!cleanText) return;
+
+  // Debounce guard: prevent duplicate simultaneous audio triggers within 350ms for same word
+  const now = Date.now();
+  if (cleanText === lastPlayText && now - lastPlayTimestamp < 350) {
+    return;
+  }
+  lastPlayTimestamp = now;
+  lastPlayText = cleanText;
 
   // 1. Stop any currently playing audio stream immediately
   if (activeAudioElement) {
@@ -66,23 +76,23 @@ export function playJapaneseAudio(
       audio.volume = 1.0;
 
       audio.onended = () => {
-        activeAudioElement = null;
+        if (activeAudioElement === audio) activeAudioElement = null;
         options?.onEnd?.();
       };
 
       audio.onerror = () => {
+        if (activeAudioElement !== audio) return;
         // Fallback to secondary Youdao stream
         try {
           const fallbackAudio = new Audio(secondaryUrl);
           activeAudioElement = fallbackAudio;
           fallbackAudio.volume = 1.0;
           fallbackAudio.onended = () => {
-            activeAudioElement = null;
+            if (activeAudioElement === fallbackAudio) activeAudioElement = null;
             options?.onEnd?.();
           };
-          fallbackAudio.play().catch((err) => {
-            console.warn("Secondary audio fallback failed:", err);
-            activeAudioElement = null;
+          fallbackAudio.play().catch(() => {
+            if (activeAudioElement === fallbackAudio) activeAudioElement = null;
           });
         } catch {
           activeAudioElement = null;
@@ -90,19 +100,19 @@ export function playJapaneseAudio(
       };
 
       audio.play().catch(() => {
-        // If primary stream blocked by browser policy, try secondary stream
+        if (activeAudioElement !== audio) return;
         try {
           const fallbackAudio = new Audio(secondaryUrl);
           activeAudioElement = fallbackAudio;
           fallbackAudio.play().catch(() => {
-            activeAudioElement = null;
+            if (activeAudioElement === fallbackAudio) activeAudioElement = null;
           });
         } catch {
           activeAudioElement = null;
         }
       });
     } catch (err) {
-      console.warn("Online audio stream failed:", err);
+      console.warn("Online audio stream error:", err);
     }
   };
 
@@ -132,14 +142,26 @@ export function playJapaneseAudio(
         utterance.rate = options?.rate ?? 0.85;
         utterance.volume = 1.0;
 
+        let hasStarted = false;
         let hasEnded = false;
+
+        utterance.onstart = () => {
+          hasStarted = true;
+        };
+
         utterance.onend = () => {
           hasEnded = true;
           options?.onEnd?.();
         };
 
-        utterance.onerror = () => {
-          if (!hasEnded) playOnlineStream();
+        utterance.onerror = (e) => {
+          // Ignore cancelled or interrupted events (happens when user clicks again)
+          if (e.error === "canceled" || e.error === "interrupted") {
+            return;
+          }
+          if (!hasStarted && !hasEnded) {
+            playOnlineStream();
+          }
         };
 
         window.speechSynthesis.speak(utterance);
@@ -150,6 +172,6 @@ export function playJapaneseAudio(
     }
   }
 
-  // 4. If no Japanese voice is found on the client OS (common on Windows without JP pack), use online streaming TTS
+  // 4. If no Japanese voice is found on the client OS, use online streaming TTS
   playOnlineStream();
 }

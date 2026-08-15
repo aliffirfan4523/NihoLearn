@@ -15,7 +15,9 @@ import {
   Disc as DiscordIcon,
   HelpCircle,
   RotateCcw,
+  Palette,
 } from "lucide-react";
+import { ThemeColorSelector } from "@/components/settings/ThemeColorSelector";
 
 interface ProfileSettingsViewProps {
   user: {
@@ -149,6 +151,12 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
                 Sections
               </div>
               <a
+                href="#appearance"
+                className="block rounded-lg px-2 py-1 text-[var(--color-vermillion)] hover:bg-black/5 dark:hover:bg-white/5 font-bold"
+              >
+                🎨 Appearance &amp; Themes
+              </a>
+              <a
                 href="#profile-info"
                 className="block rounded-lg px-2 py-1 text-[#6B6B6B] hover:bg-black/5 hover:text-[#1A1A1A] dark:text-[#A0A0A0] dark:hover:bg-white/5 dark:hover:text-[#FAFAFA]"
               >
@@ -190,10 +198,29 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
 
         {/* Right Main Settings Form */}
         <div className="space-y-8 lg:col-span-8">
+          {/* Section 0: Appearance & Theme Customization */}
+          <div
+            id="appearance"
+            className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#161B22] space-y-6"
+          >
+            <div className="flex items-center justify-between border-b border-black/5 pb-4 dark:border-white/10">
+              <div>
+                <h2 className="text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
+                  Appearance &amp; Theme Palette
+                </h2>
+                <p className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
+                  Eye-friendly Japanese dark sumi surfaces and customizable accent colors.
+                </p>
+              </div>
+            </div>
+
+            <ThemeColorSelector />
+          </div>
+
           {/* Section 1: Profile Information */}
           <div
             id="profile-info"
-            className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A] space-y-6"
+            className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#161B22] space-y-6"
           >
             <h2 className="text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
               Profile Information

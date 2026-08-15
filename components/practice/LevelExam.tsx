@@ -8,7 +8,7 @@ import { ArrowLeft, Clock, CheckCircle2, XCircle, AlertCircle, RefreshCcw } from
 import { hiraganaSeed } from "@/lib/data/hiragana"
 import { katakanaSeed } from "@/lib/data/katakana"
 import { n5Grammar } from "@/lib/data/n5-grammar"
-import { n5Vocab } from "@/lib/data/n5-vocab"
+
 import { readingStories } from "@/lib/data/stories"
 
 type ExamLevel = "kana" | "n5" | "n4" | "n3" | "n2" | "n1"
@@ -104,22 +104,32 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
       } else if (level === "n5") {
         const generated: Question[] = []
         
-        // Vocab (20 questions)
-        const vocabData = shuffle(n5Vocab).slice(0, 20)
-        const allVocabMeanings = n5Vocab.map(v => v.meaning[0])
-        vocabData.forEach((v, i) => {
-          const correct = v.meaning[0]
-          const options = getRandomOptions(correct, allVocabMeanings, 4)
-          generated.push({
-            id: `vocab_${i}`,
-            type: "vocab",
-            section: "Vocabulary",
-            prompt: `What is the meaning of ${v.word} (${v.reading})?`,
-            options,
-            correctIndex: options.indexOf(correct),
-            metadata: v
-          })
-        })
+        // Vocab (20 questions) - fetched from PostgreSQL DB
+        try {
+          const vocabRes = await fetch("/api/vocab?level=N5&limit=100")
+          const vocabJson = await vocabRes.json()
+          const dbVocabList = vocabJson.data && vocabJson.data.length > 0 ? vocabJson.data : []
+
+          if (dbVocabList.length > 0) {
+            const vocabData = shuffle(dbVocabList).slice(0, 20)
+            const allVocabMeanings = dbVocabList.map((v: any) => (Array.isArray(v.meaning) ? v.meaning[0] : String(v.meaning)))
+            vocabData.forEach((v: any, i: number) => {
+              const correct = Array.isArray(v.meaning) ? v.meaning[0] : String(v.meaning)
+              const options = getRandomOptions(correct, allVocabMeanings, 4)
+              generated.push({
+                id: `vocab_${i}`,
+                type: "vocab",
+                section: "Vocabulary",
+                prompt: `What is the meaning of ${v.word} (${v.reading})?`,
+                options,
+                correctIndex: options.indexOf(correct),
+                metadata: v
+              })
+            })
+          }
+        } catch (vErr) {
+          console.error("Failed to fetch exam vocabulary:", vErr)
+        }
         
         // Kanji (15 questions) - fetched from PostgreSQL DB
         try {

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Headphones, Volume2, CheckCircle2, XCircle, ArrowRight, Trophy, Flame, RotateCcw, ArrowLeft } from "lucide-react";
-import { n5Vocab } from "@/lib/data/n5-vocab";
 
 import { playJapaneseAudio } from "@/lib/audio";
 
@@ -30,34 +29,55 @@ export function ListeningQuiz() {
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
-    const pool = [...n5Vocab].sort(() => Math.random() - 0.5);
-    const qList: ListeningQuestion[] = [];
-    const count = 10;
+    let isMounted = true;
 
-    for (let i = 0; i < count; i++) {
-      const target = pool[i % pool.length];
-      const otherVocab = pool.filter((v) => v.id !== target.id);
-      const distractors = otherVocab
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3)
-        .map((v) => v.meaning.join(", "));
+    async function loadQuiz() {
+      try {
+        const res = await fetch("/api/vocab?level=N5&limit=100");
+        const json = await res.json();
+        const pool = json.data && json.data.length > 0 ? json.data : [];
+        if (!isMounted || pool.length === 0) return;
 
-      const options = [target.meaning.join(", "), ...distractors].sort(() => Math.random() - 0.5);
-      qList.push({
-        word: target.word,
-        reading: target.reading,
-        romaji: target.romaji,
-        meaning: target.meaning.join(", "),
-        options,
-      });
+        const shuffled = [...pool].sort(() => Math.random() - 0.5);
+        const qList: ListeningQuestion[] = [];
+        const count = Math.min(10, shuffled.length);
+
+        for (let i = 0; i < count; i++) {
+          const target = shuffled[i % shuffled.length];
+          const otherVocab = shuffled.filter((v: any) => v.id !== target.id);
+          const distractors = otherVocab
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3)
+            .map((v: any) => (Array.isArray(v.meaning) ? v.meaning.join(", ") : String(v.meaning)));
+
+          const targetMeaning = Array.isArray(target.meaning) ? target.meaning.join(", ") : String(target.meaning);
+          const options = [targetMeaning, ...distractors].sort(() => Math.random() - 0.5);
+
+          qList.push({
+            word: target.word,
+            reading: target.reading,
+            romaji: target.romaji || "",
+            meaning: targetMeaning,
+            options,
+          });
+        }
+
+        setQuestions(qList);
+        setCurrentIndex(0);
+        setScore(0);
+        setStreak(0);
+        setMaxStreak(0);
+        setIsFinished(false);
+      } catch (err) {
+        console.error("Failed to load listening quiz vocabulary:", err);
+      }
     }
 
-    setQuestions(qList);
-    setCurrentIndex(0);
-    setScore(0);
-    setStreak(0);
-    setMaxStreak(0);
-    setIsFinished(false);
+    loadQuiz();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const currentQ = questions[currentIndex];

@@ -5,20 +5,104 @@
 :root {
   --background: #FAFAF8;
   --foreground: #1A1A1A;
+  --color-washi: #FFFFFF;
+  --color-surface: #F4F4F0;
+  --color-vermillion: #C84B31;
+  --color-indigo: #2D5F8A;
+  --color-forest: #3D7D52;
+  --color-ink: #1A1A1A;
+  --color-sumi: #6B6B6B;
   color-scheme: light;
 }
 
 .dark {
-  --background: #0A0A0A;
-  --foreground: #FAFAFA;
-  --color-washi: #1A1A1A;
-  --color-surface: #2A2A2A;
+  /* Eye-friendly, soothing Japanese Sumi Ink / Charcoal palette */
+  --background: #0E1117;
+  --foreground: #F0F4F8;
+  --color-washi: #161B22;
+  --color-surface: #1E232B;
   --color-vermillion: #E85C40;
-  --color-indigo: #4A86B8;
-  --color-forest: #4D9D6A;
-  --color-ink: #FAFAFA;
-  --color-sumi: #A0A0A0;
+  --color-indigo: #60A5FA;
+  --color-forest: #34D399;
+  --color-ink: #F0F4F8;
+  --color-sumi: #94A3B8;
   color-scheme: dark;
+}
+
+/* ── Dynamic Accent Theme Color Overrides ── */
+[data-theme-color="crimson"] {
+  --color-vermillion: #C84B31;
+}
+.dark[data-theme-color="crimson"], [data-theme-color="crimson"] .dark {
+  --color-vermillion: #E85C40;
+}
+
+[data-theme-color="sakura"] {
+  --color-vermillion: #E11D48;
+}
+.dark[data-theme-color="sakura"], [data-theme-color="sakura"] .dark {
+  --color-vermillion: #FB7185;
+}
+
+[data-theme-color="fuji"] {
+  --color-vermillion: #2563EB;
+}
+.dark[data-theme-color="fuji"], [data-theme-color="fuji"] .dark {
+  --color-vermillion: #60A5FA;
+}
+
+[data-theme-color="matcha"] {
+  --color-vermillion: #059669;
+}
+.dark[data-theme-color="matcha"], [data-theme-color="matcha"] .dark {
+  --color-vermillion: #34D399;
+}
+
+[data-theme-color="murasaki"] {
+  --color-vermillion: #7C3AED;
+}
+.dark[data-theme-color="murasaki"], [data-theme-color="murasaki"] .dark {
+  --color-vermillion: #A78BFA;
+}
+
+[data-theme-color="amber"] {
+  --color-vermillion: #D97706;
+}
+.dark[data-theme-color="amber"], [data-theme-color="amber"] .dark {
+  --color-vermillion: #FBBF24;
+}
+
+[data-theme-color="sumi"] {
+  --color-vermillion: #475569;
+}
+.dark[data-theme-color="sumi"], [data-theme-color="sumi"] .dark {
+  --color-vermillion: #94A3B8;
+}
+
+/* Dynamic theme color bridge across all existing vermillion utility classes */
+[class*="text-[#C84B31]"] {
+  color: var(--color-vermillion) !important;
+}
+.dark [class*="dark:text-[#E85C40]"] {
+  color: var(--color-vermillion) !important;
+}
+
+[class*="bg-[#C84B31]"] {
+  background-color: var(--color-vermillion) !important;
+}
+.dark [class*="dark:bg-[#E85C40]"] {
+  background-color: var(--color-vermillion) !important;
+}
+
+[class*="border-[#C84B31]"] {
+  border-color: var(--color-vermillion) !important;
+}
+.dark [class*="dark:border-[#E85C40]"] {
+  border-color: var(--color-vermillion) !important;
+}
+
+[class*="ring-[#C84B31]"] {
+  --tw-ring-color: var(--color-vermillion) !important;
 }
 
 @theme {

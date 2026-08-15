@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_JP } from "next/font/google";
 import { AppShell } from "@/components/layout/AppShell";
+import { UserMenu } from "@/components/auth/UserMenu";
 import "./globals.css";
 
 const inter = Inter({
@@ -35,6 +36,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                       document.documentElement.classList.add('dark');
                     }
                   }
+                  var themeColor = localStorage.getItem('niholearn-theme-color');
+                  if (themeColor) {
+                    document.documentElement.setAttribute('data-theme-color', themeColor);
+                  }
                 } catch (e) {}
               })();
             `,
@@ -42,7 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body>
-        <AppShell>{children}</AppShell>
+        <AppShell userMenu={<UserMenu />}>{children}</AppShell>
       </body>
     </html>
   );
