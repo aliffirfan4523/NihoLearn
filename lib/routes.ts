@@ -13,6 +13,7 @@ export const mainNav: NavItem[] = [
   { label: "Sessions", href: "/sessions" },
   { label: "Statistics", href: "/stats" },
   { label: "Data Editor", href: "/data" },
+  { label: "Profile", href: "/profile" },
 ];
 
 export const kanaNav: NavItem[] = [

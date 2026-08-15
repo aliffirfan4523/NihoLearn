@@ -1,25 +1,10 @@
 import { KanaRowSections } from "@/components/kana/KanaRowSections";
-import { prisma } from "@/lib/db";
-import type { KanaCharacter, KanaType, ProgressStatus } from "@/types";
-
-function toKanaCharacter(row: { id: string; type: string; character: string; romaji: string; row: string; status: string }): KanaCharacter {
-  return {
-    id: row.id,
-    type: row.type as KanaType,
-    character: row.character,
-    romaji: row.romaji,
-    row: row.row,
-    status: row.status as ProgressStatus,
-  };
-}
+import { requireUser } from "@/lib/auth";
+import { getUserKana } from "@/lib/kana";
 
 export default async function KatakanaPage() {
-  const rows = await prisma.kanaProgress.findMany({
-    where: { type: "katakana" },
-    orderBy: [{ row: "asc" }, { id: "asc" }],
-  });
-
-  const kana = rows.map(toKanaCharacter);
+  const user = await requireUser();
+  const kana = await getUserKana(user.id, "katakana");
 
   return <KanaRowSections kana={kana} type="katakana" />;
 }

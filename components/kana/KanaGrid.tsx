@@ -11,8 +11,8 @@ export function KanaGrid({ kana }: { kana: KanaCharacter[] }) {
   return (
     <div className="space-y-6">
       {rows.map((group) => (
-        <section key={group.row} className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-widest text-[#C84B31]">{group.row} row</h3>
+        <section key={group.row} className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
+          <h3 className="mb-4 text-sm font-semibold uppercase tracking-widest text-[#C84B31] dark:text-[#E85C40]">{group.row} row</h3>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5 xl:grid-cols-6">
             {group.items.map((item) => (
               <KanaCard key={item.id} kana={item} />

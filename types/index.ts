@@ -10,6 +10,11 @@ export interface KanaCharacter {
   romaji: string;
   row: string;
   status: ProgressStatus;
+  accuracy?: number;
+  totalAnswers?: number;
+  correctAnswers?: number;
+  streak?: number;
+  bestStreak?: number;
 }
 
 export interface VocabWord {

@@ -1,11 +1,10 @@
 import { KanaDataEditor } from "@/components/data/KanaDataEditor";
-import { prisma } from "@/lib/db";
-import type { KanaCharacter } from "@/types";
+import { requireUser } from "@/lib/auth";
+import { getUserKana } from "@/lib/kana";
 
 export default async function DataPage() {
-  const kana = (await prisma.kanaProgress.findMany({
-    orderBy: [{ type: "asc" }, { row: "asc" }, { id: "asc" }],
-  })) as KanaCharacter[];
+  const user = await requireUser();
+  const kana = await getUserKana(user.id);
 
   return <KanaDataEditor initialKana={kana} />;
 }

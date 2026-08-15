@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { requireUser } from "@/lib/auth";
+import { calculateUserStreakAndStats } from "@/lib/stats-calc";
 
 export async function GET() {
   try {
+    const user = await requireUser();
+
     const [
       kanaTotal,
       kanaMastered,
@@ -12,22 +16,20 @@ export async function GET() {
       kanjiN5Mastered,
       grammarN5Total,
       grammarN5Mastered,
-      totalSessions,
-      totalMinutes,
-      recentSessions,
+      allSessions,
     ] = await Promise.all([
-      prisma.kanaProgress.count(),
-      prisma.kanaProgress.count({ where: { status: "mastered" } }),
-      prisma.vocabProgress.count({ where: { level: "N5" } }),
-      prisma.vocabProgress.count({ where: { level: "N5", status: "mastered" } }),
-      prisma.kanjiProgress.count({ where: { level: "N5" } }),
-      prisma.kanjiProgress.count({ where: { level: "N5", status: "mastered" } }),
-      prisma.grammarProgress.count({ where: { level: "N5" } }),
-      prisma.grammarProgress.count({ where: { level: "N5", status: "mastered" } }),
-      prisma.studySession.count(),
-      prisma.studySession.aggregate({ _sum: { durationMinutes: true } }),
-      prisma.studySession.findMany({ orderBy: { date: "desc" }, take: 5 }),
+      prisma.kanaProgress.count({ where: { userId: user.id } }),
+      prisma.kanaProgress.count({ where: { userId: user.id, status: "mastered" } }),
+      prisma.vocabProgress.count({ where: { userId: user.id, level: "N5" } }),
+      prisma.vocabProgress.count({ where: { userId: user.id, level: "N5", status: "mastered" } }),
+      prisma.kanjiProgress.count({ where: { userId: user.id, level: "N5" } }),
+      prisma.kanjiProgress.count({ where: { userId: user.id, level: "N5", status: "mastered" } }),
+      prisma.grammarProgress.count({ where: { userId: user.id, level: "N5" } }),
+      prisma.grammarProgress.count({ where: { userId: user.id, level: "N5", status: "mastered" } }),
+      prisma.studySession.findMany({ where: { userId: user.id }, orderBy: { date: "desc" } }),
     ]);
+
+    const userStats = calculateUserStreakAndStats(allSessions, kanaMastered);
 
     return NextResponse.json({
       data: {
@@ -37,9 +39,14 @@ export async function GET() {
           kanji: { total: kanjiN5Total, mastered: kanjiN5Mastered },
           grammar: { total: grammarN5Total, mastered: grammarN5Mastered },
         },
-        totalSessions,
-        totalMinutes: totalMinutes._sum.durationMinutes ?? 0,
-        recentSessions,
+        streak: userStats.streak,
+        totalSessions: userStats.totalSessions,
+        totalMinutes: userStats.totalStudiedMinutes,
+        kanaReviews: userStats.kanaReviews,
+        kanaAttempts: userStats.kanaAttempts,
+        kanaAnswers: userStats.kanaAnswers,
+        kanaAccuracy: userStats.kanaAccuracy,
+        recentSessions: allSessions.slice(0, 5),
       },
       error: null,
     });

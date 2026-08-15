@@ -6,9 +6,9 @@ import type { VocabWord, ProgressStatus } from "@/types";
 const statusOrder: ProgressStatus[] = ["unlearned", "reviewing", "mastered"];
 
 const statusStyles: Record<ProgressStatus, string> = {
-  unlearned: "bg-[#F0F0F0] text-[#6B6B6B]",
-  reviewing: "bg-[#FFF3CD] text-[#856404]",
-  mastered: "bg-[#D4EDDA] text-[#155724]",
+  unlearned: "bg-[#F0F0F0] text-[#6B6B6B] dark:bg-[#2A2A2A] dark:text-[#A0A0A0]",
+  reviewing: "bg-[#FFF3CD] text-[#856404] dark:bg-[#332E00] dark:text-[#FEF3C7]",
+  mastered: "bg-[#D4EDDA] text-[#155724] dark:bg-[#0F2D1A] dark:text-[#D1FAE5]",
 };
 
 type VocabWithProgress = VocabWord & { status: ProgressStatus; progressId?: string };
@@ -66,7 +66,7 @@ export function VocabTable({ words, progressMap }: { words: VocabWord[]; progres
           placeholder="Search vocabulary..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-[#C84B31]"
+          className="flex-1 rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-[#C84B31] dark:border-white/20 dark:bg-[#2A2A2A] dark:text-[#FAFAFA] dark:focus:border-[#E85C40]"
         />
         <div className="flex gap-2">
           {(["all", "unlearned", "reviewing", "mastered"] as const).map((f) => (
@@ -74,22 +74,22 @@ export function VocabTable({ words, progressMap }: { words: VocabWord[]; progres
               key={f}
               onClick={() => setFilter(f)}
               className={`rounded-xl px-4 py-3 text-sm font-semibold capitalize transition ${
-                filter === f ? "bg-[#C84B31] text-white" : "border border-black/10 bg-white text-[#6B6B6B] hover:bg-[#FAFAF8]"
+                filter === f ? "bg-[#C84B31] text-white dark:bg-[#E85C40]" : "border border-black/10 bg-white text-[#6B6B6B] hover:bg-[#FAFAF8] dark:border-white/20 dark:bg-[#2A2A2A] dark:text-[#A0A0A0] dark:hover:bg-[#1A1A1A]"
               }`}
             >
               {f}
             </button>
           ))}
         </div>
-        <div className="rounded-xl bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#3D7D52]">
+        <div className="rounded-xl bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#3D7D52] dark:bg-[#2A2A2A] dark:text-[#4D9D6A]">
           {masteredCount}/{items.length} mastered
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-3xl border border-black/10 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-3xl border border-black/10 bg-white shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
         <div className="max-h-[70vh] overflow-auto">
           <table className="w-full min-w-[800px] text-sm">
-            <thead className="sticky top-0 bg-[#FAFAF8] text-left text-[#6B6B6B]">
+            <thead className="sticky top-0 bg-[#FAFAF8] text-left text-[#6B6B6B] dark:bg-[#2A2A2A] dark:text-[#A0A0A0]">
               <tr>
                 <th className="p-3">Word</th>
                 <th className="p-3">Reading</th>
@@ -101,12 +101,12 @@ export function VocabTable({ words, progressMap }: { words: VocabWord[]; progres
             </thead>
             <tbody>
               {filtered.map((item) => (
-                <tr key={item.id} className="border-t border-black/5 hover:bg-[#FAFAF8]">
-                  <td className="p-3 font-serif text-lg font-bold text-[#1A1A1A]">{item.word}</td>
-                  <td className="p-3 text-[#6B6B6B]">{item.reading}</td>
-                  <td className="p-3 font-mono text-xs text-[#6B6B6B]">{item.romaji}</td>
-                  <td className="p-3 text-[#1A1A1A]">{item.meaning.join(", ")}</td>
-                  <td className="p-3 text-xs text-[#6B6B6B]">{item.partOfSpeech}</td>
+                <tr key={item.id} className="border-t border-black/5 hover:bg-[#FAFAF8] dark:border-white/10 dark:hover:bg-[#2A2A2A]">
+                  <td className="p-3 font-serif text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">{item.word}</td>
+                  <td className="p-3 text-[#6B6B6B] dark:text-[#A0A0A0]">{item.reading}</td>
+                  <td className="p-3 font-mono text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">{item.romaji}</td>
+                  <td className="p-3 text-[#1A1A1A] dark:text-[#FAFAFA]">{item.meaning.join(", ")}</td>
+                  <td className="p-3 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">{item.partOfSpeech}</td>
                   <td className="p-3">
                     <button
                       onClick={() => cycleStatus(item.id)}
@@ -119,7 +119,7 @@ export function VocabTable({ words, progressMap }: { words: VocabWord[]; progres
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-[#6B6B6B]">
+                  <td colSpan={6} className="p-8 text-center text-[#6B6B6B] dark:text-[#A0A0A0]">
                     No vocabulary found. Try a different search or filter.
                   </td>
                 </tr>

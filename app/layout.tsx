@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Noto_Serif_JP } from "next/font/google";
+import { Inter, Noto_Sans_JP } from "next/font/google";
 import { AppShell } from "@/components/layout/AppShell";
 import "./globals.css";
 
@@ -8,10 +8,10 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const notoSerifJp = Noto_Serif_JP({
-  variable: "--font-noto-serif-jp",
+const notoSansJp = Noto_Sans_JP({
+  variable: "--font-noto-sans-jp",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -21,7 +21,26 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${notoSerifJp.variable}`}>
+    <html lang="en" className={`${inter.variable} ${notoSansJp.variable}`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var storage = localStorage.getItem('niholearn-storage');
+                  if (storage) {
+                    var parsed = JSON.parse(storage);
+                    if (parsed && parsed.state && parsed.state.darkMode) {
+                      document.documentElement.classList.add('dark');
+                    }
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body>
         <AppShell>{children}</AppShell>
       </body>

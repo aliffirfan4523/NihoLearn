@@ -3,24 +3,54 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id             String             @id @default(cuid())
+  email          String             @unique
+  name           String?
+  avatarUrl      String?
+  provider       String             @default("email")
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  kanaProgress   KanaProgress[]
+  vocabProgress  VocabProgress[]
+  kanjiProgress  KanjiProgress[]
+  grammarProgress GrammarProgress[]
+  studySessions  StudySession[]
+}
+
+model Kana {
+  id        String @id
+  character String
+  type      String
+  romaji    String
+  row       String
+
+  progress KanaProgress[]
 }
 
 model KanaProgress {
-  id         String   @id
-  character  String
-  type       String
-  romaji     String
-  row        String
-  status     String   @default("unlearned")
+  id         String    @id @default(cuid())
+  userId     String
+  kanaId     String
+  status     String    @default("unlearned")
   masteredAt DateTime?
-  updatedAt  DateTime @updatedAt
+  updatedAt  DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kana Kana @relation(fields: [kanaId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, kanaId])
 }
 
 model VocabProgress {
   id           String    @id @default(cuid())
-  wordId       String    @unique
+  userId       String
+  wordId       String
   level        String
   status       String    @default("unlearned")
   notes        String?
@@ -28,30 +58,45 @@ model VocabProgress {
   masteredAt   DateTime?
   addedAt      DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, wordId])
 }
 
 model KanjiProgress {
   id          String    @id @default(cuid())
-  kanjiId     String    @unique
+  userId      String
+  kanjiId     String
   level       String
   status      String    @default("unlearned")
   notes       String?
   masteredAt  DateTime?
   updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, kanjiId])
 }
 
 model GrammarProgress {
   id          String    @id @default(cuid())
-  grammarId   String    @unique
+  userId      String
+  grammarId   String
   level       String
   status      String    @default("unlearned")
   notes       String?
   masteredAt  DateTime?
   updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, grammarId])
 }
 
 model StudySession {
   id              String   @id @default(cuid())
+  userId          String
   date            DateTime @default(now())
   durationMinutes Int
   level           String
@@ -60,4 +105,7 @@ model StudySession {
   kanjiReviewed   Int?
   notes           String?
   createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

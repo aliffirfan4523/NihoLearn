@@ -47,42 +47,42 @@ export default function NewSessionPage() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-3xl border border-black/10 bg-white p-8 shadow-sm">
-        <p className="text-sm font-semibold uppercase tracking-widest text-[#C84B31]">New entry</p>
-        <h2 className="mt-3 text-4xl font-bold tracking-tight text-[#1A1A1A]">Log Study Session</h2>
-        <p className="mt-4 text-[#6B6B6B]">Record what you studied to track your progress over time.</p>
+      <section className="rounded-3xl border border-black/10 bg-white p-8 shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
+        <p className="text-sm font-semibold uppercase tracking-widest text-[#C84B31] dark:text-[#E85C40]">New entry</p>
+        <h2 className="mt-3 text-4xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#FAFAFA]">Log Study Session</h2>
+        <p className="mt-4 text-[#6B6B6B] dark:text-[#A0A0A0]">Record what you studied to track your progress over time.</p>
       </section>
 
-      <form onSubmit={handleSubmit} className="space-y-5 rounded-3xl border border-black/10 bg-white p-8 shadow-sm">
+      <form onSubmit={handleSubmit} className="space-y-5 rounded-3xl border border-black/10 bg-white p-8 shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
         <div className="grid gap-5 md:grid-cols-2">
           <div>
-            <label className="block text-sm font-semibold text-[#1A1A1A]">Date</label>
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31]" />
+            <label className="block text-sm font-semibold text-[#1A1A1A] dark:text-[#FAFAFA]">Date</label>
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31] dark:border-white/20 dark:bg-[#2A2A2A] dark:text-[#FAFAFA] dark:focus:border-[#E85C40]" />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-[#1A1A1A]">Duration (minutes)</label>
-            <input type="number" min={1} value={duration} onChange={(e) => setDuration(Number(e.target.value))} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31]" />
+            <label className="block text-sm font-semibold text-[#1A1A1A] dark:text-[#FAFAFA]">Duration (minutes)</label>
+            <input type="number" min={1} value={duration} onChange={(e) => setDuration(Number(e.target.value))} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31] dark:border-white/20 dark:bg-[#2A2A2A] dark:text-[#FAFAFA] dark:focus:border-[#E85C40]" />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-[#1A1A1A]">Level</label>
-            <select value={level} onChange={(e) => setLevel(e.target.value)} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31]">
+            <label className="block text-sm font-semibold text-[#1A1A1A] dark:text-[#FAFAFA]">Level</label>
+            <select value={level} onChange={(e) => setLevel(e.target.value)} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31] dark:border-white/20 dark:bg-[#2A2A2A] dark:text-[#FAFAFA] dark:focus:border-[#E85C40]">
               {levels.map((l) => <option key={l} value={l}>{l}</option>)}
             </select>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-semibold text-[#1A1A1A]">Words reviewed</label>
-              <input type="number" min={0} value={wordsReviewed} onChange={(e) => setWordsReviewed(e.target.value ? Number(e.target.value) : "")} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31]" />
+              <label className="block text-sm font-semibold text-[#1A1A1A] dark:text-[#FAFAFA]">Words reviewed</label>
+              <input type="number" min={0} value={wordsReviewed} onChange={(e) => setWordsReviewed(e.target.value ? Number(e.target.value) : "")} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31] dark:border-white/20 dark:bg-[#2A2A2A] dark:text-[#FAFAFA] dark:focus:border-[#E85C40]" />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-[#1A1A1A]">Kanji reviewed</label>
-              <input type="number" min={0} value={kanjiReviewed} onChange={(e) => setKanjiReviewed(e.target.value ? Number(e.target.value) : "")} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31]" />
+              <label className="block text-sm font-semibold text-[#1A1A1A] dark:text-[#FAFAFA]">Kanji reviewed</label>
+              <input type="number" min={0} value={kanjiReviewed} onChange={(e) => setKanjiReviewed(e.target.value ? Number(e.target.value) : "")} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31] dark:border-white/20 dark:bg-[#2A2A2A] dark:text-[#FAFAFA] dark:focus:border-[#E85C40]" />
             </div>
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-[#1A1A1A]">Activities</label>
+          <label className="block text-sm font-semibold text-[#1A1A1A] dark:text-[#FAFAFA]">Activities</label>
           <div className="mt-2 flex flex-wrap gap-2">
             {allActivities.map((a) => (
               <button
@@ -90,7 +90,7 @@ export default function NewSessionPage() {
                 type="button"
                 onClick={() => toggleActivity(a)}
                 className={`rounded-full px-4 py-2 text-sm font-semibold capitalize transition ${
-                  activities.includes(a) ? "bg-[#C84B31] text-white" : "border border-black/10 bg-white text-[#6B6B6B] hover:bg-[#FAFAF8]"
+                  activities.includes(a) ? "bg-[#C84B31] text-white dark:bg-[#E85C40]" : "border border-black/10 bg-white text-[#6B6B6B] hover:bg-[#FAFAF8] dark:border-white/20 dark:bg-[#2A2A2A] dark:text-[#A0A0A0] dark:hover:bg-[#1A1A1A]"
                 }`}
               >
                 {a}
@@ -100,11 +100,11 @@ export default function NewSessionPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-[#1A1A1A]">Notes</label>
-          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31]" placeholder="What did you study? Any observations?" />
+          <label className="block text-sm font-semibold text-[#1A1A1A] dark:text-[#FAFAFA]">Notes</label>
+          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 outline-none focus:border-[#C84B31] dark:border-white/20 dark:bg-[#2A2A2A] dark:text-[#FAFAFA] dark:focus:border-[#E85C40]" placeholder="What did you study? Any observations?" />
         </div>
 
-        <button type="submit" disabled={submitting} className="w-full rounded-xl bg-[#C84B31] py-4 font-semibold text-white transition hover:bg-[#2D5F8A] disabled:opacity-50">
+        <button type="submit" disabled={submitting} className="w-full rounded-xl bg-[#C84B31] py-4 font-semibold text-white transition hover:bg-[#2D5F8A] disabled:opacity-50 dark:bg-[#E85C40] dark:hover:bg-[#4A86B8]">
           {submitting ? "Saving..." : "Save Session"}
         </button>
       </form>

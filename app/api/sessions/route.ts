@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { requireUser } from "@/lib/auth";
 
 export async function GET() {
   try {
+    const user = await requireUser();
     const sessions = await prisma.studySession.findMany({
+      where: { userId: user.id },
       orderBy: { date: "desc" },
     });
 
@@ -15,6 +18,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const user = await requireUser();
     const body = (await request.json()) as {
       date?: string;
       durationMinutes?: number;
@@ -31,6 +35,7 @@ export async function POST(request: NextRequest) {
 
     const data = await prisma.studySession.create({
       data: {
+        userId: user.id,
         date: body.date ? new Date(body.date) : new Date(),
         durationMinutes: body.durationMinutes,
         level: body.level,

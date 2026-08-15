@@ -1,16 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { requireUser } from "@/lib/auth";
 import type { ProgressStatus } from "@/types";
 
 const statuses: ProgressStatus[] = ["unlearned", "reviewing", "mastered"];
 
 export async function GET(request: NextRequest) {
   try {
+    const user = await requireUser();
     const level = request.nextUrl.searchParams.get("level");
     const status = request.nextUrl.searchParams.get("status");
 
     const progress = await prisma.grammarProgress.findMany({
       where: {
+        userId: user.id,
         ...(level ? { level } : {}),
         ...(status ? { status } : {}),
       },
@@ -25,6 +28,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const user = await requireUser();
     const body = (await request.json()) as { grammarId?: string; level?: string; status?: ProgressStatus; notes?: string };
 
     if (!body.grammarId || !body.level || !body.status || !statuses.includes(body.status)) {
@@ -32,7 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await prisma.grammarProgress.upsert({
-      where: { grammarId: body.grammarId },
+      where: { userId_grammarId: { userId: user.id, grammarId: body.grammarId } },
       update: {
         level: body.level,
         status: body.status,
@@ -40,6 +44,7 @@ export async function POST(request: NextRequest) {
         masteredAt: body.status === "mastered" ? new Date() : null,
       },
       create: {
+        userId: user.id,
         grammarId: body.grammarId,
         level: body.level,
         status: body.status,

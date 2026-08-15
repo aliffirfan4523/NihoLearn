@@ -1,22 +1,38 @@
 @import "tailwindcss";
 
+@variant dark (.dark &);
+
 :root {
   --background: #FAFAF8;
   --foreground: #1A1A1A;
+  color-scheme: light;
 }
 
-@theme inline {
+.dark {
+  --background: #0A0A0A;
+  --foreground: #FAFAFA;
+  --color-washi: #1A1A1A;
+  --color-surface: #2A2A2A;
+  --color-vermillion: #E85C40;
+  --color-indigo: #4A86B8;
+  --color-forest: #4D9D6A;
+  --color-ink: #FAFAFA;
+  --color-sumi: #A0A0A0;
+  color-scheme: dark;
+}
+
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-washi: #FAFAF8;
-  --color-surface: #FFFFFF;
-  --color-vermillion: #C84B31;
-  --color-indigo: #2D5F8A;
-  --color-forest: #3D7D52;
-  --color-ink: #1A1A1A;
-  --color-sumi: #6B6B6B;
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-noto-serif-jp);
+  --color-washi: var(--color-washi, #FAFAF8);
+  --color-surface: var(--color-surface, #FFFFFF);
+  --color-vermillion: var(--color-vermillion, #C84B31);
+  --color-indigo: var(--color-indigo, #2D5F8A);
+  --color-forest: var(--color-forest, #3D7D52);
+  --color-ink: var(--color-ink, #1A1A1A);
+  --color-sumi: var(--color-sumi, #6B6B6B);
+  --font-sans: var(--font-inter), var(--font-noto-sans-jp), system-ui, sans-serif;
+  --font-serif: var(--font-noto-sans-jp), "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 }
 
 * {
@@ -27,7 +43,7 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), var(--font-noto-sans-jp), "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 }
 
 a {
