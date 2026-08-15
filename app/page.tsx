@@ -4,6 +4,7 @@ import { MainDashboardView } from "@/components/dashboard/MainDashboardView";
 import { calculateUserStreakAndStats } from "@/lib/stats-calc";
 import { hiraganaSeed } from "@/lib/data/hiragana";
 import { katakanaSeed } from "@/lib/data/katakana";
+import { roadmapStages } from "@/lib/data/roadmap";
 
 export const metadata = {
   title: "Dashboard | NihoLearn",
@@ -58,6 +59,36 @@ export default async function DashboardPage() {
 
   const userStats = calculateUserStreakAndStats(allSessions, kanaMastered);
 
+  // ── Determine current roadmap stage for the "Start Here / Current Stage" banner ──
+  const passedExamIds = new Set<string>();
+  for (const s of allSessions) {
+    if (s.notes) {
+      try {
+        const parsed = JSON.parse(s.notes);
+        if (parsed.type === "exam" && parsed.passed === true && parsed.level) {
+          passedExamIds.add(parsed.level === "kana" ? "kana_exam" : `${parsed.level}_exam`);
+        }
+      } catch {}
+    }
+  }
+
+  let currentStage = roadmapStages[0]; // default to Kana
+  for (const stage of roadmapStages) {
+    const stageUnlocked = !stage.unlockAfterExam || passedExamIds.has(stage.unlockAfterExam);
+    if (!stageUnlocked) break;
+    currentStage = stage;
+    const stageComplete =
+      stage.substeps.length > 0 &&
+      stage.substeps.every((sub) => {
+        if (sub.type === "exam") return passedExamIds.has(sub.id);
+        return false; // simplified — just advance past exams
+      });
+    if (!stageComplete) break;
+  }
+
+  // Determine the first unlocked-but-incomplete substep href, or fallback
+  const stageHref = currentStage.substeps[0]?.href ?? "/progress";
+
   return (
     <MainDashboardView
       user={user}
@@ -79,6 +110,12 @@ export default async function DashboardPage() {
         basicHiraCount,
         dakutenHiraCount,
         combiHiraCount,
+        currentStep: {
+          step: currentStage.step,
+          title: currentStage.title,
+          subtitle: currentStage.subtitle,
+          href: stageHref,
+        },
       }}
     />
   );

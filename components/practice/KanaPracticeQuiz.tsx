@@ -7,34 +7,10 @@ import { katakanaSeed } from "@/lib/data/katakana";
 import type { KanaPracticeConfig, PracticeMode } from "@/components/practice/KanaPracticeSetup";
 import type { KanaCharacter } from "@/types";
 
-function kataToHira(str: string): string {
-  return str.replace(/[\u30a1-\u30f6]/g, (ch) =>
-    String.fromCharCode(ch.charCodeAt(0) - 0x60)
-  );
-}
+import { playJapaneseAudio } from "@/lib/audio";
 
 function playKanaAudio(text: string) {
-  if (typeof window === "undefined") return;
-  const spoken = kataToHira(text);
-
-  if ("speechSynthesis" in window) {
-    try {
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.resume();
-      const utterance = new SpeechSynthesisUtterance(spoken);
-      utterance.lang = "ja-JP";
-      utterance.rate = 0.8;
-      const voices = window.speechSynthesis.getVoices();
-      const jaVoice = voices.find((v) => v.lang.toLowerCase().includes("ja"));
-      if (jaVoice) utterance.voice = jaVoice;
-      window.speechSynthesis.speak(utterance);
-    } catch {}
-  }
-
-  try {
-    const audio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(spoken)}&le=jap`);
-    audio.play().catch(() => {});
-  } catch {}
+  playJapaneseAudio(text);
 }
 
 interface QuestionItem {

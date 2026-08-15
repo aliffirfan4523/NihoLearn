@@ -23,31 +23,36 @@ export async function POST(request: NextRequest) {
       date?: string;
       durationMinutes?: number;
       level?: string;
-      activities?: string[];
+      activities?: string[] | string;
       wordsReviewed?: number;
       kanjiReviewed?: number;
       notes?: string;
     };
 
-    if (!body.durationMinutes || !body.level || !body.activities) {
-      return NextResponse.json({ data: null, error: "Invalid session data." }, { status: 400 });
-    }
+    const duration = Math.max(1, Math.round(body.durationMinutes || 1));
+    const level = body.level || "N5";
+    const activitiesArray = Array.isArray(body.activities)
+      ? body.activities
+      : typeof body.activities === "string"
+      ? [body.activities]
+      : ["general"];
 
     const data = await prisma.studySession.create({
       data: {
         userId: user.id,
         date: body.date ? new Date(body.date) : new Date(),
-        durationMinutes: body.durationMinutes,
-        level: body.level,
-        activities: JSON.stringify(body.activities),
-        wordsReviewed: body.wordsReviewed,
-        kanjiReviewed: body.kanjiReviewed,
-        notes: body.notes,
+        durationMinutes: duration,
+        level: level,
+        activities: JSON.stringify(activitiesArray),
+        wordsReviewed: body.wordsReviewed || 0,
+        kanjiReviewed: body.kanjiReviewed || 0,
+        notes: typeof body.notes === "object" ? JSON.stringify(body.notes) : body.notes || null,
       },
     });
 
     return NextResponse.json({ data, error: null });
-  } catch {
+  } catch (error) {
+    console.error("Failed to create study session:", error);
     return NextResponse.json({ data: null, error: "Failed to create session." }, { status: 500 });
   }
 }

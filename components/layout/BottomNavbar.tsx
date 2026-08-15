@@ -23,7 +23,7 @@ export function BottomNavbar() {
   const [moreOpen, setMoreOpen] = useState(false);
 
   const isDashboard = pathname === "/";
-  const isRoadmap = /^\/n[1-5]$/.test(pathname);
+  const isRoadmap = pathname.startsWith("/roadmap");
   const isPractice = pathname.startsWith("/practice");
   const isProgress = pathname.startsWith("/progress") || pathname.startsWith("/stats");
   const isMore =
@@ -40,7 +40,7 @@ export function BottomNavbar() {
     },
     {
       label: "Roadmap",
-      href: "/n5",
+      href: "/roadmap",
       icon: Compass,
       active: isRoadmap,
     },
@@ -207,26 +207,26 @@ export function BottomNavbar() {
                 </Link>
               </div>
 
-              {/* Kana Quick Links */}
+              {/* Quick Hub Links */}
               <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/10 dark:bg-[#2A2A2A]">
                 <div className="text-xs font-semibold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
-                  Kana Charts
+                  Learning Hubs
                 </div>
                 <div className="mt-2.5 grid grid-cols-2 gap-2">
                   <Link
-                    href="/kana/hiragana"
+                    href="/progress/kana"
                     onClick={() => setMoreOpen(false)}
                     className="flex items-center justify-between rounded-xl bg-white p-3 text-sm font-medium text-[#1A1A1A] shadow-xs hover:border-[#C84B31] hover:text-[#C84B31] dark:bg-[#1A1A1A] dark:text-[#FAFAFA] dark:hover:text-[#E85C40]"
                   >
-                    <span>あ Hiragana</span>
+                    <span>あ Kana Progress</span>
                     <ChevronRight size={14} className="text-gray-400" />
                   </Link>
                   <Link
-                    href="/kana/katakana"
+                    href="/progress/kanji"
                     onClick={() => setMoreOpen(false)}
                     className="flex items-center justify-between rounded-xl bg-white p-3 text-sm font-medium text-[#1A1A1A] shadow-xs hover:border-[#C84B31] hover:text-[#C84B31] dark:bg-[#1A1A1A] dark:text-[#FAFAFA] dark:hover:text-[#E85C40]"
                   >
-                    <span>ア Katakana</span>
+                    <span>漢 Kanji List</span>
                     <ChevronRight size={14} className="text-gray-400" />
                   </Link>
                 </div>

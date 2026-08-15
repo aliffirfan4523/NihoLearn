@@ -1,29 +1,7 @@
 import type { KanjiEntry } from "@/types";
 
-export const n5Kanji: KanjiEntry[] = [
-  { id: "n5_k001", level: "N5", character: "日", onyomi: ["ニチ", "ジツ"], kunyomi: ["ひ", "か"], meaning: ["day", "sun"], strokeCount: 4, exampleWords: ["日曜日", "毎日"] },
-  { id: "n5_k002", level: "N5", character: "月", onyomi: ["ゲツ", "ガツ"], kunyomi: ["つき"], meaning: ["month", "moon"], strokeCount: 4, exampleWords: ["一月", "月曜日"] },
-  { id: "n5_k003", level: "N5", character: "火", onyomi: ["カ"], kunyomi: ["ひ"], meaning: ["fire"], strokeCount: 4, exampleWords: ["火曜日", "花火"] },
-  { id: "n5_k004", level: "N5", character: "水", onyomi: ["スイ"], kunyomi: ["みず"], meaning: ["water"], strokeCount: 4, exampleWords: ["水曜日", "水泳"] },
-  { id: "n5_k005", level: "N5", character: "木", onyomi: ["モク", "ボク"], kunyomi: ["き"], meaning: ["tree", "wood"], strokeCount: 4, exampleWords: ["木曜日", "木"] },
-  { id: "n5_k006", level: "N5", character: "金", onyomi: ["キン", "コン"], kunyomi: ["かね"], meaning: ["gold", "money"], strokeCount: 8, exampleWords: ["金曜日", "お金"] },
-  { id: "n5_k007", level: "N5", character: "土", onyomi: ["ド", "ト"], kunyomi: ["つち"], meaning: ["earth", "soil"], strokeCount: 3, exampleWords: ["土曜日", "土地"] },
-  { id: "n5_k008", level: "N5", character: "本", onyomi: ["ホン"], kunyomi: ["もと"], meaning: ["book", "origin"], strokeCount: 5, exampleWords: ["本", "日本"] },
-  { id: "n5_k009", level: "N5", character: "人", onyomi: ["ジン", "ニン"], kunyomi: ["ひと"], meaning: ["person"], strokeCount: 2, exampleWords: ["日本人", "一人"] },
-  { id: "n5_k010", level: "N5", character: "大", onyomi: ["ダイ", "タイ"], kunyomi: ["おお"], meaning: ["big", "large"], strokeCount: 3, exampleWords: ["大きい", "大学"] },
-  { id: "n5_k011", level: "N5", character: "小", onyomi: ["ショウ"], kunyomi: ["ちい", "こ"], meaning: ["small"], strokeCount: 3, exampleWords: ["小さい", "小学生"] },
-  { id: "n5_k012", level: "N5", character: "中", onyomi: ["チュウ"], kunyomi: ["なか"], meaning: ["middle", "inside"], strokeCount: 4, exampleWords: ["中", "中国"] },
-  { id: "n5_k013", level: "N5", character: "上", onyomi: ["ジョウ"], kunyomi: ["うえ", "あ"], meaning: ["up", "above"], strokeCount: 3, exampleWords: ["上", "上手"] },
-  { id: "n5_k014", level: "N5", character: "下", onyomi: ["カ", "ゲ"], kunyomi: ["した", "さ"], meaning: ["down", "below"], strokeCount: 3, exampleWords: ["下", "地下"] },
-  { id: "n5_k015", level: "N5", character: "山", onyomi: ["サン"], kunyomi: ["やま"], meaning: ["mountain"], strokeCount: 3, exampleWords: ["山", "富士山"] },
-  { id: "n5_k016", level: "N5", character: "川", onyomi: ["セン"], kunyomi: ["かわ"], meaning: ["river"], strokeCount: 3, exampleWords: ["川", "河川"] },
-  { id: "n5_k017", level: "N5", character: "田", onyomi: ["デン"], kunyomi: ["た"], meaning: ["field", "rice paddy"], strokeCount: 5, exampleWords: ["田中", "田んぼ"] },
-  { id: "n5_k018", level: "N5", character: "日本", onyomi: ["ニホン", "ニッポン"], kunyomi: [], meaning: ["Japan"], strokeCount: 8, exampleWords: ["日本人", "日本語"] },
-  { id: "n5_k019", level: "N5", character: "語", onyomi: ["ゴ"], kunyomi: ["かた"], meaning: ["language", "word"], strokeCount: 14, exampleWords: ["日本語", "英語"] },
-  { id: "n5_k020", level: "N5", character: "学", onyomi: ["ガク"], kunyomi: ["まな"], meaning: ["study", "learning"], strokeCount: 8, exampleWords: ["学生", "学校"] },
-  { id: "n5_k021", level: "N5", character: "校", onyomi: ["コウ"], kunyomi: [], meaning: ["school"], strokeCount: 10, exampleWords: ["学校", "大学校"] },
-  { id: "n5_k022", level: "N5", character: "生", onyomi: ["セイ", "ショウ"], kunyomi: ["い", "う", "お"], meaning: ["life", "birth"], strokeCount: 5, exampleWords: ["学生", "先生"] },
-  { id: "n5_k023", level: "N5", character: "先", onyomi: ["セン"], kunyomi: ["さき"], meaning: ["before", "ahead"], strokeCount: 6, exampleWords: ["先生", "先週"] },
-  { id: "n5_k024", level: "N5", character: "外", onyomi: ["ガイ", "ゲ"], kunyomi: ["そと", "ほか"], meaning: ["outside"], strokeCount: 5, exampleWords: ["外国", "外人"] },
-  { id: "n5_k025", level: "N5", character: "国", onyomi: ["コク"], kunyomi: ["くに"], meaning: ["country"], strokeCount: 8, exampleWords: ["外国", "日本国"] },
-];
+/**
+ * @deprecated All Kanji (N5-N1, 2,136 Joyo & JLPT characters) are now loaded
+ * dynamically from the PostgreSQL database via Prisma and `/api/kanji`.
+ */
+export const n5Kanji: KanjiEntry[] = [];

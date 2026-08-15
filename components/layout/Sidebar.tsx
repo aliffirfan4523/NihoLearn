@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { kanaNav, jlptLevels, levelSections, mainNav, formatLevel } from "@/lib/routes";
+import { jlptLevels, levelSections, mainNav, formatLevel } from "@/lib/routes";
 import { useStore } from "@/lib/store";
 
 export function Sidebar() {
@@ -31,7 +31,7 @@ export function Sidebar() {
         </div>
 
         <nav className="mt-8 space-y-8 text-sm">
-          <section className="space-y-2">
+          <section className="space-y-1">
             {mainNav.map((item) => (
               <Link key={item.href} href={item.href} className="block rounded-xl px-3 py-2 font-medium text-[#1A1A1A] hover:bg-[#FAFAF8] hover:text-[#C84B31] dark:text-[#FAFAFA] dark:hover:bg-[#0A0A0A] dark:hover:text-[#E85C40]">
                 {item.label}
@@ -40,18 +40,7 @@ export function Sidebar() {
           </section>
 
           <section>
-            <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-widest text-[#6B6B6B] dark:text-[#A0A0A0]">Kana</p>
-            <div className="space-y-1">
-              {kanaNav.map((item) => (
-                <Link key={item.href} href={item.href} className="block rounded-xl px-3 py-2 text-[#6B6B6B] hover:bg-[#FAFAF8] hover:text-[#C84B31] dark:text-[#A0A0A0] dark:hover:bg-[#0A0A0A] dark:hover:text-[#E85C40]">
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-widest text-[#6B6B6B] dark:text-[#A0A0A0]">JLPT</p>
+            <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-widest text-[#6B6B6B] dark:text-[#A0A0A0]">JLPT Mastery</p>
             <div className="space-y-4">
               {jlptLevels.map((level) => (
                 <div key={level} className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-3 dark:border-white/10 dark:bg-[#0A0A0A]">

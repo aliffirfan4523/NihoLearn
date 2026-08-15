@@ -1,22 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Headphones, Volume2, CheckCircle2, XCircle, ArrowRight, Trophy, Flame, RotateCcw, ArrowLeft } from "lucide-react";
 import { n5Vocab } from "@/lib/data/n5-vocab";
 
+import { playJapaneseAudio } from "@/lib/audio";
+
 function playAudio(text: string) {
-  if (typeof window === "undefined") return;
-  if ("speechSynthesis" in window) {
-    try {
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.resume();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = "ja-JP";
-      u.rate = 0.8;
-      window.speechSynthesis.speak(u);
-    } catch {}
-  }
+  playJapaneseAudio(text);
 }
 
 interface ListeningQuestion {
@@ -80,11 +72,55 @@ export function ListeningQuiz() {
     return <div className="p-8 text-center text-gray-500">Preparing listening quiz...</div>;
   }
 
+  const answersRef = useRef<Record<string, { word: string; correct: boolean }>>({});
+
+  // Auto-log session & update VocabProgress when finished
+  useEffect(() => {
+    if (isFinished && questions.length > 0) {
+      const accuracy = Math.round((score / questions.length) * 100);
+      const answersList = Object.values(answersRef.current);
+
+      const batch = answersList.map((item) => ({
+        wordId: item.word,
+        level: "N5",
+        status: item.correct ? ("mastered" as const) : ("reviewing" as const),
+        notes: item.correct ? "Listening quiz passed" : "Listening review needed",
+      }));
+
+      // 1. Update Vocab Progress
+      if (batch.length > 0) {
+        fetch("/api/vocab", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ batch }),
+        }).catch(() => {});
+      }
+
+      // 2. Log Study Session
+      fetch("/api/sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          durationMinutes: Math.max(1, Math.round((questions.length * 8) / 60)),
+          level: "N5",
+          activities: ["listening", "vocabulary"],
+          wordsReviewed: questions.length,
+          notes: JSON.stringify({ score, total: questions.length, accuracy, mode: "listening" }),
+        }),
+      }).catch(() => {});
+    }
+  }, [isFinished, questions.length, score]);
+
   const handleSelect = (option: string) => {
-    if (status !== "idle") return;
+    if (status !== "idle" || !currentQ) return;
     setSelectedOption(option);
 
     const isCorrect = option === currentQ.meaning;
+    answersRef.current[currentQ.word] = {
+      word: currentQ.word,
+      correct: isCorrect,
+    };
+
     if (isCorrect) {
       setStatus("correct");
       setScore((s) => s + 1);

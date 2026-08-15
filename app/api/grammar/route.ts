@@ -29,8 +29,43 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const user = await requireUser();
-    const body = (await request.json()) as { grammarId?: string; level?: string; status?: ProgressStatus; notes?: string };
+    const body = (await request.json()) as {
+      grammarId?: string;
+      level?: string;
+      status?: ProgressStatus;
+      notes?: string;
+      batch?: Array<{ grammarId: string; level: string; status: ProgressStatus; notes?: string }>;
+    };
 
+    // Handle batch update
+    if (body.batch && Array.isArray(body.batch)) {
+      const updates = body.batch.filter((item) => item.grammarId && item.level && statuses.includes(item.status));
+      await Promise.all(
+        updates.map((item) =>
+          prisma.grammarProgress.upsert({
+            where: { userId_grammarId: { userId: user.id, grammarId: item.grammarId } },
+            update: {
+              level: item.level,
+              status: item.status,
+              notes: item.notes,
+              masteredAt: item.status === "mastered" ? new Date() : null,
+            },
+            create: {
+              userId: user.id,
+              grammarId: item.grammarId,
+              level: item.level,
+              status: item.status,
+              notes: item.notes,
+              masteredAt: item.status === "mastered" ? new Date() : null,
+            },
+          })
+        )
+      );
+
+      return NextResponse.json({ success: true, updatedCount: updates.length, error: null });
+    }
+
+    // Handle single update
     if (!body.grammarId || !body.level || !body.status || !statuses.includes(body.status)) {
       return NextResponse.json({ data: null, error: "Invalid grammar update." }, { status: 400 });
     }

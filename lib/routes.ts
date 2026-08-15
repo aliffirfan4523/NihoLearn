@@ -9,16 +9,13 @@ export type JlptLevelSlug = (typeof jlptLevels)[number];
 
 export const mainNav: NavItem[] = [
   { label: "Dashboard", href: "/" },
-  { label: "Kana", href: "/kana" },
+  { label: "Roadmap", href: "/roadmap" },
+  { label: "Progress Hub", href: "/progress" },
+  { label: "Practice", href: "/practice" },
   { label: "Sessions", href: "/sessions" },
   { label: "Statistics", href: "/stats" },
   { label: "Data Editor", href: "/data" },
   { label: "Profile", href: "/profile" },
-];
-
-export const kanaNav: NavItem[] = [
-  { label: "Hiragana", href: "/kana/hiragana" },
-  { label: "Katakana", href: "/kana/katakana" },
 ];
 
 export const levelSections = ["vocabulary", "kanji", "grammar"] as const;

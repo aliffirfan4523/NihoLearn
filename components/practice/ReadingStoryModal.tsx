@@ -4,19 +4,7 @@ import { useState } from "react";
 import { X, Volume2, CheckCircle2, XCircle, ArrowRight, HelpCircle, Trophy, BookOpen } from "lucide-react";
 import type { ReadingStory, StoryWordToken } from "@/lib/data/stories";
 
-function playJapaneseAudio(text: string) {
-  if (typeof window === "undefined") return;
-  if ("speechSynthesis" in window) {
-    try {
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.resume();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = "ja-JP";
-      u.rate = 0.85;
-      window.speechSynthesis.speak(u);
-    } catch {}
-  }
-}
+import { playJapaneseAudio } from "@/lib/audio";
 
 export function ReadingStoryModal({
   story,
@@ -265,7 +253,52 @@ export function ReadingStoryModal({
                 <button
                   type="button"
                   disabled={Object.keys(selectedAnswers).length < story.questions.length}
-                  onClick={() => setShowResults(true)}
+                  onClick={() => {
+                    setShowResults(true);
+                    const score = calculateScore();
+                    const total = story.questions.length;
+                    const acc = total > 0 ? Math.round((score / total) * 100) : 100;
+
+                    // Extract vocabulary tokens with meanings from story
+                    const storyTokens = story.sentences.flatMap((s) =>
+                      s.tokens.filter((t) => t.meaning && t.meaning.trim() !== "")
+                    );
+
+                    // Log reading study session
+                    fetch("/api/sessions", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        durationMinutes: 5,
+                        level: story.level,
+                        activities: ["reading", "comprehension"],
+                        wordsReviewed: storyTokens.length || 10,
+                        notes: JSON.stringify({
+                          storyId: story.id,
+                          title: story.titleJapanese,
+                          score,
+                          total,
+                          accuracy: acc,
+                        }),
+                      }),
+                    }).catch(() => {});
+
+                    // Update vocabulary progress for story tokens
+                    if (storyTokens.length > 0) {
+                      const vocabBatch = storyTokens.map((t) => ({
+                        wordId: t.text,
+                        level: story.level,
+                        status: acc >= 70 ? ("mastered" as const) : ("reviewing" as const),
+                        notes: `Read in story: ${story.titleJapanese} (${t.meaning})`,
+                      }));
+
+                      fetch("/api/vocab", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ batch: vocabBatch }),
+                      }).catch(() => {});
+                    }
+                  }}
                   className="w-full rounded-2xl bg-[#C84B31] py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#b03e26] disabled:opacity-40 dark:bg-[#E85C40]"
                 >
                   Check Answers

@@ -1,9 +1,19 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import { BookOpenCheck, CheckCircle2, XCircle, ArrowRight, Trophy, Flame, ArrowLeft, RotateCcw } from "lucide-react";
-import { n5Kanji } from "@/lib/data/n5-kanji";
+import {
+  BookOpenCheck,
+  CheckCircle2,
+  XCircle,
+  ArrowRight,
+  Trophy,
+  Flame,
+  ArrowLeft,
+  RotateCcw,
+  Volume2,
+} from "lucide-react";
+import { playJapaneseAudio } from "@/lib/audio";
 
 interface KanjiQuestion {
   kanji: string;
@@ -14,7 +24,9 @@ interface KanjiQuestion {
 }
 
 export function KanjiQuiz() {
+  const [level, setLevel] = useState("N5");
   const [questions, setQuestions] = useState<KanjiQuestion[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "correct" | "incorrect">("idle");
@@ -25,37 +37,56 @@ export function KanjiQuiz() {
 
   const answersRef = useRef<Record<string, { kanji: string; meaning: string; correct: boolean }>>({});
 
-  useEffect(() => {
-    const pool = [...n5Kanji].sort(() => Math.random() - 0.5);
-    const qList: KanjiQuestion[] = [];
-    const count = 10;
-
-    for (let i = 0; i < count; i++) {
-      const target = pool[i % pool.length];
-      const otherKanji = pool.filter((k) => k.id !== target.id);
-      const distractors = otherKanji
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3)
-        .map((k) => k.meaning.join(", "));
-
-      const options = [target.meaning.join(", "), ...distractors].sort(() => Math.random() - 0.5);
-      qList.push({
-        kanji: target.character,
-        onyomi: target.onyomi,
-        kunyomi: target.kunyomi,
-        meaning: target.meaning.join(", "),
-        options,
-      });
-    }
-
-    setQuestions(qList);
-    setCurrentIndex(0);
+  const startQuiz = useCallback(async (quizLevel: string) => {
+    setLoading(true);
+    setIsFinished(false);
+    setSelectedOption(null);
+    setStatus("idle");
     setScore(0);
     setStreak(0);
     setMaxStreak(0);
-    setIsFinished(false);
+    setCurrentIndex(0);
     answersRef.current = {};
+
+    try {
+      const res = await fetch(`/api/kanji?level=${encodeURIComponent(quizLevel)}`);
+      const json = await res.json();
+
+      if (json.data && Array.isArray(json.data) && json.data.length > 0) {
+        const pool = [...json.data].sort(() => Math.random() - 0.5);
+        const qList: KanjiQuestion[] = [];
+        const count = Math.min(10, pool.length);
+
+        for (let i = 0; i < count; i++) {
+          const target = pool[i];
+          const otherKanji = pool.filter((k: { character: string }) => k.character !== target.character);
+          const distractors = otherKanji
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3)
+            .map((k: { meaning: string }) => k.meaning);
+
+          const options = [target.meaning, ...distractors].sort(() => Math.random() - 0.5);
+          qList.push({
+            kanji: target.character,
+            onyomi: target.onyomi || [],
+            kunyomi: target.kunyomi || [],
+            meaning: target.meaning,
+            options,
+          });
+        }
+
+        setQuestions(qList);
+      }
+    } catch (err) {
+      console.error("Failed to load kanji for quiz:", err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    startQuiz(level);
+  }, [level, startQuiz]);
 
   const currentQ = questions[currentIndex];
 
@@ -69,7 +100,7 @@ export function KanjiQuiz() {
 
       const batch = answersList.map(([kanji, data]) => ({
         kanjiId: kanji,
-        level: "N5",
+        level: level,
         status: data.correct ? ("mastered" as const) : ("reviewing" as const),
         notes: data.correct ? "Quiz passed" : "Review needed",
       }));
@@ -89,14 +120,14 @@ export function KanjiQuiz() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           durationMinutes: Math.max(1, Math.round((questions.length * 6) / 60)),
-          level: "N5",
+          level: level,
           activities: ["kanji", "reading"],
           kanjiReviewed: questions.length,
           notes: JSON.stringify({ score, total: questions.length, accuracy }),
         }),
       }).catch(() => {});
     }
-  }, [isFinished, questions.length, score]);
+  }, [isFinished, questions.length, score, level]);
 
   const handleSelect = (option: string) => {
     if (status !== "idle" || !currentQ) return;
@@ -133,8 +164,12 @@ export function KanjiQuiz() {
     }
   };
 
-  if (questions.length === 0) {
-    return <div className="p-8 text-center text-gray-500">Preparing kanji quiz...</div>;
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-xl p-12 text-center text-sm text-gray-500">
+        Loading Kanji quiz from database...
+      </div>
+    );
   }
 
   if (isFinished) {
@@ -144,8 +179,12 @@ export function KanjiQuiz() {
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/15 text-amber-500 shadow-sm">
           <Trophy size={40} />
         </div>
-        <h2 className="mt-5 text-2xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Kanji Quiz Complete!</h2>
-        <p className="mt-1 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">Your kanji recognition score:</p>
+        <h2 className="mt-5 text-2xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
+          {level} Kanji Quiz Complete!
+        </h2>
+        <p className="mt-1 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
+          Great job! Results have been recorded to your progress.
+        </p>
 
         <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#2A2A2A]">
           <div>
@@ -173,122 +212,167 @@ export function KanjiQuiz() {
           </Link>
           <button
             type="button"
-            onClick={() => {
-              setCurrentIndex(0);
-              setScore(0);
-              setStreak(0);
-              setMaxStreak(0);
-              setIsFinished(false);
-              setStatus("idle");
-              setSelectedOption(null);
-            }}
-            className="flex-1 rounded-2xl bg-[#C84B31] py-3 text-sm font-bold text-white shadow-md transition hover:bg-[#b03e26] dark:bg-[#E85C40]"
+            onClick={() => startQuiz(level)}
+            className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] py-3 text-sm font-bold text-white shadow-md hover:bg-[#b03e26] dark:bg-[#E85C40]"
           >
-            Quiz Again
+            <RotateCcw size={16} />
+            <span>Play Again</span>
           </button>
         </div>
       </div>
     );
   }
 
+  if (questions.length === 0) {
+    return (
+      <div className="mx-auto max-w-xl rounded-3xl border border-black/10 bg-white p-8 text-center dark:border-white/15 dark:bg-[#1A1A1A]">
+        <p className="text-sm text-gray-500">No Kanji found for {level}.</p>
+        <button
+          type="button"
+          onClick={() => startQuiz("N5")}
+          className="mt-4 rounded-xl bg-[#C84B31] px-4 py-2 text-xs font-bold text-white"
+        >
+          Load N5 Kanji
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-xl space-y-6">
-      {/* Header */}
+      {/* Top Header */}
       <div className="flex items-center justify-between">
         <Link
           href="/practice"
-          className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+          className="flex items-center gap-2 text-xs font-semibold text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
         >
-          <ArrowLeft size={16} /> Practice Hub
+          <ArrowLeft size={16} /> Back to Practice
         </Link>
 
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-xs font-bold text-orange-600 dark:text-orange-400">
-            <Flame size={16} />
-            <span>{streak}</span>
+        {/* Level Switcher */}
+        <div className="flex items-center gap-1.5">
+          {["N5", "N4", "N3", "N2", "N1"].map((lvl) => (
+            <button
+              key={lvl}
+              type="button"
+              onClick={() => setLevel(lvl)}
+              className={`rounded-lg px-2.5 py-1 text-xs font-bold transition ${
+                level === lvl
+                  ? "bg-[#C84B31] text-white dark:bg-[#E85C40]"
+                  : "bg-black/5 text-[#6B6B6B] hover:bg-black/10 dark:bg-white/10 dark:text-[#A0A0A0]"
+              }`}
+            >
+              {lvl}
+            </button>
+          ))}
+        </div>
+
+        {streak > 1 && (
+          <div className="flex items-center gap-1.5 rounded-full bg-orange-500/15 px-3 py-1 text-xs font-bold text-orange-600 dark:bg-orange-500/20 dark:text-orange-400">
+            <Flame size={14} /> {streak} Streak
           </div>
-          <span className="text-xs font-semibold text-[#6B6B6B] dark:text-[#A0A0A0]">
-            {currentIndex + 1} of {questions.length}
+        )}
+      </div>
+
+      {/* Progress Bar */}
+      <div className="flex items-center gap-3">
+        <div className="h-2 flex-1 overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
+          <div
+            className="h-full rounded-full bg-[#C84B31] transition-all duration-300 dark:bg-[#E85C40]"
+            style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
+          />
+        </div>
+        <span className="text-xs font-bold text-[#6B6B6B] dark:text-[#A0A0A0]">
+          {currentIndex + 1} / {questions.length}
+        </span>
+      </div>
+
+      {/* Main Kanji Question Card */}
+      <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-white p-8 text-center shadow-sm dark:border-white/15 dark:bg-[#1A1A1A]">
+        <div className="flex justify-center">
+          <span className="rounded-full bg-[#C84B31]/10 px-3 py-1 text-xs font-bold text-[#C84B31] dark:bg-[#E85C40]/20 dark:text-[#E85C40]">
+            JLPT {level} Kanji
           </span>
         </div>
-      </div>
 
-      <div className="h-2 w-full overflow-hidden rounded-full bg-[#F0F0F0] dark:bg-[#2A2A2A]">
-        <div
-          className="h-full bg-[#C84B31] transition-all duration-300 dark:bg-[#E85C40]"
-          style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
-        />
-      </div>
-
-      {/* Main Card */}
-      <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
-        <div className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
-          Identify the Meaning of this Kanji
+        <div className="mt-4 font-serif text-8xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#FAFAFA]">
+          {currentQ.kanji}
         </div>
 
-        {/* Big Kanji */}
-        <div className="my-6">
-          <div className="font-serif text-8xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
-            {currentQ.kanji}
-          </div>
-          <div className="mt-2 text-xs text-gray-400">
-            On: {currentQ.onyomi.join(", ") || "—"} · Kun: {currentQ.kunyomi.join(", ") || "—"}
-          </div>
+        {/* Readings Hint Bar */}
+        <div className="mt-3 flex items-center justify-center gap-3 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
+          {currentQ.kunyomi.length > 0 && (
+            <span>
+              <strong>訓:</strong> {currentQ.kunyomi.join("、")}
+            </span>
+          )}
+          {currentQ.onyomi.length > 0 && (
+            <span>
+              <strong>音:</strong> {currentQ.onyomi.join("、")}
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={() => playJapaneseAudio(currentQ.kanji)}
+            className="rounded-md p-1 text-gray-400 hover:text-[#C84B31] dark:hover:text-[#E85C40]"
+          >
+            <Volume2 size={15} />
+          </button>
         </div>
 
-        {/* 4 Choices */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 mt-6">
-          {currentQ.options.map((option) => {
+        <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-gray-400">
+          What is the primary English meaning?
+        </p>
+
+        {/* Options Grid */}
+        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {currentQ.options.map((option, idx) => {
+            const isSelected = selectedOption === option;
             const isCorrect = option === currentQ.meaning;
-            const isChosen = selectedOption === option;
 
             let btnStyle =
-              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]";
+              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] hover:bg-[#C84B31]/5 dark:border-white/10 dark:bg-[#2A2A2A] dark:text-[#FAFAFA] dark:hover:border-[#E85C40]";
 
             if (status !== "idle") {
               if (isCorrect) {
-                btnStyle = "border-emerald-500 bg-emerald-500 text-white font-bold";
-              } else if (isChosen && !isCorrect) {
-                btnStyle = "border-rose-500 bg-rose-500 text-white font-bold";
+                btnStyle =
+                  "border-emerald-500 bg-emerald-500/15 text-emerald-800 font-bold dark:text-emerald-300 dark:border-emerald-500/50";
+              } else if (isSelected && !isCorrect) {
+                btnStyle =
+                  "border-rose-500 bg-rose-500/15 text-rose-800 font-bold dark:text-rose-300 dark:border-rose-500/50";
               } else {
-                btnStyle = "opacity-40 border-black/5 dark:border-white/5";
+                btnStyle = "border-black/5 bg-gray-50 text-gray-400 opacity-60 dark:bg-white/5 dark:text-gray-500";
               }
             }
 
             return (
               <button
-                key={option}
+                key={idx}
                 type="button"
                 disabled={status !== "idle"}
                 onClick={() => handleSelect(option)}
-                className={`rounded-2xl border p-4 text-center text-sm font-semibold shadow-xs transition ${btnStyle}`}
+                className={`flex items-center justify-between rounded-2xl border p-4 text-left text-sm font-semibold capitalize transition ${btnStyle}`}
               >
-                {option}
+                <span>{option}</span>
+                {status !== "idle" && isCorrect && <CheckCircle2 size={18} className="text-emerald-600" />}
+                {status !== "idle" && isSelected && !isCorrect && (
+                  <XCircle size={18} className="text-rose-600" />
+                )}
               </button>
             );
           })}
         </div>
 
-        {/* Feedback Alert */}
+        {/* Next Question Button */}
         {status !== "idle" && (
-          <div className="mt-6 flex items-center justify-between rounded-2xl bg-emerald-500/15 p-4 text-emerald-900 dark:text-emerald-300 animate-in fade-in duration-150">
-            <div className="flex items-center gap-2">
-              {status === "correct" ? <CheckCircle2 size={22} /> : <XCircle size={22} className="text-rose-500" />}
-              <span className="font-bold text-sm">
-                {status === "correct" ? "Correct!" : `Correct: ${currentQ.meaning}`}
-              </span>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleNext}
-              autoFocus
-              className="flex items-center gap-1 rounded-xl bg-black px-4 py-2 text-xs font-bold text-white shadow-md hover:bg-gray-800 dark:bg-white dark:text-black"
-            >
-              <span>Next</span>
-              <ArrowRight size={14} />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleNext}
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#C84B31] py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#b03e26] dark:bg-[#E85C40]"
+          >
+            <span>{currentIndex + 1 < questions.length ? "Next Kanji" : "View Results"}</span>
+            <ArrowRight size={16} />
+          </button>
         )}
       </div>
     </div>

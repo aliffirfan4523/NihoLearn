@@ -21,6 +21,8 @@ export function KanaSpeedGame() {
   const [charList, setCharList] = useState<Omit<KanaCharacter, "status">[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const correctKanaIdsRef = useRef<Set<string>>(new Set());
+  const wrongKanaIdsRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     try {
@@ -81,6 +83,7 @@ export function KanaSpeedGame() {
 
     if (trimmed === expected) {
       // Correct match!
+      correctKanaIdsRef.current.add(currentChar.id);
       setCorrectCount((c) => c + 1);
       setStreak((s) => {
         const next = s + 1;
@@ -93,6 +96,7 @@ export function KanaSpeedGame() {
       setTypedInput(val);
       // Check if typed length exceeds expected without matching -> wrong
       if (trimmed.length >= expected.length + 1) {
+        wrongKanaIdsRef.current.add(currentChar.id);
         setWrongCount((w) => w + 1);
         setStreak(0);
         setTypedInput("");
@@ -110,7 +114,26 @@ export function KanaSpeedGame() {
         } catch {}
       }
 
-      // Log session
+      // 1. Update Kana Progress
+      const batchUpdates: Array<{ kanaId: string; status: "mastered" | "reviewing" }> = [];
+      for (const id of correctKanaIdsRef.current) {
+        batchUpdates.push({ kanaId: id, status: "mastered" });
+      }
+      for (const id of wrongKanaIdsRef.current) {
+        if (!correctKanaIdsRef.current.has(id)) {
+          batchUpdates.push({ kanaId: id, status: "reviewing" });
+        }
+      }
+
+      if (batchUpdates.length > 0) {
+        fetch("/api/kana", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ batch: batchUpdates }),
+        }).catch(() => {});
+      }
+
+      // 2. Log session
       const total = correctCount + wrongCount;
       const acc = total > 0 ? Math.round((correctCount / total) * 100) : 100;
       fetch("/api/sessions", {

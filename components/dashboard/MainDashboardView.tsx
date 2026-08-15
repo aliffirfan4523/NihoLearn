@@ -45,6 +45,12 @@ interface MainDashboardViewProps {
     basicHiraCount: number;
     dakutenHiraCount: number;
     combiHiraCount: number;
+    currentStep: {
+      step: number;
+      title: string;
+      subtitle: string;
+      href: string;
+    };
   };
 }
 
@@ -135,33 +141,33 @@ export function MainDashboardView({ user, stats }: MainDashboardViewProps) {
           </div>
         </div>
 
-        {/* Start Here Banner */}
-        <div className="rounded-3xl border border-purple-500/30 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 p-5 shadow-xs dark:border-purple-500/40">
+        {/* Current Step Banner */}
+        <Link
+          href={stats.currentStep.href}
+          className="group block rounded-3xl border border-[#C84B31]/30 bg-gradient-to-r from-[#C84B31]/10 to-orange-500/10 p-5 shadow-xs transition hover:shadow-md dark:border-[#E85C40]/30"
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-600 text-white font-serif text-lg font-bold shadow-sm">
-                あ
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#C84B31] text-white font-serif text-lg font-bold shadow-sm dark:bg-[#E85C40]">
+                {stats.currentStep.step === 0 ? "あ" : `${stats.currentStep.step}`}
               </div>
               <div>
-                <span className="rounded bg-purple-500/20 px-1.5 py-0.5 text-[9px] font-bold uppercase text-purple-700 dark:text-purple-300">
-                  Start Here
+                <span className="rounded bg-[#C84B31]/20 px-1.5 py-0.5 text-[9px] font-bold uppercase text-[#C84B31] dark:text-[#E85C40]">
+                  {stats.currentStep.step === 0 ? "Start Here" : "Current Stage"}
                 </span>
                 <div className="text-xs font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
-                  STEP 1 · KANA FOUNDATION
+                  STEP {stats.currentStep.step} · {stats.currentStep.title.toUpperCase()}
                 </div>
-                <div className="text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">Practice Kana</div>
+                <div className="text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">{stats.currentStep.subtitle}</div>
               </div>
             </div>
 
-            <Link
-              href="/practice/kana"
-              className="flex items-center gap-1 rounded-xl bg-purple-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-purple-700"
-            >
+            <div className="flex items-center gap-1 rounded-xl bg-[#C84B31] px-3.5 py-2 text-xs font-bold text-white shadow-sm transition group-hover:bg-[#b03e26] dark:bg-[#E85C40]">
               <span>Go</span>
               <ArrowRight size={12} />
-            </Link>
+            </div>
           </div>
-        </div>
+        </Link>
 
         {/* 3 Stats Summary */}
         <div className="grid grid-cols-3 gap-2.5">

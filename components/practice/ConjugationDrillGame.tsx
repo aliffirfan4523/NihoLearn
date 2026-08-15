@@ -10,18 +10,10 @@ import {
 } from "@/lib/data/conjugation";
 import type { ConjugationDrillConfig } from "@/components/practice/ConjugationDrillSetup";
 
+import { playJapaneseAudio } from "@/lib/audio";
+
 function playAudio(text: string) {
-  if (typeof window === "undefined") return;
-  if ("speechSynthesis" in window) {
-    try {
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.resume();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = "ja-JP";
-      u.rate = 0.85;
-      window.speechSynthesis.speak(u);
-    } catch {}
-  }
+  playJapaneseAudio(text);
 }
 
 interface ConjugationQuestion {
@@ -87,10 +79,28 @@ export function ConjugationDrillGame({
 
   const currentQ = questions[currentIndex];
 
-  // Auto-log session when finished
+  // Auto-log session & update GrammarProgress when finished
   useEffect(() => {
     if (isFinished && questions.length > 0) {
       const accuracy = Math.round((score / questions.length) * 100);
+
+      // 1. Batch update grammar progress for the practiced conjugation forms
+      const grammarBatch = config.selectedForms.map((formKey) => ({
+        grammarId: `${config.level.toLowerCase()}_conjugation_${formKey}`,
+        level: config.level,
+        status: accuracy >= 70 ? ("mastered" as const) : ("reviewing" as const),
+        notes: `Conjugation drill: ${accuracy}% accuracy`,
+      }));
+
+      if (grammarBatch.length > 0) {
+        fetch("/api/grammar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ batch: grammarBatch }),
+        }).catch(() => {});
+      }
+
+      // 2. Log study session
       fetch("/api/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
