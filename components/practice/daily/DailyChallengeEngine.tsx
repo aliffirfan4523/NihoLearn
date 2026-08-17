@@ -18,9 +18,10 @@ import {
   Check,
   Zap,
 } from "lucide-react";
-import { generateDailyChallenge, type DailyQuestion } from "@/lib/data/daily-seed";
+import { generateDailyChallenge, type DailyDatasets, type DailyQuestion } from "@/lib/data/daily-seed";
 import { playJapaneseAudio } from "@/lib/audio";
 import { sfx } from "@/lib/japanese-utils";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 export function DailyChallengeEngine() {
   const [todayStr, setTodayStr] = useState<string>("");
@@ -40,17 +41,45 @@ export function DailyChallengeEngine() {
   // Midnight Countdown
   const [countdown, setCountdown] = useState<string>("");
 
-  // Initialize date string and questions
+  // Initialize date string and questions (banks fetched from the database)
   useEffect(() => {
+    let isMounted = true;
+
     const now = new Date();
     const yyyy = now.getFullYear();
     const mm = String(now.getMonth() + 1).padStart(2, "0");
     const dd = String(now.getDate()).padStart(2, "0");
     const dateFormatted = `${yyyy}-${mm}-${dd}`;
 
-    setTodayStr(dateFormatted);
-    const dailyQuestions = generateDailyChallenge(dateFormatted);
-    setQuestions(dailyQuestions);
+    async function loadDaily() {
+      setTodayStr(dateFormatted);
+
+      const [bankRes, particlesRes, dictationRes, grammarRes] = await Promise.all([
+        fetch("/api/content/daily-bank").then((r) => r.json()).catch(() => ({ data: [] })),
+        fetch("/api/content/particles").then((r) => r.json()).catch(() => ({ data: [] })),
+        fetch("/api/content/dictation").then((r) => r.json()).catch(() => ({ data: [] })),
+        fetch("/api/content/grammar").then((r) => r.json()).catch(() => ({ data: [] })),
+      ]);
+
+      if (!isMounted) return;
+
+      const bank = (bankRes.data ?? []) as Array<{ category: string; payload: Record<string, unknown> }>;
+      const pick = (category: string) =>
+        bank.filter((b) => b.category === category).map((b) => b.payload as any);
+
+      const datasets: DailyDatasets = {
+        kanjiBank: pick("kanji"),
+        vocabBank: pick("vocabulary"),
+        cultureBank: pick("culture"),
+        particles: particlesRes.data ?? [],
+        dictation: dictationRes.data ?? [],
+        grammar: grammarRes.data ?? [],
+      };
+
+      setQuestions(generateDailyChallenge(dateFormatted, datasets));
+    }
+
+    loadDaily();
 
     // Check streak and today completion from localStorage
     try {
@@ -65,6 +94,9 @@ export function DailyChallengeEngine() {
         setHasCompletedToday(true);
       }
     } catch {}
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Countdown timer to midnight
@@ -331,6 +363,19 @@ export function DailyChallengeEngine() {
           </div>
         </div>
       </div>
+
+      {/* How to Play */}
+      <HowToPlay
+        gameKey="daily-challenge"
+        steps={[
+          "Every day you get 10 mixed questions (vocabulary, kanji, and listening) — everyone gets the same challenge for that date.",
+          "Pick an answer, then press Submit to lock it in; the correct answer is highlighted after submitting.",
+          "Listening questions play their audio automatically — tap the speaker icon to replay before answering.",
+          "Your score and accuracy are shown at the end, and completing a challenge extends your daily streak.",
+          "A new challenge unlocks at midnight — the countdown shows how long until the next one drops.",
+        ]}
+        note="Tip: complete the challenge every day to keep your streak alive — missing a day is fine, but completing daily builds it up."
+      />
 
       {/* Progress Dots Bar (1 to 10) */}
       <div className="space-y-2">

@@ -3,8 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Zap, Timer, Flame, Trophy, RotateCcw, ArrowLeft } from "lucide-react";
-import { hiraganaSeed } from "@/lib/data/hiragana";
-import { katakanaSeed } from "@/lib/data/katakana";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 import type { KanaCharacter } from "@/types";
 
 export function KanaSpeedGame() {
@@ -19,10 +18,16 @@ export function KanaSpeedGame() {
   const [maxStreak, setMaxStreak] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [charList, setCharList] = useState<Omit<KanaCharacter, "status">[]>([]);
+  // All kana fetched from the database once on mount (filtered when starting)
+  const [kanaList, setKanaList] = useState<Omit<KanaCharacter, "status">[]>([]);
+  const [kanaLoaded, setKanaLoaded] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const correctKanaIdsRef = useRef<Set<string>>(new Set());
   const wrongKanaIdsRef = useRef<Set<string>>(new Set());
+  // IME (kana input / mobile keyboards) composition tracking — don't judge the
+  // answer while the IME owns the field; wait for compositionend.
+  const isComposingRef = useRef(false);
 
   useEffect(() => {
     try {
@@ -31,11 +36,44 @@ export function KanaSpeedGame() {
     } catch {}
   }, []);
 
+  // Fetch all kana from the database once on mount
+  useEffect(() => {
+    let isMounted = true;
+
+    fetch("/api/kana")
+      .then((res) => res.json())
+      .then((json) => {
+        if (!isMounted) return;
+        setKanaList(
+          (json?.data ?? []).map(
+            (k: { id: string; type: "hiragana" | "katakana"; character: string; romaji: string; row: string }) => ({
+              id: k.id,
+              type: k.type,
+              character: k.character,
+              romaji: k.romaji,
+              row: k.row,
+            })
+          )
+        );
+        setKanaLoaded(true);
+      })
+      .catch((err) => {
+        console.error("Failed to load kana:", err);
+        if (isMounted) setKanaLoaded(true);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const startGame = () => {
+    if (!kanaLoaded || kanaList.length === 0) return;
+
     let pool: Omit<KanaCharacter, "status">[] = [];
-    if (type === "hiragana") pool = [...hiraganaSeed];
-    else if (type === "katakana") pool = [...katakanaSeed];
-    else pool = [...hiraganaSeed, ...katakanaSeed];
+    if (type === "hiragana") pool = kanaList.filter((k) => k.type === "hiragana");
+    else if (type === "katakana") pool = kanaList.filter((k) => k.type === "katakana");
+    else pool = [...kanaList];
 
     const shuffled = pool.sort(() => Math.random() - 0.5);
     setCharList(shuffled);
@@ -78,10 +116,17 @@ export function KanaSpeedGame() {
   const handleInputChange = (val: string) => {
     if (gameState !== "playing" || !currentChar) return;
 
+    if (isComposingRef.current) {
+      // Mirror the composition text for display, but let the IME finish before judging
+      setTypedInput(val);
+      return;
+    }
+
     const trimmed = val.trim().toLowerCase();
     const expected = currentChar.romaji.toLowerCase();
+    const expectedKana = (currentChar.character || "").toLowerCase();
 
-    if (trimmed === expected) {
+    if (trimmed === expected || trimmed === expectedKana) {
       // Correct match!
       correctKanaIdsRef.current.add(currentChar.id);
       setCorrectCount((c) => c + 1);
@@ -102,6 +147,15 @@ export function KanaSpeedGame() {
         setTypedInput("");
       }
     }
+  };
+
+  const handleCompositionStart = () => {
+    isComposingRef.current = true;
+  };
+
+  const handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
+    isComposingRef.current = false;
+    handleInputChange((e.target as HTMLInputElement).value);
   };
 
   // Check and save high score upon finish
@@ -182,6 +236,20 @@ export function KanaSpeedGame() {
             How fast can you read Kana? Type romaji as quickly and accurately as possible in 60 seconds.
           </p>
 
+          <div className="mt-5 text-left">
+            <HowToPlay
+              gameKey="kana-speed"
+              steps={[
+                "One kana character appears on the flashcard at a time.",
+                "Type its romaji into the box (e.g. ぬ → \"nu\") — the card advances automatically the moment you type the correct answer; no Enter needed.",
+                "Using a Japanese keyboard? Typing the kana itself (ぬ) also counts.",
+                "If your input can no longer match (too many letters), it counts as a miss and the card moves on.",
+                "You have 60 seconds. Your score is correct answers (CPM), accuracy, and best streak.",
+              ]}
+              note="Tip: choose Hiragana, Katakana, or Mixed before starting — the timer starts the moment you press Start."
+            />
+          </div>
+
           <div className="mt-7 flex justify-center gap-2">
             {(["hiragana", "katakana", "mixed"] as const).map((t) => (
               <button
@@ -202,10 +270,11 @@ export function KanaSpeedGame() {
           <button
             type="button"
             onClick={startGame}
-            className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-purple-600 py-4 text-base font-bold text-white shadow-lg transition hover:bg-purple-700"
+            disabled={!kanaLoaded}
+            className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-purple-600 py-4 text-base font-bold text-white shadow-lg transition hover:bg-purple-700 disabled:opacity-40"
           >
             <Zap size={20} />
-            <span>Start 60s Sprint</span>
+            <span>{kanaLoaded ? "Start 60s Sprint" : "Loading kana…"}</span>
           </button>
         </div>
       )}
@@ -246,6 +315,8 @@ export function KanaSpeedGame() {
                 type="text"
                 value={typedInput}
                 onChange={(e) => handleInputChange(e.target.value)}
+                onCompositionStart={handleCompositionStart}
+                onCompositionEnd={handleCompositionEnd}
                 placeholder="type romaji..."
                 autoComplete="off"
                 autoCapitalize="off"

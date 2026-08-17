@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Zap, Volume2, Sparkles, CheckCircle2, RotateCcw, ArrowRight } from "lucide-react";
-import { hiraganaSeed } from "@/lib/data/hiragana";
-import { katakanaSeed } from "@/lib/data/katakana";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 import type { KanaCharacter } from "@/types";
 
 export type PracticeMode =
@@ -42,8 +41,41 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
   const [order, setOrder] = useState<"random" | "sequential">("random");
   const [sessionSize, setSessionSize] = useState(20);
   const [selectedRows, setSelectedRows] = useState<string[]>(["a", "ka", "sa", "ta", "na"]);
+  // All kana fetched from the database once on mount
+  const [kanaList, setKanaList] = useState<Omit<KanaCharacter, "status">[]>([]);
+  const [kanaLoaded, setKanaLoaded] = useState(false);
 
-  const pool = type === "hiragana" ? hiraganaSeed : katakanaSeed;
+  useEffect(() => {
+    let isMounted = true;
+
+    fetch("/api/kana")
+      .then((res) => res.json())
+      .then((json) => {
+        if (!isMounted) return;
+        setKanaList(
+          (json?.data ?? []).map(
+            (k: { id: string; type: "hiragana" | "katakana"; character: string; romaji: string; row: string }) => ({
+              id: k.id,
+              type: k.type,
+              character: k.character,
+              romaji: k.romaji,
+              row: k.row,
+            })
+          )
+        );
+        setKanaLoaded(true);
+      })
+      .catch((err) => {
+        console.error("Failed to load kana:", err);
+        if (isMounted) setKanaLoaded(true);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const pool = kanaList.filter((k) => k.type === type);
 
   const toggleMode = (mode: PracticeMode) => {
     if (selectedModes.includes(mode)) {
@@ -117,6 +149,18 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
         </div>
       </div>
 
+      <HowToPlay
+        gameKey="kana-quiz"
+        steps={[
+          "Choose Hiragana or Katakana, pick your game modes, character rows, session size, and order, then press Start Practice.",
+          "Each question randomly uses one of your selected modes — you may see a kana or romaji, or hear audio, and answer by clicking one of four choices or typing.",
+          "In typing modes, type the romaji (e.g. あ → a) and press Submit Answer; typing the kana character itself also counts.",
+          "After each answer the correct choice is highlighted and the kana is pronounced — press Continue to advance.",
+          "Finish the session to see your score, accuracy, and best streak; your kana mastery is saved to your progress.",
+        ]}
+        note="Tip: at least one game mode must stay selected — the last one cannot be deselected."
+      />
+
       <div className="grid gap-8 lg:grid-cols-12">
         {/* Left Settings Sidebar */}
         <div className="space-y-6 lg:col-span-4">
@@ -134,7 +178,7 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
                     onClick={() => toggleMode(opt.id)}
                     className={`flex flex-col items-center justify-center rounded-2xl border p-3 text-center transition ${
                       isSelected
-                        ? "border-[#C84B31] bg-[#C84B31]/10 text-[#C84B31] font-bold dark:border-[#E85C40] dark:bg-[#E85C40]/15 dark:text-[#E85C40]"
+                        ? "border-[#C84B31] bg-[#C84B31] text-white font-bold dark:border-[#E85C40] dark:bg-[#E85C40]"
                         : "border-black/5 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/10 dark:bg-[#2A2A2A] dark:text-[#A0A0A0]"
                     }`}
                   >
@@ -200,7 +244,7 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
             <div className="mt-6">
               <button
                 type="button"
-                disabled={selectedRows.length === 0}
+                disabled={selectedRows.length === 0 || !kanaLoaded}
                 onClick={() =>
                   onStart({
                     type,
@@ -251,6 +295,11 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
             </button>
           </div>
 
+          {!kanaLoaded ? (
+            <div className="rounded-3xl border border-black/10 bg-white p-10 text-center text-sm text-[#6B6B6B] shadow-sm dark:border-white/15 dark:bg-[#1A1A1A] dark:text-[#A0A0A0]">
+              Loading kana…
+            </div>
+          ) : (
           <div className="grid gap-6 md:grid-cols-3">
             {/* Basic Column */}
             <div className="space-y-3">
@@ -283,7 +332,7 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
                     >
                       <div>
                         <div className="text-xs font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">{row} row</div>
-                        <div className="mt-1 flex gap-1 font-serif text-sm font-bold text-[#2D5F8A] dark:text-[#4A86B8]">
+                        <div className="mt-1 flex gap-1 font-serif text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
                           {items.map((i) => i.character).join(" ")}
                         </div>
                       </div>
@@ -333,7 +382,7 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
                     >
                       <div>
                         <div className="text-xs font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">{row} row</div>
-                        <div className="mt-1 flex gap-1 font-serif text-sm font-bold text-[#2D5F8A] dark:text-[#4A86B8]">
+                        <div className="mt-1 flex gap-1 font-serif text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
                           {items.map((i) => i.character).join(" ")}
                         </div>
                       </div>
@@ -383,7 +432,7 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
                     >
                       <div>
                         <div className="text-xs font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">{row} row</div>
-                        <div className="mt-1 flex gap-1 font-serif text-sm font-bold text-purple-600 dark:text-purple-400">
+                        <div className="mt-1 flex gap-1 font-serif text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
                           {items.map((i) => i.character).join(" ")}
                         </div>
                       </div>
@@ -402,6 +451,7 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
               </div>
             </div>
           </div>
+          )}
         </div>
       </div>
     </div>

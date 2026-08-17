@@ -20,11 +20,23 @@ import {
   EyeOff,
   Check,
 } from "lucide-react";
-import { DICTATION_EXERCISES, type DictationExercise } from "@/lib/data/practice-content";
 import { playJapaneseAudio } from "@/lib/audio";
 import { verifyDictationInput, romajiToHiragana, sfx, type DiffChar } from "@/lib/japanese-utils";
+import { HowToPlay } from "@/components/practice/HowToPlay";
+
+interface DictationExercise {
+  id: string;
+  audioPrompt: string;
+  japanese: string;
+  reading: string;
+  romaji: string;
+  translation: string;
+  level: "N5" | "N4" | "N3";
+  hint: string | null;
+}
 
 export function DictationEngine() {
+  const [allExercises, setAllExercises] = useState<DictationExercise[]>([]);
   const [selectedLevel, setSelectedLevel] = useState<"ALL" | "N5" | "N4" | "N3">("ALL");
   const [exercises, setExercises] = useState<DictationExercise[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -57,9 +69,17 @@ export function DictationEngine() {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Fetch the full dictation pool once from the database (level filtering stays client-side)
+  useEffect(() => {
+    fetch("/api/content/dictation")
+      .then((res) => res.json())
+      .then((json) => setAllExercises(json.data || []))
+      .catch(() => setAllExercises([]));
+  }, []);
+
   // Initialize exercises on level change
   useEffect(() => {
-    let pool = [...DICTATION_EXERCISES];
+    let pool = [...allExercises];
     if (selectedLevel !== "ALL") {
       pool = pool.filter((e) => e.level === selectedLevel);
     }
@@ -76,7 +96,7 @@ export function DictationEngine() {
     setPlayCount(0);
     setShowHint(false);
     setShowTranslation(false);
-  }, [selectedLevel]);
+  }, [selectedLevel, allExercises]);
 
   const currentExercise = exercises[currentIndex];
 
@@ -389,6 +409,21 @@ export function DictationEngine() {
 
       {/* Main Dictation Studio Card */}
       <div className="rounded-3xl border border-black/10 bg-white p-6 shadow-xl dark:border-white/15 dark:bg-[#1A1A1A] sm:p-8">
+        <div className="mx-auto mb-6 max-w-md text-left">
+          <HowToPlay
+            gameKey="dictation"
+            steps={[
+              "A Japanese sentence is read aloud automatically (tap the speaker to replay — replays are unlimited).",
+              "Type what you hear in kana/kanji or romaji. If you type romaji, the Convert Romaji → かな button turns your answer into hiragana.",
+              "Use the speed controls (0.75x / 1x / 1.25x) to slow the audio down if it is too fast.",
+              "Stuck? Tap Hint to see the first characters and the English meaning of the sentence.",
+              "Answers are graded char-by-char: 85% accuracy or better counts as correct. Green = right characters, red = mistakes.",
+              "Finish all sentences to see your score, accuracy, and streak summary.",
+            ]}
+            note="Tip: partial credit exists — small mistakes still score high, so always type your best guess."
+          />
+        </div>
+
         <div className="text-center">
           <div className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
             Audio Dictation Trainer

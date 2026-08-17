@@ -24,6 +24,7 @@ import { playJapaneseAudio } from "@/lib/audio";
 import { JapaneseLoader } from "@/components/ui/JapaneseLoader";
 import { VOCAB_THEMES, type VocabTheme } from "@/lib/vocab-themes";
 import type { ProgressStatus } from "@/types";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 export type ReverseMode = "multiple_choice" | "typing";
 
@@ -292,6 +293,18 @@ export function ReverseTranslationEngine() {
             See the English meaning and recall the Japanese expression. Test your active production memory!
           </p>
         </div>
+
+        <HowToPlay
+          gameKey="reverse-translation"
+          steps={[
+            "You are shown an English meaning — recall the Japanese word that expresses it.",
+            "In Multiple Choice mode, pick the matching Japanese word from four options; keys 1-4 also work.",
+            "In Typing Recall mode, type your answer in kana, kanji, or romaji and press Submit.",
+            "After each answer the target word is shown and pronounced; press Enter for the next one.",
+            "Correct answers grow your streak and are saved as mastered in your vocabulary progress.",
+          ]}
+          note="Tip: set your JLPT level, theme, and question count first — warm up in Multiple Choice, then switch to Typing Recall for a real challenge."
+        />
 
         <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           {/* Mode Selector */}

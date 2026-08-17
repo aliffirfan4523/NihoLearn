@@ -1,7 +1,6 @@
 import { requireUser } from "@/lib/auth";
 import { RoadmapView } from "@/components/progress/RoadmapView";
-import { hiraganaSeed } from "@/lib/data/hiragana";
-import { katakanaSeed } from "@/lib/data/katakana";
+import { BASIC_ROWS, DAKUTEN_ROWS, COMBO_ROWS, kanaByGroup } from "@/lib/kana-groups";
 import {
   roadmapStages,
   computeUnlockedSubsteps,
@@ -18,18 +17,18 @@ export default async function RoadmapPage() {
   const user = await requireUser();
 
   // ── High-speed cached data resolution (< 5ms on warm cache) ──
-  const { masteredKanaIds: rawKanaIds, levelCountsRows, examNotes } =
+  const { masteredKanaIds: rawKanaIds, allKana, levelCountsRows, examNotes } =
     await getCachedRoadmapData(user.id);
 
   // ── Build mastered-ID sets for Kana ─────────────────────────────────────
   const masteredKanaIds = new Set(rawKanaIds);
 
-  const basicHiraIds = new Set(hiraganaSeed.slice(0, 46).map((k) => k.id));
-  const dakutenHiraIds = new Set(hiraganaSeed.slice(46, 71).map((k) => k.id));
-  const combiHiraIds = new Set(hiraganaSeed.slice(71).map((k) => k.id));
-  const basicKataIds = new Set(katakanaSeed.slice(0, 46).map((k) => k.id));
-  const dakutenKataIds = new Set(katakanaSeed.slice(46, 71).map((k) => k.id));
-  const combiKataIds = new Set(katakanaSeed.slice(71).map((k) => k.id));
+  const basicHiraIds = new Set(kanaByGroup(allKana, "hiragana", BASIC_ROWS).map((k) => k.id));
+  const dakutenHiraIds = new Set(kanaByGroup(allKana, "hiragana", DAKUTEN_ROWS).map((k) => k.id));
+  const combiHiraIds = new Set(kanaByGroup(allKana, "hiragana", COMBO_ROWS).map((k) => k.id));
+  const basicKataIds = new Set(kanaByGroup(allKana, "katakana", BASIC_ROWS).map((k) => k.id));
+  const dakutenKataIds = new Set(kanaByGroup(allKana, "katakana", DAKUTEN_ROWS).map((k) => k.id));
+  const combiKataIds = new Set(kanaByGroup(allKana, "katakana", COMBO_ROWS).map((k) => k.id));
 
   let basicHiraMastered = 0;
   let dakutenHiraMastered = 0;

@@ -5,11 +5,10 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Clock, CheckCircle2, XCircle, AlertCircle, RefreshCcw } from "lucide-react"
 
-import { hiraganaSeed } from "@/lib/data/hiragana"
-import { katakanaSeed } from "@/lib/data/katakana"
 import { n5Grammar } from "@/lib/data/n5-grammar"
 
 import { readingStories } from "@/lib/data/stories"
+import { HowToPlay } from "@/components/practice/HowToPlay"
 
 type ExamLevel = "kana" | "n5" | "n4" | "n3" | "n2" | "n1"
 
@@ -84,23 +83,41 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
 
     async function initQuestions() {
       if (level === "kana") {
-        const allKana = [...hiraganaSeed, ...katakanaSeed]
-        const allRomaji = allKana.map(k => k.romaji)
-        
-        const selected = shuffle(allKana).slice(0, 50)
-        const generated: Question[] = selected.map((k, i) => {
-          const options = getRandomOptions(k.romaji, allRomaji, 4)
-          return {
-            id: `kana_${i}`,
-            type: "kana",
-            section: "Kana",
-            prompt: `What is the romaji for ${k.character}?`,
-            options,
-            correctIndex: options.indexOf(k.romaji),
-            metadata: k
+        // Kana questions are fetched from the database
+        try {
+          const kanaRes = await fetch("/api/kana")
+          const kanaJson = await kanaRes.json()
+          const allKana: Array<{ id: string; type: string; character: string; romaji: string; row: string }> = (kanaJson?.data ?? []).map(
+            (k: any) => ({
+              id: k.id as string,
+              type: k.type as string,
+              character: k.character as string,
+              romaji: k.romaji as string,
+              row: k.row as string
+            })
+          )
+
+          if (allKana.length > 0) {
+            const allRomaji = allKana.map(k => k.romaji)
+
+            const selected = shuffle(allKana).slice(0, 50)
+            const generated: Question[] = selected.map((k, i) => {
+              const options = getRandomOptions(k.romaji, allRomaji, 4)
+              return {
+                id: `kana_${i}`,
+                type: "kana",
+                section: "Kana",
+                prompt: `What is the romaji for ${k.character}?`,
+                options,
+                correctIndex: options.indexOf(k.romaji),
+                metadata: k
+              }
+            })
+            if (isMounted) setQuestions(generated)
           }
-        })
-        if (isMounted) setQuestions(generated)
+        } catch (kanaErr) {
+          console.error("Failed to fetch exam kana:", kanaErr)
+        }
       } else if (level === "n5") {
         const generated: Question[] = []
         
@@ -457,6 +474,20 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
               <li>You can navigate back and forth between questions using the previous/next buttons or question grid.</li>
               <li>Your results will be automatically calculated and saved to your progress report.</li>
             </ul>
+          </div>
+
+          <div className="mt-6">
+            <HowToPlay
+              gameKey="level-exam"
+              steps={[
+                "Press Start Exam and the timer begins immediately — when it hits zero the exam submits itself.",
+                "Every question is multiple choice: kana exams ask for the romaji of a character, while N5 mixes vocabulary, kanji, grammar, and reading sections.",
+                "Click an option to select it, then move with Previous and Next or jump to any question in the Question Grid — answered questions turn green.",
+                "The timer turns red when under five minutes remain.",
+                "Press Finish Exam on the last question to see your score — 60% or higher passes, with a section-by-section breakdown saved to your progress.",
+              ]}
+              note="Tip: unanswered questions count as incorrect — use the Question Grid to fill in every question before you finish."
+            />
           </div>
 
           <button

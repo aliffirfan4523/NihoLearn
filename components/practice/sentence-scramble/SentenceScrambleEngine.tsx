@@ -19,10 +19,19 @@ import {
   Check,
   Layers,
 } from "lucide-react";
-import { SCRAMBLE_EXERCISES, type SentenceScrambleExercise } from "@/lib/data/practice-content";
 import { playJapaneseAudio } from "@/lib/audio";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 type LevelFilter = "ALL" | "N5" | "N4" | "N3";
+
+interface SentenceScrambleExercise {
+  id: string;
+  level: "N5" | "N4" | "N3";
+  fullSentence: string;
+  reading: string;
+  translation: string;
+  tiles: string[]; // correct sequence
+}
 
 interface ScrambledTile {
   id: string;
@@ -38,6 +47,11 @@ interface SessionResultItem {
 
 export function SentenceScrambleEngine() {
   const [levelFilter, setLevelFilter] = useState<LevelFilter>("ALL");
+
+  // Content pool fetched from the database
+  const [allExercises, setAllExercises] = useState<SentenceScrambleExercise[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const [quizPool, setQuizPool] = useState<SentenceScrambleExercise[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -61,8 +75,8 @@ export function SentenceScrambleEngine() {
       const source =
         customPool ??
         (level === "ALL"
-          ? SCRAMBLE_EXERCISES
-          : SCRAMBLE_EXERCISES.filter((ex) => ex.level === level));
+          ? allExercises
+          : allExercises.filter((ex) => ex.level === level));
 
       const shuffled = [...source].sort(() => Math.random() - 0.5);
       setQuizPool(shuffled);
@@ -75,12 +89,36 @@ export function SentenceScrambleEngine() {
       setSessionResults([]);
       setStartTime(Date.now());
     },
-    []
+    [allExercises]
   );
 
   useEffect(() => {
     startQuiz(levelFilter);
   }, [levelFilter, startQuiz]);
+
+  // Fetch the full exercise pool from the database once on mount
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/content/scramble");
+        const json = await res.json();
+
+        if (json.data && Array.isArray(json.data) && !cancelled) {
+          setAllExercises(json.data as SentenceScrambleExercise[]);
+        }
+      } catch (err) {
+        console.error("Failed to load sentence scramble exercises:", err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const currentExercise = quizPool[currentIndex];
 
@@ -264,6 +302,15 @@ export function SentenceScrambleEngine() {
       loggedRef.current = false;
     }
   }, [isFinished, quizPool, score, levelFilter, maxStreak, startTime]);
+
+  // While the exercise pool is being fetched
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-xl p-12 text-center text-sm text-gray-500">
+        Loading sentence scramble exercises from database...
+      </div>
+    );
+  }
 
   if (quizPool.length === 0) {
     return (
@@ -463,6 +510,19 @@ export function SentenceScrambleEngine() {
           style={{ width: `${((currentIndex + 1) / quizPool.length) * 100}%` }}
         />
       </div>
+
+      {/* How to Play */}
+      <HowToPlay
+        gameKey="sentence-scramble"
+        steps={[
+          "The words of a Japanese sentence are scrambled into tiles. Tap them in the right order to rebuild the sentence.",
+          "Tap a placed tile to remove it again, or use Undo / Clear to rearrange; the English hint and furigana are shown to help.",
+          "Fast keyboard play: press 1–9 to place tiles, Backspace to undo the last tile, Enter to check, and Enter again for the next sentence.",
+          "When all tiles are placed, Check verifies your answer — correct sentences are pronounced aloud.",
+          "Correct answers build your streak; filter by JLPT level (ALL / N5 / N4 / N3) and see your summary at the end.",
+        ]}
+        note="Tip: identify the particle first (は, を, に...) — its position usually anchors the rest of the sentence."
+      />
 
       {/* Main Assembly Arena Card */}
       <div className="rounded-3xl border border-black/10 bg-white p-6 sm:p-8 shadow-lg dark:border-white/10 dark:bg-[#161B22] space-y-6">

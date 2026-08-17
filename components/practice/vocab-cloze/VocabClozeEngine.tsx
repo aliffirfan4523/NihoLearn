@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { playJapaneseAudio } from "@/lib/audio";
 import { JapaneseLoader } from "@/components/ui/JapaneseLoader";
-import { CLOZE_DATASET, type ClozeExercise } from "@/lib/data/vocab-practice-suite";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 import type { ProgressStatus } from "@/types";
 
 interface ClozeQuestion {
@@ -46,6 +46,27 @@ interface ClozeQuestion {
   hint: string;
 }
 
+// Row shape returned by GET /api/cloze (curated exercises stored in the database)
+interface ClozeApiItem {
+  id: string;
+  level: string;
+  sentenceWithBlank: string;
+  fullSentence: string;
+  reading: string;
+  englishTranslation: string;
+  hint: string | null;
+  targetWord: {
+    word: string;
+    reading: string;
+    meaning: string;
+  };
+  distractors: Array<{
+    word: string;
+    reading: string;
+    meaning: string;
+  }>;
+}
+
 export function VocabClozeEngine() {
   // Configuration
   const [level, setLevel] = useState<string>("N5");
@@ -56,6 +77,7 @@ export function VocabClozeEngine() {
   const [isSessionActive, setIsSessionActive] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [questions, setQuestions] = useState<ClozeQuestion[]>([]);
+  const [clozeItems, setClozeItems] = useState<ClozeApiItem[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState<boolean>(false);
@@ -92,8 +114,22 @@ export function VocabClozeEngine() {
 
       const generatedQuestions: ClozeQuestion[] = [];
 
-      // 2. Add curated high-quality Cloze items matching level
-      const curatedMatching = CLOZE_DATASET.filter((item) => level === "ALL" || item.level === level);
+      // 2. Fetch curated high-quality Cloze exercises from the database (cached after first fetch)
+      let curatedItems = clozeItems;
+      if (curatedItems === null) {
+        try {
+          const res = await fetch("/api/cloze");
+          const json = await res.json();
+          curatedItems = Array.isArray(json.data) ? (json.data as ClozeApiItem[]) : [];
+          setClozeItems(curatedItems);
+        } catch (e) {
+          console.warn("Failed to load curated cloze exercises:", e);
+          curatedItems = [];
+        }
+      }
+
+      // Add curated Cloze items matching level
+      const curatedMatching = curatedItems.filter((item) => level === "ALL" || item.level === level);
       for (const item of curatedMatching) {
         const allOpts = [item.targetWord, ...item.distractors].sort(() => Math.random() - 0.5);
         generatedQuestions.push({
@@ -105,7 +141,7 @@ export function VocabClozeEngine() {
           englishTranslation: item.englishTranslation,
           targetWord: item.targetWord,
           options: allOpts,
-          hint: item.hint,
+          hint: item.hint ?? "",
         });
       }
 
@@ -155,7 +191,7 @@ export function VocabClozeEngine() {
 
       // 4. Fallback if few questions
       if (generatedQuestions.length === 0) {
-        for (const item of CLOZE_DATASET) {
+        for (const item of curatedItems) {
           const allOpts = [item.targetWord, ...item.distractors].sort(() => Math.random() - 0.5);
           generatedQuestions.push({
             id: item.id,
@@ -166,7 +202,7 @@ export function VocabClozeEngine() {
             englishTranslation: item.englishTranslation,
             targetWord: item.targetWord,
             options: allOpts,
-            hint: item.hint,
+            hint: item.hint ?? "",
           });
         }
       }
@@ -191,7 +227,7 @@ export function VocabClozeEngine() {
     } finally {
       setIsLoading(false);
     }
-  }, [level, questionCount]);
+  }, [level, questionCount, clozeItems]);
 
   const currentQ = questions[currentIndex] || null;
 
@@ -331,6 +367,18 @@ export function VocabClozeEngine() {
             Test your contextual vocabulary mastery. Read the natural sentence and pick the missing word from clues.
           </p>
         </div>
+
+        <HowToPlay
+          gameKey="vocab-cloze"
+          steps={[
+            "A Japanese sentence appears with one word missing — read it (and the English translation if enabled) to work out what fits the blank.",
+            "Pick the missing word from the 4 vocabulary options; press 1–4 on the keyboard for speed.",
+            "Need help? Reveal a hint before answering — no penalty.",
+            "The completed sentence is shown after answering and the target word is pronounced; press Enter for the next question.",
+            "Correct answers build your streak and mark the word mastered in your vocabulary progress; misses mark it for review.",
+          ]}
+          note="Tip: pay attention to the particles around the blank — they tell you the grammatical role of the missing word."
+        />
 
         <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           {/* JLPT Level */}

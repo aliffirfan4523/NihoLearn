@@ -14,6 +14,7 @@ import {
   Volume2,
 } from "lucide-react";
 import { playJapaneseAudio } from "@/lib/audio";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 interface KanjiQuestion {
   kanji: string;
@@ -286,6 +287,18 @@ export function KanjiQuiz() {
           {currentIndex + 1} / {questions.length}
         </span>
       </div>
+
+      <HowToPlay
+        gameKey="kanji-quiz"
+        steps={[
+          "One kanji appears at a time — choose its primary English meaning from four options.",
+          "Kun and on readings are shown below the kanji, and the speaker button pronounces it.",
+          "Each round is 10 random kanji from your chosen JLPT level; switching levels restarts the quiz.",
+          "Correct answers build your streak; a wrong answer resets it.",
+          "At the end your score, accuracy, and max streak are recorded to your kanji progress.",
+        ]}
+        note="Tip: try to recall the meaning before scanning the answer options — use the readings bar only as a backup hint."
+      />
 
       {/* Main Kanji Question Card */}
       <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-white p-8 text-center shadow-sm dark:border-white/15 dark:bg-[#1A1A1A]">

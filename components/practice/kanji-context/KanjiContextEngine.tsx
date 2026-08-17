@@ -25,12 +25,46 @@ import {
 } from "lucide-react";
 import { playJapaneseAudio } from "@/lib/audio";
 import { JapaneseLoader } from "@/components/ui/JapaneseLoader";
-import { KANJI_CONTEXT_DATASET, type KanjiContextSnippet } from "@/lib/data/vocab-practice-suite";
+import { HowToPlay } from "@/components/practice/HowToPlay";
+
+interface KanjiContextSnippet {
+  id: string;
+  level: "N5" | "N4" | "N3";
+  domain: "Transit" | "Shopping & Food" | "Public Notice" | "Workplace & Study" | "Weather & Safety";
+  domainEmoji: string;
+  scenarioTitle: string;
+  snippetText: string;
+  targetKanji: string;
+  targetReading: string;
+  targetMeaning: string;
+  kanjiBreakdown: Array<{
+    char: string;
+    onyomi: string;
+    kunyomi: string;
+    meaning: string;
+  }>;
+  contextQuestion: {
+    prompt: string;
+    options: string[];
+    correctIndex: number;
+    explanation: string;
+  };
+  readingQuestion: {
+    prompt: string;
+    options: string[];
+    correctIndex: number;
+    explanation: string;
+  };
+}
 
 export function KanjiContextEngine() {
   // Config
   const [level, setLevel] = useState<string>("ALL");
   const [questionCount, setQuestionCount] = useState<number>(5);
+
+  // Snippet pool fetched from the database
+  const [dataset, setDataset] = useState<KanjiContextSnippet[]>([]);
+  const [isDatasetLoading, setIsDatasetLoading] = useState<boolean>(true);
 
   // Session state
   const [isSessionActive, setIsSessionActive] = useState<boolean>(false);
@@ -58,12 +92,26 @@ export function KanjiContextEngine() {
     }>
   >([]);
 
+  // Fetch the kanji context scenarios from the database on mount
+  useEffect(() => {
+    fetch("/api/content/kanji-context")
+      .then((res) => res.json())
+      .then((json) => {
+        setDataset(json.data || []);
+        setIsDatasetLoading(false);
+      })
+      .catch(() => {
+        setDataset([]);
+        setIsDatasetLoading(false);
+      });
+  }, []);
+
   // Start Session
   const handleStartPractice = useCallback(async () => {
     setIsLoading(true);
     try {
-      const pool = KANJI_CONTEXT_DATASET.filter((s) => level === "ALL" || s.level === level);
-      const shuffled = [...(pool.length > 0 ? pool : KANJI_CONTEXT_DATASET)]
+      const pool = dataset.filter((s) => level === "ALL" || s.level === level);
+      const shuffled = [...(pool.length > 0 ? pool : dataset)]
         .sort(() => Math.random() - 0.5)
         .slice(0, questionCount);
 
@@ -85,7 +133,7 @@ export function KanjiContextEngine() {
     } finally {
       setIsLoading(false);
     }
-  }, [level, questionCount]);
+  }, [level, questionCount, dataset]);
 
   const currentSnippet = snippets[currentIndex] || null;
 
@@ -203,6 +251,11 @@ export function KanjiContextEngine() {
     }
   };
 
+  // 0. SNIPPET POOL LOADING STATE
+  if (!isSessionActive && isDatasetLoading) {
+    return <JapaneseLoader message="Loading kanji context scenarios..." />;
+  }
+
   // 1. SETUP SCREEN
   if (!isSessionActive) {
     return (
@@ -218,6 +271,18 @@ export function KanjiContextEngine() {
             Deduce readings and meanings of kanji compounds (Jukugo) from authentic signs, transit notices, and menus.
           </p>
         </div>
+
+        <HowToPlay
+          gameKey="kanji-context"
+          steps={[
+            "Each round shows a real-world snippet (a sign, notice, or menu) with one kanji compound highlighted inside it.",
+            "Step 1: pick what the highlighted compound means in this context from the answer choices.",
+            "Step 2 unlocks right after: choose the compound's correct reading (pronunciation) from the options.",
+            "Every correct answer is worth 1 point and extends your streak; each scenario offers 2 points, and a miss resets the streak.",
+            "After both steps, study the jukugo breakdown (each kanji with its onyomi and meaning) before moving to the next scenario.",
+          ]}
+          note="Tip: press the Audio button on a scenario to hear the whole snippet read aloud before you commit to an answer."
+        />
 
         <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           {/* JLPT Level Selection */}

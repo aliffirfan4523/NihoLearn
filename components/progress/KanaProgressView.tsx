@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { BookOpen, ArrowRight, Play, CheckCircle2, RotateCw, Trophy, Flame, ChevronDown, ChevronRight, Sparkles } from "lucide-react";
-import { hiraganaSeed } from "@/lib/data/hiragana";
-import { katakanaSeed } from "@/lib/data/katakana";
+import { BASIC_ROWS, DAKUTEN_ROWS, COMBO_ROWS, kanaByGroup, type KanaRef } from "@/lib/kana-groups";
 import { KanaFlashcardModal } from "@/components/kana/KanaFlashcardModal";
 import type { KanaCharacter } from "@/types";
 
@@ -21,7 +20,7 @@ export interface KanaProgressStats {
   struggles?: Array<{ id: string; character: string; romaji: string }>;
 }
 
-export function KanaProgressView({ stats }: { stats?: KanaProgressStats }) {
+export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; kana: KanaRef[] }) {
   const [selectedKana, setSelectedKana] = useState<KanaCharacter | null>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     hira_basic: true,
@@ -36,13 +35,13 @@ export function KanaProgressView({ stats }: { stats?: KanaProgressStats }) {
     setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const basicHira = hiraganaSeed.slice(0, 46);
-  const dakutenHira = hiraganaSeed.slice(46, 71);
-  const combiHira = hiraganaSeed.slice(71);
+  const basicHira = kanaByGroup(kana, "hiragana", BASIC_ROWS);
+  const dakutenHira = kanaByGroup(kana, "hiragana", DAKUTEN_ROWS);
+  const combiHira = kanaByGroup(kana, "hiragana", COMBO_ROWS);
 
-  const basicKata = katakanaSeed.slice(0, 46);
-  const dakutenKata = katakanaSeed.slice(46, 71);
-  const combiKata = katakanaSeed.slice(71);
+  const basicKata = kanaByGroup(kana, "katakana", BASIC_ROWS);
+  const dakutenKata = kanaByGroup(kana, "katakana", DAKUTEN_ROWS);
+  const combiKata = kanaByGroup(kana, "katakana", COMBO_ROWS);
 
   const masteredIds = new Set(stats?.masteredIdSet || []);
 
@@ -57,17 +56,19 @@ export function KanaProgressView({ stats }: { stats?: KanaProgressStats }) {
   const totalHiraMastered = basicHiraMastered + dakutenHiraMastered + combiHiraMastered;
   const totalKataMastered = basicKataMastered + dakutenKataMastered + combiKataMastered;
   const totalMastered = stats?.totalMastered ?? (totalHiraMastered + totalKataMastered);
-  const totalKana = stats?.totalKana ?? (hiraganaSeed.length + katakanaSeed.length);
+  const hiraganaCount = basicHira.length + dakutenHira.length + combiHira.length;
+  const katakanaCount = basicKata.length + dakutenKata.length + combiKata.length;
+  const totalKana = stats?.totalKana ?? (hiraganaCount + katakanaCount);
 
   const basicHiraPct = Math.round((basicHiraMastered / basicHira.length) * 100);
   const dakutenHiraPct = Math.round((dakutenHiraMastered / dakutenHira.length) * 100);
   const combiHiraPct = Math.round((combiHiraMastered / combiHira.length) * 100);
-  const avgHiraPct = Math.round((totalHiraMastered / hiraganaSeed.length) * 100);
+  const avgHiraPct = Math.round((totalHiraMastered / hiraganaCount) * 100);
 
   const basicKataPct = Math.round((basicKataMastered / basicKata.length) * 100);
   const dakutenKataPct = Math.round((dakutenKataMastered / dakutenKata.length) * 100);
   const combiKataPct = Math.round((combiKataMastered / combiKata.length) * 100);
-  const avgKataPct = Math.round((totalKataMastered / katakanaSeed.length) * 100);
+  const avgKataPct = Math.round((totalKataMastered / katakanaCount) * 100);
 
   const overallMasteryPct = Math.round((totalMastered / totalKana) * 100);
 

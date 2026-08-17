@@ -23,14 +23,43 @@ import {
   Info,
   Radio,
 } from "lucide-react";
-import {
-  SHADOWING_EXERCISES,
-  type ShadowingExercise,
-  type ShadowingLine,
-} from "@/lib/data/practice-content";
 import { playJapaneseAudio } from "@/lib/audio";
+import { HowToPlay } from "@/components/practice/HowToPlay";
+
+interface ShadowingLine {
+  speaker?: string;
+  japanese: string;
+  reading: string;
+  english: string;
+}
+
+interface ShadowingExercise {
+  id: string;
+  title: string;
+  level: "N5" | "N4" | "N3";
+  theme: string;
+  description: string;
+  lines: ShadowingLine[];
+}
+
+// Placeholder used only while the fetched pool is still empty
+const EMPTY_SHADOWING_EXERCISE: ShadowingExercise = {
+  id: "",
+  title: "",
+  level: "N5",
+  theme: "",
+  description: "",
+  lines: [],
+};
+
+const EMPTY_SHADOWING_LINE: ShadowingLine = {
+  japanese: "",
+  reading: "",
+  english: "",
+};
 
 export function ShadowingEngine() {
+  const [exercises, setExercises] = useState<ShadowingExercise[]>([]);
   const [selectedExerciseIndex, setSelectedExerciseIndex] = useState(0);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -53,8 +82,18 @@ export function ShadowingEngine() {
   const [completedConversations, setCompletedConversations] = useState<string[]>([]);
   const [isSessionComplete, setIsSessionComplete] = useState(false);
 
-  const activeExercise: ShadowingExercise = SHADOWING_EXERCISES[selectedExerciseIndex] || SHADOWING_EXERCISES[0];
-  const activeLine: ShadowingLine = activeExercise.lines[currentLineIndex] || activeExercise.lines[0];
+  const activeExercise: ShadowingExercise =
+    exercises[selectedExerciseIndex] || exercises[0] || EMPTY_SHADOWING_EXERCISE;
+  const activeLine: ShadowingLine =
+    activeExercise.lines[currentLineIndex] || activeExercise.lines[0] || EMPTY_SHADOWING_LINE;
+
+  // Fetch the shadowing conversations from the database on mount
+  useEffect(() => {
+    fetch("/api/content/shadowing")
+      .then((res) => res.json())
+      .then((json) => setExercises(json.data || []))
+      .catch(() => setExercises([]));
+  }, []);
 
   // Stop any active recordings and clean URLs when switching
   useEffect(() => {
@@ -204,6 +243,14 @@ export function ShadowingEngine() {
     }
   }, [isSessionComplete, activeExercise, shadowedCount, playbackSpeed]);
 
+  if (exercises.length === 0) {
+    return (
+      <div className="flex min-h-[300px] items-center justify-center text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
+        Loading shadowing exercises...
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       {/* Top Header & Breadcrumb */}
@@ -223,7 +270,7 @@ export function ShadowingEngine() {
             onChange={(e) => setSelectedExerciseIndex(parseInt(e.target.value, 10))}
             className="rounded-xl border border-black/10 bg-white px-3 py-1.5 text-xs font-bold text-[#1A1A1A] shadow-2xs focus:outline-none dark:border-white/15 dark:bg-[#1A1A1A] dark:text-[#FAFAFA]"
           >
-            {SHADOWING_EXERCISES.map((ex, idx) => (
+            {exercises.map((ex, idx) => (
               <option key={ex.id} value={idx}>
                 {ex.level} • {ex.title}
               </option>
@@ -231,6 +278,20 @@ export function ShadowingEngine() {
           </select>
         </div>
       </div>
+
+      {/* How to Play */}
+      <HowToPlay
+        gameKey="shadowing"
+        steps={[
+          "Pick a conversation scenario from the Scenario dropdown, then press Play to hear each line — the active line is highlighted in the script.",
+          "Shadow it: repeat the line out loud immediately after it plays, imitating the pronunciation and rhythm.",
+          "Choose Step mode to go line by line manually, or Continuous mode to play the whole conversation with a pause after each line for you to repeat.",
+          "Toggle Repeat to loop the conversation endlessly, and adjust speed (0.75x–1.2x) if the audio is too fast.",
+          "Record yourself with the mic button and play it back to compare against the native audio — hide the English or furigana for an extra challenge.",
+          "Each line you finish practicing counts toward your Lines Practiced total; finish all lines to complete the scenario.",
+        ]}
+        note="Tip: grant microphone permission when your browser asks — recording and comparing your voice is the fastest way to improve accent."
+      />
 
       {/* Conversation Info Banner */}
       <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">

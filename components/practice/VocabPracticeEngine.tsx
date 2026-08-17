@@ -25,6 +25,7 @@ import {
 import { playJapaneseAudio } from "@/lib/audio";
 import { VOCAB_THEMES, type VocabTheme } from "@/lib/vocab-themes";
 import { JapaneseLoader } from "@/components/ui/JapaneseLoader";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 import type { ProgressStatus } from "@/types";
 
 export type PracticeMode = "flashcard" | "quiz" | "typing" | "listening";
@@ -277,6 +278,18 @@ export function VocabPracticeEngine() {
             Train and memorize 7,972 JLPT words with interactive quizzes, flashcards, and audio drills.
           </p>
         </div>
+
+        <HowToPlay
+          gameKey="vocab-practice"
+          steps={[
+            "Pick a JLPT level (N5-N1 or ALL), a practice mode, and how many words to drill, then press Start Practice Session.",
+            "Quiz shows a word with its reading — click the correct meaning from four choices; Audio Listening works the same but you hear the word and can replay it.",
+            "Flashcards flip when clicked to reveal the reading, romaji, and meaning — rate each card Still Learning or Got it Mastered to move on.",
+            "Typing Recall shows the word and its meaning — type the reading in kana or romaji (e.g. たべる or taberu) and press Submit Answer.",
+            "Correct answers build your streak and play the word aloud; at the end you get score, accuracy, and a word-by-word review, all saved to your vocabulary progress.",
+          ]}
+          note="Tip: in Typing Recall, typing the kanji word itself also counts as correct."
+        />
 
         <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           {/* JLPT Level Selection */}

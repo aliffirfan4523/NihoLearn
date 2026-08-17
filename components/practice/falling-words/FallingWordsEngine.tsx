@@ -17,10 +17,9 @@ import {
   X,
   CheckCircle2,
 } from "lucide-react";
-import { hiraganaSeed } from "@/lib/data/hiragana";
-import { katakanaSeed } from "@/lib/data/katakana";
 import { playJapaneseAudio } from "@/lib/audio";
 import { sfx, romajiToHiragana, normalizeJapanese } from "@/lib/japanese-utils";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 export interface FallingWord {
   id: string;
@@ -39,46 +38,12 @@ export interface FallingWord {
 export type DisplayHintMode = "full" | "no_romaji" | "kanji_only" | "meaning_only";
 export type InputAcceptMode = "all" | "japanese_only" | "romaji_only";
 
-const FALLING_VOCAB_PRESETS = [
-  { word: "水", reading: "みず", romaji: "mizu", meaning: "water" },
-  { word: "火", reading: "ひ", romaji: "hi", meaning: "fire" },
-  { word: "木", reading: "き", romaji: "ki", meaning: "tree" },
-  { word: "猫", reading: "ねこ", romaji: "neko", meaning: "cat" },
-  { word: "犬", reading: "いぬ", romaji: "inu", meaning: "dog" },
-  { word: "車", reading: "くるま", romaji: "kuruma", meaning: "car" },
-  { word: "本", reading: "ほん", romaji: "hon", meaning: "book" },
-  { word: "雨", reading: "あめ", romaji: "ame", meaning: "rain" },
-  { word: "空", reading: "そら", romaji: "sora", meaning: "sky" },
-  { word: "海", reading: "うみ", romaji: "umi", meaning: "sea" },
-  { word: "山", reading: "やま", romaji: "yama", meaning: "mountain" },
-  { word: "川", reading: "かわ", romaji: "kawa", meaning: "river" },
-  { word: "魚", reading: "さかな", romaji: "sakana", meaning: "fish" },
-  { word: "鳥", reading: "とり", romaji: "tori", meaning: "bird" },
-  { word: "花", reading: "はな", romaji: "hana", meaning: "flower" },
-  { word: "春", reading: "はる", romaji: "haru", meaning: "spring" },
-  { word: "夏", reading: "なつ", romaji: "natsu", meaning: "summer" },
-  { word: "秋", reading: "あき", romaji: "aki", meaning: "autumn" },
-  { word: "冬", reading: "ふゆ", romaji: "fuyu", meaning: "winter" },
-  { word: "月", reading: "つき", romaji: "tsuki", meaning: "moon" },
-  { word: "星", reading: "ほし", romaji: "hoshi", meaning: "star" },
-  { word: "友達", reading: "ともだち", romaji: "tomodachi", meaning: "friend" },
-  { word: "先生", reading: "せんせい", romaji: "sensei", meaning: "teacher" },
-  { word: "学校", reading: "がっこう", romaji: "gakkou", meaning: "school" },
-  { word: "時間", reading: "じかん", romaji: "jikan", meaning: "time" },
-  { word: "電車", reading: "でんしゃ", romaji: "densha", meaning: "train" },
-  { word: "電話", reading: "でんわ", romaji: "denwa", meaning: "phone" },
-  { word: "今日", reading: "きょう", romaji: "kyou", meaning: "today" },
-  { word: "明日", reading: "あした", romaji: "ashita", meaning: "tomorrow" },
-  { word: "昨日", reading: "きのう", romaji: "kinou", meaning: "yesterday" },
-  { word: "部屋", reading: "へや", romaji: "heya", meaning: "room" },
-  { word: "机", reading: "つくえ", romaji: "tsukue", meaning: "desk" },
-  { word: "椅子", reading: "いす", romaji: "isu", meaning: "chair" },
-  { word: "桜", reading: "さくら", romaji: "sakura", meaning: "cherry blossom" },
-  { word: "太陽", reading: "たいよう", romaji: "taiyou", meaning: "sun" },
-  { word: "心", reading: "こころ", romaji: "kokoro", meaning: "heart" },
-  { word: "夢", reading: "ゆめ", romaji: "yume", meaning: "dream" },
-  { word: "力", reading: "ちから", romaji: "chikara", meaning: "power" },
-];
+interface WordPoolItem {
+  word: string;
+  reading: string;
+  romaji: string;
+  meaning: string;
+}
 
 export function FallingWordsEngine() {
   const [gameMode, setGameMode] = useState<"n5" | "kana" | "mixed">("n5");
@@ -98,6 +63,11 @@ export function FallingWordsEngine() {
   const [destroyedCount, setDestroyedCount] = useState(0);
   const [freezeTimeLeft, setFreezeTimeLeft] = useState(0);
   const [lastMatchNotice, setLastMatchNotice] = useState<string | null>(null);
+
+  // Word pools fetched from the database (empty until loaded)
+  const [vocabPool, setVocabPool] = useState<WordPoolItem[]>([]);
+  const [kanaPool, setKanaPool] = useState<WordPoolItem[]>([]);
+  const [poolsLoaded, setPoolsLoaded] = useState(false);
 
   // Controlled Typing Input
   const [typedInput, setTypedInput] = useState("");
@@ -135,6 +105,53 @@ export function FallingWordsEngine() {
     } catch {}
   }, []);
 
+  // Fetch word pools (N5 vocab + all kana) from the database once on mount
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadPools() {
+      try {
+        const [vocabRes, kanaRes] = await Promise.all([
+          fetch("/api/vocab?level=N5&limit=200"),
+          fetch("/api/kana"),
+        ]);
+        const vocabJson = await vocabRes.json();
+        const kanaJson = await kanaRes.json();
+
+        const vocab = (vocabJson?.data ?? []).map(
+          (v: { word?: string; reading?: string; romaji?: string; meaning?: string | string[] }) => ({
+            word: v.word || "",
+            reading: v.reading || "",
+            romaji: v.romaji || "",
+            meaning: Array.isArray(v.meaning) ? v.meaning[0] || "" : String(v.meaning ?? ""),
+          })
+        );
+        const kana = (kanaJson?.data ?? []).map(
+          (k: { character?: string; romaji?: string }) => ({
+            word: k.character || "",
+            reading: k.character || "",
+            romaji: k.romaji || "",
+            meaning: k.romaji || "",
+          })
+        );
+
+        if (!isMounted) return;
+        setVocabPool(vocab);
+        setKanaPool(kana);
+      } catch (err) {
+        console.error("Failed to load falling words data:", err);
+      } finally {
+        if (isMounted) setPoolsLoaded(true);
+      }
+    }
+
+    loadPools();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   // Save Session on Game Over
   useEffect(() => {
     if (gameState === "gameover") {
@@ -165,34 +182,32 @@ export function FallingWordsEngine() {
     }
   }, [gameState, score, highScore, destroyedCount, level, maxCombo, gameMode, scoreMultiplier]);
 
-  // Generate word pool
-  const getWordPool = useCallback(() => {
+  // Generate word pool from the fetched pools
+  const getWordPool = useCallback((): WordPoolItem[] => {
     if (gameMode === "kana") {
-      return [...hiraganaSeed, ...katakanaSeed].map((k) => ({
-        word: k.character || "",
-        reading: k.character || "",
-        romaji: k.romaji || "",
-        meaning: k.romaji || "",
-      }));
+      return kanaPool;
     }
     if (gameMode === "n5") {
-      return FALLING_VOCAB_PRESETS;
+      return vocabPool;
     }
-    return [
-      ...FALLING_VOCAB_PRESETS,
-      ...hiraganaSeed.slice(0, 20).map((k) => ({
-        word: k.character || "",
-        reading: k.character || "",
-        romaji: k.romaji || "",
-        meaning: k.romaji || "",
-      })),
-    ];
-  }, [gameMode]);
+    return [...vocabPool, ...kanaPool.slice(0, 20)];
+  }, [gameMode, vocabPool, kanaPool]);
 
   // Clear Input helper
+  // Uses the native value setter so React's value tracker stays in sync even when
+  // an IME has been mutating the field (direct `.value = ""` can be re-inserted by
+  // the IME or silently miss the next onChange).
   const clearInput = useCallback(() => {
     setTypedInput("");
-    if (inputRef.current) inputRef.current.value = "";
+    const el = inputRef.current;
+    if (!el) return;
+    try {
+      const valueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
+      valueSetter?.call(el, "");
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    } catch {
+      el.value = "";
+    }
   }, []);
 
   // Freeze countdown interval
@@ -373,24 +388,50 @@ export function FallingWordsEngine() {
     [inputAcceptMode]
   );
 
+  // IME (Japanese kana / mobile keyboards) composition tracking. While composing,
+  // the IME owns the field — matching/clearing mid-composition leaves the buffer
+  // behind and the typed text re-appears, so we defer to compositionend.
+  const isComposingRef = useRef(false);
+
+  const tryMatchAndDestroy = useCallback(
+    (raw: string) => {
+      const clean = raw.trim().toLowerCase();
+      if (!clean) return;
+      const matched = wordsRef.current.find((fw) => isMatch(clean, fw));
+      if (matched) destroyWord(matched.id);
+    },
+    [isMatch, destroyWord]
+  );
+
+  const handleCompositionStart = () => {
+    isComposingRef.current = true;
+  };
+
+  const handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
+    isComposingRef.current = false;
+    if (gameState !== "playing") return;
+    const val = (e.target as HTMLInputElement).value;
+    setTypedInput(val);
+    tryMatchAndDestroy(val);
+  };
+
   // Handle typing in input box
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (gameState !== "playing") return;
     const val = e.target.value;
     setTypedInput(val);
 
-    const clean = val.trim().toLowerCase();
-    if (!clean) return;
-
-    const matched = wordsRef.current.find((fw) => isMatch(clean, fw));
-    if (matched) destroyWord(matched.id);
+    if (isComposingRef.current) return;
+    tryMatchAndDestroy(val);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Let the IME consume keys while confirming a composition
+    if (e.nativeEvent.isComposing || isComposingRef.current || e.keyCode === 229) return;
     if (e.key === "Enter" || e.key === " " || e.key === "Escape") {
       e.preventDefault();
       const clean = typedInput.trim().toLowerCase();
-      const matched = wordsRef.current.find((fw) => isMatch(clean, fw));
+      const matched = clean ? wordsRef.current.find((fw) => isMatch(clean, fw)) : undefined;
       if (matched) destroyWord(matched.id);
       else clearInput();
     }
@@ -505,25 +546,39 @@ export function FallingWordsEngine() {
         </div>
       </div>
 
+      {/* How to Play */}
+      <HowToPlay
+        gameKey="falling-words"
+        steps={[
+          "Japanese words fall from the top toward the red laser barrier at the bottom.",
+          "Destroy a word by typing its romaji, its kana reading, or its English meaning into the box under the arena — it blasts automatically the moment your input matches.",
+          "A word that reaches the barrier costs 1 heart; you start with 3 hearts.",
+          "Chain kills for combos: 1.5x points at 5 streak, 2x at 10, 3x at 20. A missed word resets the streak.",
+          "Grab special drops: ❄️ Freeze slows everything for 6s, 💣 Bomb clears all words, 💖 Heart restores a life.",
+          "Every 10 words destroyed advances the wave — words fall faster and spawn more often, but score higher.",
+        ]}
+        note="Tip: pick harder display/input modes before launching (e.g. Kanji Only) for up to a 1.95x score multiplier."
+      />
+
       {/* Main Arcade Frame */}
-      <div className="overflow-hidden rounded-3xl border border-black/10 bg-[#0E1117] shadow-2xl dark:border-white/10">
+      <div className="overflow-hidden rounded-3xl border border-black/10 bg-white shadow-2xl dark:border-white/10 dark:bg-[#0E1117]">
         {/* Header Bar */}
-        <div className="flex items-center justify-between border-b border-white/10 bg-[#161B22] px-6 py-3 text-white">
+        <div className="flex items-center justify-between border-b border-black/10 bg-[#F8FAFC] px-6 py-3 text-gray-800 dark:border-white/10 dark:bg-[#161B22] dark:text-white">
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-1">
               {[1, 2, 3].map((i) => (
                 <Heart
                   key={i}
                   size={18}
-                  className={`transition ${i <= lives ? "fill-rose-500 text-rose-500" : "text-gray-600"}`}
+                  className={`transition ${i <= lives ? "fill-rose-500 text-rose-500" : "text-gray-400 dark:text-gray-600"}`}
                 />
               ))}
             </div>
-            <div className="text-xs font-bold text-gray-400">
-              Wave: <span className="font-mono text-white">{level}</span>
+            <div className="text-xs font-bold text-gray-500 dark:text-gray-400">
+              Wave: <span className="font-mono text-gray-800 dark:text-white">{level}</span>
             </div>
             {combo > 1 && (
-              <div className="flex items-center gap-1 text-xs font-bold text-orange-400 animate-pulse">
+              <div className="flex items-center gap-1 text-xs font-bold text-orange-500 dark:text-orange-400 animate-pulse">
                 <Flame size={14} className="fill-current" />
                 <span>{combo}x Combo!</span>
               </div>
@@ -531,25 +586,25 @@ export function FallingWordsEngine() {
           </div>
           <div className="flex items-center gap-4 text-right">
             <div>
-              <div className="text-[10px] uppercase font-bold text-gray-400">Score</div>
-              <div className="font-mono text-base font-bold text-amber-400">{score.toLocaleString()}</div>
+              <div className="text-[10px] uppercase font-bold text-gray-500 dark:text-gray-400">Score</div>
+              <div className="font-mono text-base font-bold text-amber-600 dark:text-amber-400">{score.toLocaleString()}</div>
             </div>
             {highScore > 0 && (
-              <div className="hidden sm:block border-l border-white/10 pl-4">
-                <div className="text-[10px] uppercase font-bold text-gray-400">Record</div>
-                <div className="font-mono text-base font-bold text-emerald-400">{highScore.toLocaleString()}</div>
+              <div className="hidden sm:block border-l border-black/10 pl-4 dark:border-white/10">
+                <div className="text-[10px] uppercase font-bold text-gray-500 dark:text-gray-400">Record</div>
+                <div className="font-mono text-base font-bold text-emerald-600 dark:text-emerald-400">{highScore.toLocaleString()}</div>
               </div>
             )}
           </div>
         </div>
 
         {/* Canvas Drop Runway */}
-        <div className="relative h-[530px] w-full overflow-hidden bg-[#0A0D12] select-none">
-          <div className="absolute inset-0 bg-[radial-gradient(#1E293B_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none" />
+        <div className="relative h-[530px] w-full overflow-hidden bg-[#F1F5F9] select-none dark:bg-[#0A0D12]">
+          <div className="absolute inset-0 bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] dark:bg-[radial-gradient(#1E293B_1px,transparent_1px)] [background-size:24px_24px] opacity-60 dark:opacity-40 pointer-events-none" />
 
           {freezeTimeLeft > 0 && (
             <div className="absolute inset-0 z-10 flex items-start justify-center bg-cyan-900/20 p-4 pointer-events-none">
-              <span className="flex items-center gap-1 rounded-full border border-cyan-400/40 bg-cyan-500/20 px-3 py-1 text-xs font-bold text-cyan-300">
+              <span className="flex items-center gap-1 rounded-full border border-cyan-400/40 bg-cyan-500/20 px-3 py-1 text-xs font-bold text-cyan-700 dark:text-cyan-300">
                 <Snowflake size={14} className="animate-spin" />
                 Time Freeze Active ({freezeTimeLeft}s)
               </span>
@@ -576,19 +631,19 @@ export function FallingWordsEngine() {
                   <div
                     className={`flex flex-col items-center rounded-2xl border px-3.5 py-2 shadow-lg backdrop-blur-md transition-colors ${
                       blasted
-                        ? "border-emerald-400 bg-emerald-500 text-white"
+                        ? "border-emerald-500 bg-emerald-500 text-white"
                         : highlighted
-                        ? "border-amber-400 bg-amber-500/30 text-amber-200 ring-2 ring-amber-400/60 shadow-[0_0_20px_rgba(245,158,11,0.4)]"
+                        ? "border-amber-500 bg-amber-500/10 text-amber-800 dark:border-amber-400 dark:bg-amber-500/30 dark:text-amber-200 ring-2 ring-amber-400/60 shadow-[0_0_20px_rgba(245,158,11,0.3)]"
                         : fw.powerUp === "freeze"
-                        ? "border-cyan-400 bg-cyan-950/80 text-cyan-200"
+                        ? "border-cyan-400 bg-cyan-100 text-cyan-800 dark:bg-cyan-950/80 dark:text-cyan-200"
                         : fw.powerUp === "bomb"
-                        ? "border-orange-500 bg-orange-950/80 text-orange-200"
+                        ? "border-orange-500 bg-orange-100 text-orange-800 dark:bg-orange-950/80 dark:text-orange-200"
                         : fw.powerUp === "heart"
-                        ? "border-rose-400 bg-rose-950/80 text-rose-200"
-                        : "border-white/15 bg-[#1E232B]/90 text-white"
+                        ? "border-rose-400 bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-200"
+                        : "border-black/10 bg-white/95 text-gray-800 dark:border-white/15 dark:bg-[#1E232B]/90 dark:text-white"
                     }`}
                   >
-                    {blasted && <div className="text-xs font-bold text-amber-300">+{fw.pointsGained}!</div>}
+                    {blasted && <div className="text-xs font-bold text-amber-500 dark:text-amber-300">+{fw.pointsGained}!</div>}
                     {fw.powerUp && !blasted && (
                       <div className="text-[10px] font-bold uppercase tracking-wider mb-0.5">
                         {fw.powerUp === "freeze" && "❄️ FREEZE"}
@@ -599,16 +654,16 @@ export function FallingWordsEngine() {
                     {showJapaneseWord ? (
                       <span className="font-serif text-xl font-bold tracking-wide">{fw.word}</span>
                     ) : (
-                      <span className="text-sm font-bold text-amber-300">{fw.meaning}</span>
+                      <span className="text-sm font-bold text-amber-600 dark:text-amber-300">{fw.meaning}</span>
                     )}
                     {showFurigana && !blasted && (
-                      <div className="text-[11px] font-mono text-gray-300">
+                      <div className="text-[11px] font-mono text-gray-600 dark:text-gray-300">
                         <span>{fw.reading}</span>
-                        {showRomaji && <span className="ml-1 text-gray-400">({fw.romaji})</span>}
+                        {showRomaji && <span className="ml-1 text-gray-500 dark:text-gray-400">({fw.romaji})</span>}
                       </div>
                     )}
                     {displayHintMode !== "meaning_only" && !blasted && (
-                      <span className="text-[10px] text-gray-400">{fw.meaning}</span>
+                      <span className="text-[10px] text-gray-500 dark:text-gray-400">{fw.meaning}</span>
                     )}
                   </div>
                 </div>
@@ -620,12 +675,12 @@ export function FallingWordsEngine() {
 
           {/* Start Menu */}
           {gameState === "idle" && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0E1117]/95 px-6 py-4 text-center">
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 px-6 py-4 text-center dark:bg-[#0E1117]/95">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-lg">
                 <Flame size={26} />
               </div>
-              <h1 className="mt-2 text-2xl font-bold text-white">Falling Words Arcade</h1>
-              <p className="mt-0.5 max-w-sm text-xs text-gray-400">
+              <h1 className="mt-2 text-2xl font-bold text-gray-800 dark:text-white">Falling Words Arcade</h1>
+              <p className="mt-0.5 max-w-sm text-xs text-gray-500 dark:text-gray-400">
                 Destroy falling Japanese words by typing their romaji, kana, or meaning!
               </p>
 
@@ -636,7 +691,7 @@ export function FallingWordsEngine() {
                     type="button"
                     onClick={() => setGameMode(m)}
                     className={`rounded-xl px-3 py-1 text-xs font-bold transition ${
-                      gameMode === m ? "bg-amber-500 text-white" : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
+                      gameMode === m ? "bg-amber-500 text-white" : "bg-black/5 text-gray-600 hover:bg-black/10 hover:text-gray-800 dark:bg-white/5 dark:text-gray-400 dark:hover:bg-white/10 dark:hover:text-white"
                     }`}
                   >
                     {m === "n5" ? "JLPT N5 Core" : m === "kana" ? "Kana Only" : "Mixed All"}
@@ -644,17 +699,17 @@ export function FallingWordsEngine() {
                 ))}
               </div>
 
-              <div className="mt-3 w-full max-w-md rounded-2xl border border-white/10 bg-white/5 p-3 text-left space-y-2.5">
-                <div className="flex items-center justify-between border-b border-white/10 pb-1.5">
-                  <span className="flex items-center gap-1.5 text-amber-400 text-[11px] font-bold">
+              <div className="mt-3 w-full max-w-md rounded-2xl border border-black/10 bg-black/5 p-3 text-left space-y-2.5 dark:border-white/10 dark:bg-white/5">
+                <div className="flex items-center justify-between border-b border-black/10 pb-1.5 dark:border-white/10">
+                  <span className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 text-[11px] font-bold">
                     <Settings2 size={13} /> Difficulty & Multipliers
                   </span>
-                  <span className="rounded-md bg-amber-500/20 px-2 py-0.5 text-amber-300 font-mono text-[11px]">
+                  <span className="rounded-md bg-amber-500/20 px-2 py-0.5 text-amber-700 dark:text-amber-300 font-mono text-[11px]">
                     Total: {scoreMultiplier}x
                   </span>
                 </div>
                 <div>
-                  <div className="text-[10px] font-semibold text-gray-400 mb-1">Word Card Display:</div>
+                  <div className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 mb-1">Word Card Display:</div>
                   <div className="grid grid-cols-2 gap-1">
                     {[
                       { id: "full", label: "Full (+ Romaji)", mult: "1.0x" },
@@ -667,7 +722,7 @@ export function FallingWordsEngine() {
                         type="button"
                         onClick={() => setDisplayHintMode(opt.id as DisplayHintMode)}
                         className={`flex items-center justify-between rounded-xl px-2.5 py-1.5 text-[11px] font-bold transition ${
-                          displayHintMode === opt.id ? "bg-amber-500 text-white" : "bg-white/5 text-gray-300 hover:bg-white/10"
+                          displayHintMode === opt.id ? "bg-amber-500 text-white" : "bg-black/5 text-gray-700 hover:bg-black/10 dark:bg-white/5 dark:text-gray-300 dark:hover:bg-white/10"
                         }`}
                       >
                         <span>{opt.label}</span>
@@ -677,7 +732,7 @@ export function FallingWordsEngine() {
                   </div>
                 </div>
                 <div>
-                  <div className="text-[10px] font-semibold text-gray-400 mb-1">Accepted Input:</div>
+                  <div className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 mb-1">Accepted Input:</div>
                   <div className="grid grid-cols-3 gap-1">
                     {[
                       { id: "all", label: "Romaji / Kana", mult: "1.0x" },
@@ -689,7 +744,7 @@ export function FallingWordsEngine() {
                         type="button"
                         onClick={() => setInputAcceptMode(opt.id as InputAcceptMode)}
                         className={`flex flex-col items-center rounded-xl p-1 text-[10px] font-bold transition ${
-                          inputAcceptMode === opt.id ? "bg-amber-500 text-white" : "bg-white/5 text-gray-300 hover:bg-white/10"
+                          inputAcceptMode === opt.id ? "bg-amber-500 text-white" : "bg-black/5 text-gray-700 hover:bg-black/10 dark:bg-white/5 dark:text-gray-300 dark:hover:bg-white/10"
                         }`}
                       >
                         <span>{opt.label}</span>
@@ -703,39 +758,40 @@ export function FallingWordsEngine() {
               <button
                 type="button"
                 onClick={startGame}
-                className="mt-3 flex items-center gap-2 rounded-2xl bg-amber-500 px-7 py-2.5 text-xs font-bold text-white shadow-xl transition hover:bg-amber-600 active:scale-95"
+                disabled={!poolsLoaded}
+                className="mt-3 flex items-center gap-2 rounded-2xl bg-amber-500 px-7 py-2.5 text-xs font-bold text-white shadow-xl transition hover:bg-amber-600 active:scale-95 disabled:opacity-40"
               >
                 <Play size={15} />
-                <span>Launch Arcade ({scoreMultiplier}x Boost)</span>
+                <span>{poolsLoaded ? `Launch Arcade (${scoreMultiplier}x Boost)` : "Loading words…"}</span>
               </button>
             </div>
           )}
 
           {/* Game Over Screen */}
           {gameState === "gameover" && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0E1117]/95 p-6 text-center animate-in fade-in zoom-in-95 duration-200">
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 p-6 text-center dark:bg-[#0E1117]/95 animate-in fade-in zoom-in-95 duration-200">
               <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-rose-500/20 text-rose-500">
                 <ShieldAlert size={44} />
               </div>
-              <h2 className="mt-4 text-3xl font-bold text-white">Defense Breached!</h2>
-              <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-white/5 p-4 text-center">
+              <h2 className="mt-4 text-3xl font-bold text-gray-800 dark:text-white">Defense Breached!</h2>
+              <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-black/5 p-4 text-center dark:bg-white/5">
                 <div>
-                  <div className="text-[11px] text-gray-400">Final Score</div>
-                  <div className="mt-1 font-mono text-2xl font-bold text-amber-400">{score.toLocaleString()}</div>
+                  <div className="text-[11px] text-gray-500 dark:text-gray-400">Final Score</div>
+                  <div className="mt-1 font-mono text-2xl font-bold text-amber-600 dark:text-amber-400">{score.toLocaleString()}</div>
                 </div>
                 <div>
-                  <div className="text-[11px] text-gray-400">Words Destroyed</div>
-                  <div className="mt-1 font-mono text-2xl font-bold text-emerald-400">{destroyedCount}</div>
+                  <div className="text-[11px] text-gray-500 dark:text-gray-400">Words Destroyed</div>
+                  <div className="mt-1 font-mono text-2xl font-bold text-emerald-600 dark:text-emerald-400">{destroyedCount}</div>
                 </div>
                 <div>
-                  <div className="text-[11px] text-gray-400">Max Combo</div>
-                  <div className="mt-1 font-mono text-2xl font-bold text-orange-400">{maxCombo}x 🔥</div>
+                  <div className="text-[11px] text-gray-500 dark:text-gray-400">Max Combo</div>
+                  <div className="mt-1 font-mono text-2xl font-bold text-orange-600 dark:text-orange-400">{maxCombo}x 🔥</div>
                 </div>
               </div>
               <div className="mt-7 flex gap-3">
                 <Link
                   href="/practice"
-                  className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3.5 text-xs font-bold text-white hover:bg-white/10 transition"
+                  className="rounded-2xl border border-black/10 bg-black/5 px-6 py-3.5 text-xs font-bold text-gray-700 hover:bg-black/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 transition"
                 >
                   Practice Dojo
                 </Link>
@@ -761,6 +817,8 @@ export function FallingWordsEngine() {
               value={typedInput}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
+              onCompositionStart={handleCompositionStart}
+              onCompositionEnd={handleCompositionEnd}
               disabled={gameState !== "playing"}
               placeholder={gameState === "playing" ? "Type romaji, kana, or meaning..." : "Press start to play"}
               autoComplete="off"

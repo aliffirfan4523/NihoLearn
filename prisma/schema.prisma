@@ -9,18 +9,25 @@ datasource db {
 }
 
 model User {
-  id              String             @id @default(cuid())
-  email           String             @unique
-  name            String?
-  avatarUrl       String?
-  provider        String             @default("email")
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
-  kanaProgress    KanaProgress[]
-  vocabProgress   VocabProgress[]
-  kanjiProgress   KanjiProgress[]
-  grammarProgress GrammarProgress[]
-  studySessions   StudySession[]
+  id               String             @id @default(cuid())
+  email            String             @unique
+  name             String?
+  avatarUrl        String?
+  provider         String             @default("email")
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  kanaProgress     KanaProgress[]
+  vocabProgress    VocabProgress[]
+  kanjiProgress    KanjiProgress[]
+  grammarProgress  GrammarProgress[]
+  studySessions    StudySession[]
+
+  // Customization fields
+  knowsKana        Boolean            @default(false)
+  dailyVocabGoal   Int                @default(5)
+  dailyGrammarGoal Int                @default(2)
+  japaneseLevel    String             @default("Complete Beginner")
+  profileCompleted Boolean            @default(false)
 }
 
 model Kana {
@@ -118,6 +125,209 @@ model KanjiProgress {
   kanji Kanji? @relation(fields: [kanjiId], references: [character], onDelete: Cascade)
 
   @@unique([userId, kanjiId])
+}
+
+model ClozeExercise {
+  id                 String  @id
+  level              String
+  sentenceWithBlank  String
+  fullSentence       String
+  reading            String
+  englishTranslation String
+  hint               String?
+  targetWord         String // JSON: { word, reading, meaning }
+  distractors        String // JSON: [{ word, reading, meaning }]
+
+  @@index([level])
+}
+
+// ─── Practice content tables (migrated from static lib/data files) ──────────
+
+model ParticleExercise {
+  id              String @id
+  level           String
+  japanese        String
+  reading         String
+  translation     String
+  correctParticle String
+  options         String // JSON string[]
+  explanation     String
+
+  @@index([level])
+}
+
+model ScrambleExercise {
+  id           String @id
+  level        String
+  fullSentence String
+  reading      String
+  translation  String
+  tiles        String // JSON string[]
+
+  @@index([level])
+}
+
+model GrammarPatternExercise {
+  id             String @id
+  level          String
+  scenario       String
+  sentence       String
+  correctPattern String
+  options        String // JSON string[]
+  meaning        String
+  explanation    String
+
+  @@index([level])
+}
+
+model KeigoExercise {
+  id          String  @id
+  plain       String
+  polite      String
+  sonkeigo    String
+  kenjougo    String
+  meaning     String
+  contextNote String?
+}
+
+model DictationExercise {
+  id          String  @id
+  audioPrompt String
+  japanese    String
+  reading     String
+  romaji      String
+  translation String
+  level       String
+  hint        String?
+
+  @@index([level])
+}
+
+model ShadowingExercise {
+  id          String @id
+  title       String
+  level       String
+  theme       String
+  description String
+  lines       String // JSON ShadowingLine[]
+
+  @@index([level])
+}
+
+model WordPair {
+  id            String  @id
+  pairType      String // "antonym" | "synonym" | "theme"
+  themeCategory String?
+  wordA         String // JSON { kanji, reading, romaji, meaning }
+  wordB         String // JSON { kanji, reading, romaji, meaning }
+  relationLabel String
+  level         String
+
+  @@index([level])
+}
+
+model FuriganaPassage {
+  id                    String @id
+  level                 String
+  title                 String
+  category              String
+  readTime              String
+  summary               String
+  sentences             String // JSON sentence[]
+  comprehensionQuestions String // JSON question[]
+
+  @@index([level])
+}
+
+model KanjiContextSnippet {
+  id              String @id
+  level           String
+  domain          String
+  domainEmoji     String
+  scenarioTitle   String
+  snippetText     String
+  targetKanji     String
+  targetReading   String
+  targetMeaning   String
+  kanjiBreakdown  String // JSON breakdown[]
+  contextQuestion String // JSON { prompt, options, correctIndex, explanation }
+  readingQuestion String // JSON { prompt, options, correctIndex, explanation }
+
+  @@index([level])
+}
+
+model GrammarLesson {
+  id        String @id
+  level     String
+  title     String
+  meaning   String
+  structure String
+  examples  String // JSON example[]
+
+  @@index([level])
+}
+
+model Verb {
+  id       String @id
+  kanji    String
+  reading  String
+  romaji   String
+  meaning  String
+  verbType String // "ichidan" | "godan" | "irregular"
+  level    String
+  forms    String // JSON Record<form, { japanese, reading, romaji, rule }>
+
+  @@index([level])
+}
+
+model ReadingStory {
+  id            String  @id
+  level         String
+  titleJapanese String
+  titleRomaji   String
+  titleEnglish  String
+  description   String
+  readTime      String
+  pixelArtEmoji String
+  category      String
+  isLocked      Boolean @default(false)
+  sentences     String  // JSON StorySentence[]
+  questions     String  // JSON StoryQuizQuestion[]
+
+  @@index([level])
+}
+
+model KanaMnemonic {
+  character     String  @id
+  romaji        String
+  word          String
+  kanji         String?
+  wordRomaji    String
+  meaning       String
+  emoji         String
+  mnemonic      String
+  secondaryWord String? // JSON { word, kanji?, wordRomaji, meaning, emoji }
+
+  @@index([romaji])
+}
+
+model RadicalItem {
+  radicalNumber Int    @id
+  radical       String
+  strokes       Int
+  name          String
+  meaning       String
+  examples      String // JSON string[]
+
+  @@index([strokes])
+}
+
+model DailyBankItem {
+  id       String @id
+  category String // "kanji" | "vocabulary" | "culture"
+  payload  String // JSON item
+
+  @@index([category])
 }
 
 model GrammarProgress {

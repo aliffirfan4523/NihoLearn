@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Volume2, CheckCircle2, XCircle, RotateCcw, ArrowRight, Trophy, Flame } from "lucide-react";
-import { hiraganaSeed } from "@/lib/data/hiragana";
-import { katakanaSeed } from "@/lib/data/katakana";
 import type { KanaPracticeConfig, PracticeMode } from "@/components/practice/KanaPracticeSetup";
 import type { KanaCharacter } from "@/types";
 
@@ -26,8 +24,8 @@ export function KanaPracticeQuiz({
   config: KanaPracticeConfig;
   onExit: () => void;
 }) {
-  const pool = config.type === "hiragana" ? hiraganaSeed : katakanaSeed;
-  const selectedPool = pool.filter((k) => config.selectedRows.includes(k.row));
+  // All kana of the configured type, fetched from the database on mount
+  const [pool, setPool] = useState<Omit<KanaCharacter, "status">[]>([]);
 
   const [questions, setQuestions] = useState<QuestionItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -42,8 +40,38 @@ export function KanaPracticeQuiz({
   const inputRef = useRef<HTMLInputElement>(null);
   const answersMapRef = useRef<Record<string, { character: string; romaji: string; correct: boolean }>>({});
 
+  // Fetch kana from the database (filtered by the configured type)
+  useEffect(() => {
+    let isMounted = true;
+
+    fetch(`/api/kana?type=${config.type}`)
+      .then((res) => res.json())
+      .then((json) => {
+        if (!isMounted) return;
+        setPool(
+          (json?.data ?? []).map(
+            (k: { id: string; type: "hiragana" | "katakana"; character: string; romaji: string; row: string }) => ({
+              id: k.id,
+              type: k.type,
+              character: k.character,
+              romaji: k.romaji,
+              row: k.row,
+            })
+          )
+        );
+      })
+      .catch((err) => console.error("Failed to load kana:", err));
+
+    return () => {
+      isMounted = false;
+    };
+  }, [config.type]);
+
   // Generate Questions
   useEffect(() => {
+    if (pool.length === 0) return;
+
+    const selectedPool = pool.filter((k) => config.selectedRows.includes(k.row));
     if (selectedPool.length === 0) return;
 
     let items = [...selectedPool];
@@ -82,7 +110,7 @@ export function KanaPracticeQuiz({
     setMaxStreak(0);
     setIsFinished(false);
     answersMapRef.current = {};
-  }, []);
+  }, [pool]);
 
   const currentQ = questions[currentIndex];
 

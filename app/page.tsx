@@ -1,10 +1,10 @@
 import { requireUser } from "@/lib/auth";
 import { MainDashboardView } from "@/components/dashboard/MainDashboardView";
 import { calculateUserStreakAndStats } from "@/lib/stats-calc";
-import { hiraganaSeed } from "@/lib/data/hiragana";
-import { katakanaSeed } from "@/lib/data/katakana";
+import { BASIC_ROWS, DAKUTEN_ROWS, COMBO_ROWS, kanaByGroup } from "@/lib/kana-groups";
 import { roadmapStages } from "@/lib/data/roadmap";
 import { getCachedDashboardData } from "@/lib/services/dashboard-data";
+import { cookies } from "next/headers";
 
 export const metadata = {
   title: "Dashboard | NihoLearn",
@@ -15,7 +15,7 @@ export default async function DashboardPage() {
   const user = await requireUser();
 
   // ── High-speed cached data resolution (< 5ms on warm cache, ~100ms on fresh fetch) ──
-  const { counts, masteredKanaIds, allSessions } = await getCachedDashboardData(user.id);
+  const { counts, masteredKanaIds, allSessions, jlpt, allKana } = await getCachedDashboardData(user.id);
 
   const kanaTotal = counts.kanaTotal;
   const vocabCount = counts.vocabCount;
@@ -25,9 +25,9 @@ export default async function DashboardPage() {
   const kanaMastered = masteredKanaIds.length;
   const masteredIdSet = new Set(masteredKanaIds);
 
-  const basicHiraIds = new Set(hiraganaSeed.slice(0, 46).map((k) => k.id));
-  const dakutenHiraIds = new Set(hiraganaSeed.slice(46, 71).map((k) => k.id));
-  const combiHiraIds = new Set(hiraganaSeed.slice(71).map((k) => k.id));
+  const basicHiraIds = new Set(kanaByGroup(allKana, "hiragana", BASIC_ROWS).map((k) => k.id));
+  const dakutenHiraIds = new Set(kanaByGroup(allKana, "hiragana", DAKUTEN_ROWS).map((k) => k.id));
+  const combiHiraIds = new Set(kanaByGroup(allKana, "hiragana", COMBO_ROWS).map((k) => k.id));
 
   let basicHiraCount = 0;
   let dakutenHiraCount = 0;
@@ -46,7 +46,9 @@ export default async function DashboardPage() {
     }
   }
 
-  const userStats = calculateUserStreakAndStats(allSessions as any, kanaMastered);
+  const cookieStore = await cookies();
+  const tzOffset = parseInt(cookieStore.get("x-timezone-offset")?.value ?? "0", 10);
+  const userStats = calculateUserStreakAndStats(allSessions as any, kanaMastered, tzOffset);
 
   // ── Determine current roadmap stage for the "Start Here / Current Stage" banner ──
   const passedExamIds = new Set<string>();
@@ -98,6 +100,7 @@ export default async function DashboardPage() {
         basicHiraCount,
         dakutenHiraCount,
         combiHiraCount,
+        jlpt: jlpt,
         currentStep: {
           step: currentStage.step,
           title: currentStage.title,

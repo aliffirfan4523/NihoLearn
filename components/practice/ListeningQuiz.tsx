@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Headphones, Volume2, CheckCircle2, XCircle, ArrowRight, Trophy, Flame, RotateCcw, ArrowLeft } from "lucide-react";
 
 import { playJapaneseAudio } from "@/lib/audio";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 function playAudio(text: string) {
   playJapaneseAudio(text);
@@ -82,17 +83,13 @@ export function ListeningQuiz() {
 
   const currentQ = questions[currentIndex];
 
+  const answersRef = useRef<Record<string, { word: string; correct: boolean }>>({});
+
   useEffect(() => {
     if (currentQ) {
       playAudio(currentQ.reading || currentQ.word);
     }
   }, [currentIndex, currentQ]);
-
-  if (questions.length === 0) {
-    return <div className="p-8 text-center text-gray-500">Preparing listening quiz...</div>;
-  }
-
-  const answersRef = useRef<Record<string, { word: string; correct: boolean }>>({});
 
   // Auto-log session & update VocabProgress when finished
   useEffect(() => {
@@ -130,6 +127,10 @@ export function ListeningQuiz() {
       }).catch(() => {});
     }
   }, [isFinished, questions.length, score]);
+
+  if (questions.length === 0) {
+    return <div className="p-8 text-center text-gray-500">Preparing listening quiz...</div>;
+  }
 
   const handleSelect = (option: string) => {
     if (status !== "idle" || !currentQ) return;
@@ -250,6 +251,19 @@ export function ListeningQuiz() {
 
       {/* Main Question Card */}
       <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
+        <div className="mx-auto mb-6 max-w-md text-left">
+          <HowToPlay
+            gameKey="listening-quiz"
+            steps={[
+              "Tap the big speaker button to hear a Japanese word — it also plays automatically when each question starts.",
+              "Listen carefully, then pick the matching English meaning from the 4 choices.",
+              "Answers are revealed instantly: the correct choice lights up green, wrong picks turn red.",
+              "10 questions per round. Correct answers in a row build a streak — your score and accuracy are shown at the end.",
+            ]}
+            note="Tip: replay the audio as many times as you need before answering — no penalty for listening again."
+          />
+        </div>
+
         <div className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
           Listen to the Audio & Pick the Meaning
         </div>

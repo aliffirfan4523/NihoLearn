@@ -19,10 +19,21 @@ import {
   BookOpen,
   Check,
 } from "lucide-react";
-import { PARTICLE_EXERCISES, type ParticleExercise } from "@/lib/data/practice-content";
 import { playJapaneseAudio } from "@/lib/audio";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 type LevelFilter = "ALL" | "N5" | "N4" | "N3";
+
+interface ParticleExercise {
+  id: string;
+  level: "N5" | "N4" | "N3";
+  japanese: string;
+  reading: string;
+  translation: string;
+  correctParticle: string;
+  options: string[];
+  explanation: string;
+}
 
 interface SessionResultItem {
   exercise: ParticleExercise;
@@ -36,6 +47,10 @@ export function ParticlePickerEngine() {
   const [showFurigana, setShowFurigana] = useState(true);
   const [showTranslation, setShowTranslation] = useState(true);
   const [autoPlayAudio, setAutoPlayAudio] = useState(true);
+
+  // Content pool fetched from the database
+  const [allExercises, setAllExercises] = useState<ParticleExercise[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // Game state
   const [quizPool, setQuizPool] = useState<ParticleExercise[]>([]);
@@ -54,8 +69,8 @@ export function ParticlePickerEngine() {
   const startQuiz = useCallback(
     (level: LevelFilter, customPool?: ParticleExercise[]) => {
       const source = customPool ?? (level === "ALL"
-        ? PARTICLE_EXERCISES
-        : PARTICLE_EXERCISES.filter((ex) => ex.level === level));
+        ? allExercises
+        : allExercises.filter((ex) => ex.level === level));
 
       const shuffled = [...source].sort(() => Math.random() - 0.5);
       setQuizPool(shuffled);
@@ -69,12 +84,36 @@ export function ParticlePickerEngine() {
       setSessionResults([]);
       setStartTime(Date.now());
     },
-    []
+    [allExercises]
   );
 
   useEffect(() => {
     startQuiz(levelFilter);
   }, [levelFilter, startQuiz]);
+
+  // Fetch the full exercise pool from the database once on mount
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/content/particles");
+        const json = await res.json();
+
+        if (json.data && Array.isArray(json.data) && !cancelled) {
+          setAllExercises(json.data as ParticleExercise[]);
+        }
+      } catch (err) {
+        console.error("Failed to load particle exercises:", err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const currentExercise = quizPool[currentIndex];
 
@@ -218,6 +257,15 @@ export function ParticlePickerEngine() {
       loggedRef.current = false;
     }
   }, [isFinished, quizPool, score, levelFilter, maxStreak, startTime]);
+
+  // While the exercise pool is being fetched
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-xl p-12 text-center text-sm text-gray-500">
+        Loading particle exercises from database...
+      </div>
+    );
+  }
 
   // If pool empty
   if (quizPool.length === 0) {
@@ -432,6 +480,19 @@ export function ParticlePickerEngine() {
           style={{ width: `${((currentIndex + 1) / quizPool.length) * 100}%` }}
         />
       </div>
+
+      {/* How to Play */}
+      <HowToPlay
+        gameKey="particle-picker"
+        steps={[
+          "A Japanese sentence appears with a missing particle (は, が, を, に, で...). Pick the correct one from the choices.",
+          "Quick keyboard play: press 1–4 to choose an answer, then Enter / Space / → for the next question.",
+          "The correct sentence is revealed after each answer, and the full sentence is read aloud — tap the speaker to replay it.",
+          "Toggle furigana and the English translation with the eye buttons if you need help reading.",
+          "Filter by JLPT level (ALL / N5 / N4 / N3) at the top; correct streaks build your score, and results are shown at the end.",
+        ]}
+        note="Tip: at 70%+ accuracy the drill marks these particles as mastered in your grammar progress."
+      />
 
       {/* Main Question Card */}
       <div className="rounded-3xl border border-black/10 bg-white p-6 sm:p-8 shadow-lg dark:border-white/10 dark:bg-[#161B22] space-y-6">

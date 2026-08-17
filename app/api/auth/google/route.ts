@@ -6,7 +6,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export async function POST(request: NextRequest) {
   try {
-    const response = NextResponse.json({});
+    const cookiesToSetArray: { name: string; value: string; options: any }[] = [];
 
     const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
@@ -14,9 +14,7 @@ export async function POST(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, options)
-          );
+          cookiesToSetArray.push(...cookiesToSet);
         },
       },
     });
@@ -32,7 +30,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    return NextResponse.json({ url: data.url });
+    const response = NextResponse.json({ url: data.url });
+    cookiesToSetArray.forEach(({ name, value, options }) => {
+      response.cookies.set(name, value, options);
+    });
+
+    return response;
   } catch {
     return NextResponse.json({ error: "Google sign-in failed." }, { status: 500 });
   }

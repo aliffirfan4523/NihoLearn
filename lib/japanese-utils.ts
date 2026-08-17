@@ -129,6 +129,92 @@ export function katakanaToHiragana(text: string): string {
   });
 }
 
+// ── 1b. Hiragana → Romaji (deterministic, used to backfill DB romaji) ──
+const HIRA_TO_ROMAJI: Record<string, string> = {
+  あ: "a", い: "i", う: "u", え: "e", お: "o",
+  か: "ka", き: "ki", く: "ku", け: "ke", こ: "ko",
+  が: "ga", ぎ: "gi", ぐ: "gu", げ: "ge", ご: "go",
+  さ: "sa", し: "shi", す: "su", せ: "se", そ: "so",
+  ざ: "za", じ: "ji", ず: "zu", ぜ: "ze", ぞ: "zo",
+  た: "ta", ち: "chi", つ: "tsu", て: "te", と: "to",
+  だ: "da", ぢ: "ji", づ: "zu", で: "de", ど: "do",
+  な: "na", に: "ni", ぬ: "nu", ね: "ne", の: "no",
+  は: "ha", ひ: "hi", ふ: "fu", へ: "he", ほ: "ho",
+  ば: "ba", び: "bi", ぶ: "bu", べ: "be", ぼ: "bo",
+  ぱ: "pa", ぴ: "pi", ぷ: "pu", ぺ: "pe", ぽ: "po",
+  ま: "ma", み: "mi", む: "mu", め: "me", も: "mo",
+  や: "ya", ゆ: "yu", よ: "yo",
+  ら: "ra", り: "ri", る: "ru", れ: "re", ろ: "ro",
+  わ: "wa", ゐ: "i", ゑ: "e", を: "wo", ん: "n", ゔ: "vu",
+  // Small vowels (loanword spellings)
+  ぁ: "a", ぃ: "i", ぅ: "u", ぇ: "e", ぉ: "o",
+  // Youon (combos) — 2-char keys matched greedily
+  きゃ: "kya", きゅ: "kyu", きょ: "kyo", ぎゃ: "gya", ぎゅ: "gyu", ぎょ: "gyo",
+  しゃ: "sha", しゅ: "shu", しょ: "sho", じゃ: "ja", じゅ: "ju", じょ: "jo",
+  ちゃ: "cha", ちゅ: "chu", ちょ: "cho", ぢゃ: "ja", ぢゅ: "ju", ぢょ: "jo",
+  にゃ: "nya", にゅ: "nyu", にょ: "nyo",
+  ひゃ: "hya", ひゅ: "hyu", ひょ: "hyo", びゃ: "bya", びゅ: "byu", びょ: "byo",
+  ぴゃ: "pya", ぴゅ: "pyu", ぴょ: "pyo",
+  みゃ: "mya", みゅ: "myu", みょ: "myo",
+  りゃ: "rya", りゅ: "ryu", りょ: "ryo",
+  ふぁ: "fa", ふぃ: "fi", ふぇ: "fe", ふぉ: "fo",
+  うぃ: "wi", うぇ: "we", うぉ: "wo",
+  てぃ: "ti", てゅ: "tyu", でぃ: "di", でゅ: "dyu", とぅ: "tu", どぅ: "du",
+  ちぇ: "che", しぇ: "she", じぇ: "je",
+};
+
+/**
+ * Converts kana text (hiragana or katakana) into romaji.
+ * Handles youon (きゃ), sokuon (っ), and the long-vowel mark (ー → "-").
+ * Non-kana characters (kanji, punctuation) pass through unchanged.
+ */
+export function kanaToRomaji(text: string): string {
+  if (!text) return "";
+  const hira = katakanaToHiragana(text);
+
+  let result = "";
+  let i = 0;
+  while (i < hira.length) {
+    const ch = hira[i];
+
+    // Sokuon: double the next mora's leading consonant
+    if (ch === "っ") {
+      const next = hira.substring(i + 1, i + 3);
+      const nextRomaji =
+        HIRA_TO_ROMAJI[next] ?? HIRA_TO_ROMAJI[hira[i + 1]] ?? "";
+      const lead = nextRomaji.charAt(0);
+      if (lead && !"aiueon".includes(lead)) result += lead;
+      i++;
+      continue;
+    }
+
+    // Long vowel mark maps to "-" (round-trips via romajiToHiragana)
+    if (ch === "ー") {
+      result += "-";
+      i++;
+      continue;
+    }
+
+    // Greedy 2-char (youon) then 1-char match
+    const pair = hira.substring(i, i + 2);
+    if (HIRA_TO_ROMAJI[pair]) {
+      result += HIRA_TO_ROMAJI[pair];
+      i += 2;
+      continue;
+    }
+    if (HIRA_TO_ROMAJI[ch]) {
+      result += HIRA_TO_ROMAJI[ch];
+      i++;
+      continue;
+    }
+
+    result += ch;
+    i++;
+  }
+
+  return result;
+}
+
 // ── 2. Character-by-Character Diff Engine ──
 
 export interface DiffChar {

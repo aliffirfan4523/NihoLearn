@@ -5,6 +5,8 @@ import { Header } from "@/components/layout/Header";
 import { BottomNavbar } from "@/components/layout/BottomNavbar";
 import { UserMenuWithDarkToggle } from "@/components/layout/UserMenuWithDarkToggle";
 
+import { useEffect } from "react";
+
 export function AppShell({
   children,
   userMenu,
@@ -14,6 +16,11 @@ export function AppShell({
 }) {
   const pathname = usePathname();
   const isAuthPage = pathname.startsWith("/login") || pathname.startsWith("/signup");
+
+  useEffect(() => {
+    const offset = new Date().getTimezoneOffset();
+    document.cookie = `x-timezone-offset=${offset}; path=/; max-age=31536000; SameSite=Lax`;
+  }, []);
 
   if (isAuthPage) {
     return (

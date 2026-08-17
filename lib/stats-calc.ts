@@ -23,7 +23,8 @@ export interface CalculatedUserStats {
 
 export function calculateUserStreakAndStats(
   sessions: StudySessionItem[],
-  kanaProgressCount: number = 0
+  kanaProgressCount: number = 0,
+  tzOffset: number = 0
 ): CalculatedUserStats {
   if (!sessions || sessions.length === 0) {
     return {
@@ -38,59 +39,59 @@ export function calculateUserStreakAndStats(
     };
   }
 
-  // 1. Calculate Streak
-  // Get unique local dates (YYYY-MM-DD)
+  // 1. Calculate Streak using user's local timezone adjusted date strings
   const uniqueDates = Array.from(
     new Set(
       sessions
         .filter((s) => s && s.date)
         .map((s) => {
-          const d = new Date(s.date);
+          // Adjust UTC to user's local time (tzOffset is in minutes, e.g. -480 for GMT+8)
+          const d = new Date(new Date(s.date).getTime() - tzOffset * 60 * 1000);
           if (isNaN(d.getTime())) return "";
-          return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
-            d.getDate()
+          return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(
+            d.getUTCDate()
           ).padStart(2, "0")}`;
         })
         .filter(Boolean)
     )
   ).sort((a, b) => (a > b ? -1 : 1)); // newest first
 
-  const now = new Date();
-  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
-    now.getDate()
+  const clientNow = new Date(Date.now() - tzOffset * 60 * 1000);
+  const todayStr = `${clientNow.getUTCFullYear()}-${String(clientNow.getUTCMonth() + 1).padStart(2, "0")}-${String(
+    clientNow.getUTCDate()
   ).padStart(2, "0")}`;
 
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(
+  const clientYesterday = new Date(Date.now() - tzOffset * 60 * 1000 - 24 * 60 * 60 * 1000);
+  const yesterdayStr = `${clientYesterday.getUTCFullYear()}-${String(clientYesterday.getUTCMonth() + 1).padStart(
     2,
     "0"
-  )}-${String(yesterday.getDate()).padStart(2, "0")}`;
+  )}-${String(clientYesterday.getUTCDate()).padStart(2, "0")}`;
 
   let streak = 0;
-  let expectedDate = new Date();
+  let expectedDate: Date | null = null;
 
-  // Check if user practiced today or yesterday
+  // Check if user practiced today or yesterday in their local timezone
   if (uniqueDates.includes(todayStr)) {
-    expectedDate = new Date();
+    expectedDate = new Date(clientNow);
   } else if (uniqueDates.includes(yesterdayStr)) {
-    expectedDate = new Date(yesterday);
+    expectedDate = new Date(clientYesterday);
   } else {
     // Streak broken
-    expectedDate = new Date(0);
+    expectedDate = null;
   }
 
-  if (expectedDate.getTime() > 0) {
+  if (expectedDate) {
     let checkDate = new Date(expectedDate);
     while (true) {
-      const checkStr = `${checkDate.getFullYear()}-${String(checkDate.getMonth() + 1).padStart(
+      const checkStr = `${checkDate.getUTCFullYear()}-${String(checkDate.getUTCMonth() + 1).padStart(
         2,
         "0"
-      )}-${String(checkDate.getDate()).padStart(2, "0")}`;
+      )}-${String(checkDate.getUTCDate()).padStart(2, "0")}`;
 
       if (uniqueDates.includes(checkStr)) {
         streak++;
-        checkDate.setDate(checkDate.getDate() - 1);
+        // Go back 24 hours
+        checkDate.setTime(checkDate.getTime() - 24 * 60 * 60 * 1000);
       } else {
         break;
       }

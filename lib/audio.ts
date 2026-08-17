@@ -32,6 +32,24 @@ let activeAudioElement: HTMLAudioElement | null = null;
 let lastPlayTimestamp = 0;
 let lastPlayText = "";
 
+// ── Autoplay-policy bridge ──────────────────────────────────────────────────
+// Browsers block audio that starts before the first user gesture (games often
+// auto-play on load). When that happens we park the play and flush it on the
+// first pointer/key interaction.
+let gestureRetry: (() => void) | null = null;
+
+function flushGestureRetry() {
+  const retry = gestureRetry;
+  gestureRetry = null;
+  retry?.();
+}
+
+if (typeof window !== "undefined") {
+  const opts = { capture: true } as AddEventListenerOptions;
+  window.addEventListener("pointerdown", flushGestureRetry, opts);
+  window.addEventListener("keydown", flushGestureRetry, opts);
+}
+
 /**
  * Plays clean Japanese pronunciation with multi-tier fallback and duplicate prevention.
  */
@@ -61,15 +79,13 @@ export function playJapaneseAudio(
     activeAudioElement = null;
   }
 
-  // 2. Helper to play high-quality online Japanese TTS stream (Google & Youdao)
+  // 2. Helper to play high-quality online Japanese TTS stream.
+  //    Both providers are streamed through our /api/tts proxy (same-origin) to
+  //    avoid browser-side referer/extension blocks on the raw endpoints.
   const playOnlineStream = () => {
     try {
-      const primaryUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodeURIComponent(
-        cleanText
-      )}`;
-      const secondaryUrl = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(
-        cleanText
-      )}&le=jap`;
+      const primaryUrl = `/api/tts?p=google&q=${encodeURIComponent(cleanText)}`;
+      const secondaryUrl = `/api/tts?p=youdao&q=${encodeURIComponent(cleanText)}`;
 
       const audio = new Audio(primaryUrl);
       activeAudioElement = audio;
@@ -99,8 +115,15 @@ export function playJapaneseAudio(
         }
       };
 
-      audio.play().catch(() => {
+      audio.play().catch((err) => {
         if (activeAudioElement !== audio) return;
+        if (err && err.name === "NotAllowedError") {
+          // Autoplay policy: no user gesture yet. Park the audio; the bridge
+          // above replays it on the first interaction.
+          activeAudioElement = null;
+          gestureRetry = () => playJapaneseAudio(cleanText, options);
+          return;
+        }
         try {
           const fallbackAudio = new Audio(secondaryUrl);
           activeAudioElement = fallbackAudio;
@@ -145,16 +168,31 @@ export function playJapaneseAudio(
         let hasStarted = false;
         let hasEnded = false;
 
+        // Watchdog: speechSynthesis can be blocked by autoplay policy or stall
+        // silently (no error event). If it never starts, fall to the online stream.
+        const watchdog = setTimeout(() => {
+          if (hasStarted || hasEnded) return;
+          try {
+            window.speechSynthesis.cancel();
+          } catch {}
+          playOnlineStream();
+        }, 900);
+
+        const clearWatchdog = () => clearTimeout(watchdog);
+
         utterance.onstart = () => {
           hasStarted = true;
+          clearWatchdog();
         };
 
         utterance.onend = () => {
           hasEnded = true;
+          clearWatchdog();
           options?.onEnd?.();
         };
 
         utterance.onerror = (e) => {
+          clearWatchdog();
           // Ignore cancelled or interrupted events (happens when user clicks again)
           if (e.error === "canceled" || e.error === "interrupted") {
             return;

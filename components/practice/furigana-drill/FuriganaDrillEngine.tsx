@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   EyeOff,
@@ -21,13 +21,42 @@ import {
   MousePointerClick,
 } from "lucide-react";
 import { playJapaneseAudio } from "@/lib/audio";
-import { FURIGANA_PASSAGES, type FuriganaPassage } from "@/lib/data/vocab-practice-suite";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 export type FuriganaDisplayMode = "all_visible" | "hover_only" | "completely_hidden" | "interactive_drill";
 
+interface FuriganaPassage {
+  id: string;
+  level: "N5" | "N4" | "N3";
+  title: string;
+  category: string;
+  readTime: string;
+  summary: string;
+  sentences: Array<{
+    id: string;
+    japanese: string;
+    translation: string;
+    tokens: Array<{
+      surface: string;
+      reading?: string;
+      isKanji?: boolean;
+      meaning?: string;
+    }>;
+  }>;
+  comprehensionQuestions: Array<{
+    question: string;
+    options: string[];
+    correctIndex: number;
+    explanation: string;
+  }>;
+}
+
 export function FuriganaDrillEngine() {
+  // Passage pool fetched from the database
+  const [passages, setPassages] = useState<FuriganaPassage[]>([]);
+
   // Passage selection
-  const [selectedPassageId, setSelectedPassageId] = useState<string>(FURIGANA_PASSAGES[0].id);
+  const [selectedPassageId, setSelectedPassageId] = useState<string>("");
   const [displayMode, setDisplayMode] = useState<FuriganaDisplayMode>("interactive_drill");
 
   // Interactive Kanji Recall Drill State
@@ -49,13 +78,28 @@ export function FuriganaDrillEngine() {
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
   const [isQuizSubmitted, setIsQuizSubmitted] = useState<boolean>(false);
 
+  // Fetch the reading passages from the database on mount
+  useEffect(() => {
+    fetch("/api/content/furigana-passages")
+      .then((res) => res.json())
+      .then((json) => {
+        const data: FuriganaPassage[] = json.data || [];
+        setPassages(data);
+        if (data.length > 0) {
+          setSelectedPassageId((cur) => (data.some((p) => p.id === cur) ? cur : data[0].id));
+        }
+      })
+      .catch(() => setPassages([]));
+  }, []);
+
   const passage = useMemo(
-    () => FURIGANA_PASSAGES.find((p) => p.id === selectedPassageId) || FURIGANA_PASSAGES[0],
-    [selectedPassageId]
+    () => passages.find((p) => p.id === selectedPassageId) || passages[0],
+    [selectedPassageId, passages]
   );
 
   // Collect all kanji tokens in passage to know total drillable kanji
   const allKanjiTokens = useMemo(() => {
+    if (!passage) return [];
     const list: Array<{ surface: string; reading: string; meaning?: string; key: string }> = [];
     passage.sentences.forEach((sent, sIdx) => {
       sent.tokens.forEach((tok, tIdx) => {
@@ -161,6 +205,7 @@ export function FuriganaDrillEngine() {
 
   // Submit Comprehension Quiz
   const handleSubmitQuiz = () => {
+    if (!passage) return;
     setIsQuizSubmitted(true);
 
     let correctCount = 0;
@@ -183,6 +228,14 @@ export function FuriganaDrillEngine() {
       }),
     }).catch(() => {});
   };
+
+  if (!passage) {
+    return (
+      <div className="flex min-h-[300px] items-center justify-center text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
+        Loading furigana passages...
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 animate-in fade-in duration-200">
@@ -207,7 +260,7 @@ export function FuriganaDrillEngine() {
 
         {/* Passage Selector Tabs */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1">
-          {FURIGANA_PASSAGES.map((p) => (
+          {passages.map((p) => (
             <button
               key={p.id}
               type="button"
@@ -223,6 +276,18 @@ export function FuriganaDrillEngine() {
           ))}
         </div>
       </div>
+
+      <HowToPlay
+        gameKey="furigana-drill"
+        steps={[
+          "Pick a passage from the level tabs, then a reading mode: Interactive Drill, Hidden, Hover Reveal, or Full Furigana.",
+          "In Interactive Drill every kanji reading is masked with a dot — click a kanji to open a popup and pick its correct reading from 4 choices.",
+          "Answering reveals the reading in green on the passage (the popup highlights the right choice), and the Recalled counter tracks your progress.",
+          "In the other modes clicking a kanji plays its pronunciation; use Reveal All to show every reading or the reset button to start the drill over.",
+          "Finish with the comprehension questions below the story — click Submit to grade your answers with explanations.",
+        ]}
+        note="Tip: each sentence shows an English translation underneath and has its own speaker button; Listen All reads the whole passage."
+      />
 
       {/* Control Bar: Furigana Mode Toggle & Actions */}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-black/10 bg-white p-3.5 shadow-xs dark:border-white/10 dark:bg-[#161B22]">

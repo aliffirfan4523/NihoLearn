@@ -1,8 +1,7 @@
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { KanaProgressView, type KanaProgressStats } from "@/components/progress/KanaProgressView";
-import { hiraganaSeed } from "@/lib/data/hiragana";
-import { katakanaSeed } from "@/lib/data/katakana";
+import { BASIC_ROWS, DAKUTEN_ROWS, COMBO_ROWS, kanaByGroup } from "@/lib/kana-groups";
 
 export const metadata = {
   title: "Kana Progress | NihoLearn",
@@ -12,7 +11,7 @@ export const metadata = {
 export default async function KanaProgressPage() {
   const user = await requireUser();
 
-  const [allProgress, recentSessions] = await Promise.all([
+  const [allProgress, recentSessions, allKana] = await Promise.all([
     prisma.kanaProgress.findMany({
       where: { userId: user.id },
     }),
@@ -21,6 +20,10 @@ export default async function KanaProgressPage() {
       orderBy: { date: "desc" },
       take: 10,
     }),
+    prisma.kana.findMany({
+      select: { id: true, type: true, character: true, romaji: true, row: true },
+      orderBy: [{ type: "asc" }, { row: "asc" }, { id: "asc" }],
+    }),
   ]);
 
   const masteredRows = allProgress.filter((p) => p.status === "mastered");
@@ -28,13 +31,13 @@ export default async function KanaProgressPage() {
 
   const masteredIdSet = masteredRows.map((p) => p.kanaId);
 
-  const basicHiraIds = new Set(hiraganaSeed.slice(0, 46).map((k) => k.id));
-  const dakutenHiraIds = new Set(hiraganaSeed.slice(46, 71).map((k) => k.id));
-  const combiHiraIds = new Set(hiraganaSeed.slice(71).map((k) => k.id));
+  const basicHiraIds = new Set(kanaByGroup(allKana, "hiragana", BASIC_ROWS).map((k) => k.id));
+  const dakutenHiraIds = new Set(kanaByGroup(allKana, "hiragana", DAKUTEN_ROWS).map((k) => k.id));
+  const combiHiraIds = new Set(kanaByGroup(allKana, "hiragana", COMBO_ROWS).map((k) => k.id));
 
-  const basicKataIds = new Set(katakanaSeed.slice(0, 46).map((k) => k.id));
-  const dakutenKataIds = new Set(katakanaSeed.slice(46, 71).map((k) => k.id));
-  const combiKataIds = new Set(katakanaSeed.slice(71).map((k) => k.id));
+  const basicKataIds = new Set(kanaByGroup(allKana, "katakana", BASIC_ROWS).map((k) => k.id));
+  const dakutenKataIds = new Set(kanaByGroup(allKana, "katakana", DAKUTEN_ROWS).map((k) => k.id));
+  const combiKataIds = new Set(kanaByGroup(allKana, "katakana", COMBO_ROWS).map((k) => k.id));
 
   let basicHiraCount = 0;
   let dakutenHiraCount = 0;
@@ -54,9 +57,7 @@ export default async function KanaProgressPage() {
   }
 
   // Aggregate struggle items from reviewing rows and recent session notes
-  const allKanaMap = new Map(
-    [...hiraganaSeed, ...katakanaSeed].map((k) => [k.id, k])
-  );
+  const allKanaMap = new Map(allKana.map((k) => [k.id, k]));
 
   const struggleMap = new Map<string, { id: string; character: string; romaji: string }>();
 
@@ -98,10 +99,10 @@ export default async function KanaProgressPage() {
     dakutenKataCount,
     combiKataCount,
     totalMastered: masteredIdSet.length,
-    totalKana: hiraganaSeed.length + katakanaSeed.length,
+    totalKana: allKana.length,
     masteredIdSet,
     struggles,
   };
 
-  return <KanaProgressView stats={stats} />;
+  return <KanaProgressView stats={stats} kana={allKana} />;
 }

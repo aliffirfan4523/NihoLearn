@@ -45,6 +45,15 @@ interface MainDashboardViewProps {
     basicHiraCount: number;
     dakutenHiraCount: number;
     combiHiraCount: number;
+    jlpt: Array<{
+      level: string;
+      vocabMastered: number;
+      vocabTotal: number;
+      kanjiMastered: number;
+      kanjiTotal: number;
+      grammarMastered: number;
+      grammarTotal: number;
+    }>;
     currentStep: {
       step: number;
       title: string;
@@ -218,88 +227,38 @@ export function MainDashboardView({ user, stats }: MainDashboardViewProps) {
 
           {jlptExpanded && (
             <div className="space-y-4 border-t border-black/5 pt-4 text-xs dark:border-white/10">
-              {/* N5 */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
-                  <span>N5</span>
-                  <span>{stats.vocabCount + stats.grammarCount}/843 items 0%</span>
-                </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
-                  <div
-                    className="h-full bg-blue-500 rounded-full"
-                    style={{
-                      width: `${Math.min(
-                        100,
-                        ((stats.vocabCount + stats.grammarCount) / 843) * 100
-                      )}%`,
-                    }}
-                  />
-                </div>
-                <div className="flex justify-between text-[10px] text-gray-400">
-                  <span>Vocabulary: {stats.vocabCount}/697</span>
-                  <span>Grammar: {stats.grammarCount}/146</span>
-                </div>
-              </div>
-
-              {/* N4 */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
-                  <span>N4</span>
-                  <span>0/773 items 0%</span>
-                </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
-                  <div className="h-full bg-blue-500 rounded-full" style={{ width: "0%" }} />
-                </div>
-                <div className="flex justify-between text-[10px] text-gray-400">
-                  <span>Vocabulary: 0/653</span>
-                  <span>Grammar: 0/120</span>
-                </div>
-              </div>
-
-              {/* N3 */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
-                  <span>N3</span>
-                  <span>0/2238 items 0%</span>
-                </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
-                  <div className="h-full bg-blue-500 rounded-full" style={{ width: "0%" }} />
-                </div>
-                <div className="flex justify-between text-[10px] text-gray-400">
-                  <span>Vocabulary: 0/2114</span>
-                  <span>Grammar: 0/124</span>
-                </div>
-              </div>
-
-              {/* N2 */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
-                  <span>N2</span>
-                  <span>0/1968 items 0%</span>
-                </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
-                  <div className="h-full bg-blue-500 rounded-full" style={{ width: "0%" }} />
-                </div>
-                <div className="flex justify-between text-[10px] text-gray-400">
-                  <span>Vocabulary: 0/1795</span>
-                  <span>Grammar: 0/173</span>
-                </div>
-              </div>
-
-              {/* N1 */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
-                  <span>N1</span>
-                  <span>0/2938 items 0%</span>
-                </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
-                  <div className="h-full bg-blue-500 rounded-full" style={{ width: "0%" }} />
-                </div>
-                <div className="flex justify-between text-[10px] text-gray-400">
-                  <span>Vocabulary: 0/2694</span>
-                  <span>Grammar: 0/244</span>
-                </div>
-              </div>
+              {stats.jlpt.map((row) => {
+                const items = row.vocabMastered + row.kanjiMastered + row.grammarMastered;
+                const totalItems = row.vocabTotal + row.kanjiTotal + row.grammarTotal;
+                const pct = totalItems > 0 ? Math.round((items / totalItems) * 100) : 0;
+                return (
+                  <div key={row.level} className="space-y-1.5">
+                    <div className="flex items-center justify-between font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
+                      <span>{row.level}</span>
+                      <span>
+                        {items}/{totalItems} items {pct}%
+                      </span>
+                    </div>
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
+                      <div
+                        className="h-full bg-blue-500 rounded-full"
+                        style={{ width: `${Math.min(100, pct)}%` }}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between text-[10px] text-gray-400">
+                      <span>
+                        Vocabulary: {row.vocabMastered}/{row.vocabTotal}
+                      </span>
+                      <span>
+                        Kanji: {row.kanjiMastered}/{row.kanjiTotal}
+                      </span>
+                      <span>
+                        Grammar: {row.grammarMastered}/{row.grammarTotal}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

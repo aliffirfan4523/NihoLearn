@@ -19,15 +19,14 @@ import {
 } from "lucide-react";
 import {
   OPPONENTS,
-  SHIRITORI_DICTIONARY,
   getShiritoriEndKana,
   getShiritoriStartKana,
-  findShiritoriCandidates,
   type ShiritoriWord,
   type OpponentProfile,
 } from "@/lib/data/shiritori-data";
 import { playJapaneseAudio } from "@/lib/audio";
-import { romajiToHiragana, normalizeJapanese, sfx } from "@/lib/japanese-utils";
+import { romajiToHiragana, normalizeJapanese, katakanaToHiragana, sfx } from "@/lib/japanese-utils";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 interface ChainEntry {
   word: string;
@@ -37,6 +36,43 @@ interface ChainEntry {
   startKana: string;
   endKana: string;
   by: "player" | "ai";
+}
+
+/**
+ * Fetches candidate words from the vocabulary database whose kana reading
+ * starts with the required kana, excluding already-used words and (unless
+ * allowed) readings that end with 「ん」.
+ */
+async function fetchShiritoriCandidates(
+  startKana: string,
+  usedWords: Set<string>,
+  allowNEnding: boolean
+): Promise<ShiritoriWord[]> {
+  try {
+    const res = await fetch(`/api/vocab?readingStarts=${encodeURIComponent(startKana)}&limit=60`);
+    const json = await res.json();
+    const rows: any[] = Array.isArray(json.data) ? json.data : [];
+
+    return rows
+      .map((row): ShiritoriWord => {
+        const reading = katakanaToHiragana(String(row.reading || row.word || ""));
+        return {
+          word: String(row.word || reading),
+          reading,
+          romaji: String(row.romaji || ""),
+          meaning: Array.isArray(row.meaning) ? row.meaning.join(", ") : String(row.meaning || ""),
+          startKana: getShiritoriStartKana(reading),
+          endKana: getShiritoriEndKana(reading),
+        };
+      })
+      .filter((item) => {
+        if (usedWords.has(item.word) || usedWords.has(item.reading)) return false;
+        if (!allowNEnding && item.endKana === "ん") return false;
+        return item.startKana === startKana;
+      });
+  } catch {
+    return [];
+  }
 }
 
 export function ShiritoriEngine() {
@@ -137,10 +173,16 @@ export function ShiritoriEngine() {
 
   // Update Hints when required start kana changes
   useEffect(() => {
-    if (gameState === "playing") {
-      const candidates = findShiritoriCandidates(requiredStartKana, usedWords, false);
-      setSuggestedWords(candidates.slice(0, 3));
-    }
+    if (gameState !== "playing") return;
+
+    let cancelled = false;
+    fetchShiritoriCandidates(requiredStartKana, usedWords, false).then((candidates) => {
+      if (!cancelled) setSuggestedWords(candidates.slice(0, 3));
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, [requiredStartKana, usedWords, gameState]);
 
   // AI Turn Handler
@@ -151,9 +193,9 @@ export function ShiritoriEngine() {
     const playerLastEntry = updatedChain[updatedChain.length - 1];
     const aiTargetKana = playerLastEntry.endKana;
 
-    setTimeout(() => {
-      // Find candidate words for AI
-      const candidates = findShiritoriCandidates(aiTargetKana, updatedUsedWords, false);
+    setTimeout(async () => {
+      // Find candidate words for AI from the database
+      const candidates = await fetchShiritoriCandidates(aiTargetKana, updatedUsedWords, false);
 
       if (candidates.length === 0) {
         // AI has no valid words remaining! AI LOSES!
@@ -239,35 +281,29 @@ export function ShiritoriEngine() {
       return;
     }
 
-    // 4. Validate in built-in dictionary or `/api/vocab`
-    let matchedItem = SHIRITORI_DICTIONARY.find(
-      (item) => item.word === raw || item.reading === hira || item.romaji.toLowerCase() === raw.toLowerCase()
-    );
+    // 4. Validate word and fetch its meaning from `/api/vocab`
+    let meaning = "";
+    let romaji = raw;
 
-    let meaning = matchedItem?.meaning || "";
-    let romaji = matchedItem?.romaji || raw;
-
-    if (!matchedItem) {
-      try {
-        const res = await fetch(`/api/vocab?q=${encodeURIComponent(hira)}&limit=1`);
-        const json = await res.json();
-        if (json.data && json.data.length > 0) {
-          const vocab = json.data[0];
-          meaning = Array.isArray(vocab.meaning) ? vocab.meaning.join(", ") : String(vocab.meaning);
-          romaji = vocab.romaji || hira;
+    try {
+      const res = await fetch(`/api/vocab?q=${encodeURIComponent(hira)}&limit=1`);
+      const json = await res.json();
+      if (json.data && json.data.length > 0) {
+        const vocab = json.data[0];
+        meaning = Array.isArray(vocab.meaning) ? vocab.meaning.join(", ") : String(vocab.meaning);
+        romaji = vocab.romaji || hira;
+      } else {
+        // If word is length >= 2, accept as valid custom submission
+        if (hira.length >= 2) {
+          meaning = "Japanese vocabulary";
         } else {
-          // If word is length >= 2, accept as valid custom submission
-          if (hira.length >= 2) {
-            meaning = "Japanese vocabulary";
-          } else {
-            sfx.playWrong();
-            setInputError(`「${raw}」 is not recognized as a valid Japanese word. Please try another.`);
-            return;
-          }
+          sfx.playWrong();
+          setInputError(`「${raw}」 is not recognized as a valid Japanese word. Please try another.`);
+          return;
         }
-      } catch {
-        meaning = "Japanese vocabulary";
       }
+    } catch {
+      meaning = "Japanese vocabulary";
     }
 
     // Valid Player Word! Add to chain
@@ -536,6 +572,20 @@ export function ShiritoriEngine() {
             Challenge the Sensei to the classic Japanese word chain game. Each word must start with
             the final mora of the previous word. Don&apos;t say a word ending in 「ん」!
           </p>
+
+          <div className="mt-5 text-left">
+            <HowToPlay
+              gameKey="shiritori"
+              steps={[
+                "Pick an opponent (Beginner 🌱 / Intermediate ⚔️ / Master 🐉) and start the match — the AI opens with しりとり, so your first word must start with り.",
+                "Type a Japanese word in hiragana or romaji (romaji converts automatically) that starts with the kana shown in the banner, then submit.",
+                "Your word's last kana becomes the AI's starting kana — the AI replies, and its last kana becomes your next starting kana.",
+                "Words ending in 「ん」 lose instantly, repeated words are rejected, and invalid words don't count.",
+                "Win by making the AI run out of valid words; the longer your chain, the better your record.",
+              ]}
+              note="Tip: stuck on a kana? Reveal hints to see 3 possible words — using them has no penalty."
+            />
+          </div>
 
           <button
             type="button"

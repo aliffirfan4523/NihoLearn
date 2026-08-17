@@ -3,6 +3,7 @@ import { unstable_cache } from "next/cache";
 
 export interface RoadmapData {
   masteredKanaIds: string[];
+  allKana: Array<{ id: string; type: string; character: string; romaji: string; row: string }>;
   levelCountsRows: Array<{
     type: string;
     level: string;
@@ -14,10 +15,14 @@ export interface RoadmapData {
 export const getCachedRoadmapData = (userId: string) =>
   unstable_cache(
     async (): Promise<RoadmapData> => {
-      const [kanaProgress, levelCountsRows, examSessions] = await Promise.all([
+      const [kanaProgress, allKana, levelCountsRows, examSessions] = await Promise.all([
         prisma.kanaProgress.findMany({
           where: { userId, status: "mastered" },
           select: { kanaId: true },
+        }),
+        prisma.kana.findMany({
+          select: { id: true, type: true, character: true, romaji: true, row: true },
+          orderBy: [{ type: "asc" }, { row: "asc" }, { id: "asc" }],
         }),
         prisma.$queryRaw<
           Array<{
@@ -53,6 +58,7 @@ export const getCachedRoadmapData = (userId: string) =>
 
       return {
         masteredKanaIds: kanaProgress.map((r) => r.kanaId),
+        allKana,
         levelCountsRows: (levelCountsRows || []).map((r) => ({
           type: r.type,
           level: r.level,

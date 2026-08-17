@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
     const levelParam = searchParams.get("level")?.toUpperCase();
     const statusParam = searchParams.get("status");
     const searchQuery = searchParams.get("q")?.trim();
+    const readingStarts = searchParams.get("readingStarts")?.trim();
     const limit = parseInt(searchParams.get("limit") || "1000", 10);
     const offset = parseInt(searchParams.get("offset") || "0", 10);
 
@@ -21,6 +22,9 @@ export async function GET(request: NextRequest) {
       const whereClause: any = {};
       if (levelParam && ["N5", "N4", "N3", "N2", "N1"].includes(levelParam)) {
         whereClause.level = levelParam;
+      }
+      if (readingStarts) {
+        whereClause.reading = { startsWith: readingStarts };
       }
       if (searchQuery) {
         whereClause.OR = [
@@ -46,6 +50,10 @@ export async function GET(request: NextRequest) {
         if (levelParam && ["N5", "N4", "N3", "N2", "N1"].includes(levelParam)) {
           sql += ` AND "level" = $${pIdx++}`;
           params.push(levelParam);
+        }
+        if (readingStarts) {
+          sql += ` AND "reading" LIKE $${pIdx++}`;
+          params.push(`${readingStarts}%`);
         }
         if (searchQuery) {
           sql += ` AND ("word" ILIKE $${pIdx} OR "reading" ILIKE $${pIdx} OR "meaning" ILIKE $${pIdx})`;

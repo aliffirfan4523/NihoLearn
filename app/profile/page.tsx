@@ -2,6 +2,7 @@ import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { UserProfileView } from "@/components/profile/UserProfileView";
 import { calculateUserStreakAndStats } from "@/lib/stats-calc";
+import { cookies } from "next/headers";
 
 export const metadata = {
   title: "User Profile | NihoLearn",
@@ -46,7 +47,9 @@ export default async function ProfilePage() {
   const kanjiCount = Number(counts.kanjiCount ?? 0);
   const grammarCount = Number(counts.grammarCount ?? 0);
 
-  const userStats = calculateUserStreakAndStats(allSessions as any, kanaCount);
+  const cookieStore = await cookies();
+  const tzOffset = parseInt(cookieStore.get("x-timezone-offset")?.value ?? "0", 10);
+  const userStats = calculateUserStreakAndStats(allSessions as any, kanaCount, tzOffset);
 
   return (
     <UserProfileView

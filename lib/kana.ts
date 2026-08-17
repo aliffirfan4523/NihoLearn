@@ -1,8 +1,5 @@
 import { prisma } from "@/lib/db";
-import { kanaSeed } from "@/lib/data/kana";
 import type { KanaCharacter, ProgressStatus } from "@/types";
-
-const kanaSeedMap = new Map(kanaSeed.map((k) => [k.id, k.character]));
 
 // Fetch the shared Kana reference joined with a user's progress,
 // returning KanaCharacter objects for the UI.
@@ -21,7 +18,7 @@ export async function getUserKana(userId: string, type?: "hiragana" | "katakana"
   return kana.map((k) => ({
     id: k.id,
     type: k.type as KanaCharacter["type"],
-    character: kanaSeedMap.get(k.id) ?? k.character,
+    character: k.character,
     romaji: k.romaji,
     row: k.row,
     status: (k.progress[0]?.status ?? "unlearned") as ProgressStatus,

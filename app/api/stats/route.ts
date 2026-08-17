@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { calculateUserStreakAndStats } from "@/lib/stats-calc";
+import { cookies } from "next/headers";
 
 export async function GET() {
   try {
@@ -29,7 +30,9 @@ export async function GET() {
       prisma.studySession.findMany({ where: { userId: user.id }, orderBy: { date: "desc" } }),
     ]);
 
-    const userStats = calculateUserStreakAndStats(allSessions, kanaMastered);
+    const cookieStore = await cookies();
+    const tzOffset = parseInt(cookieStore.get("x-timezone-offset")?.value ?? "0", 10);
+    const userStats = calculateUserStreakAndStats(allSessions, kanaMastered, tzOffset);
 
     return NextResponse.json({
       data: {

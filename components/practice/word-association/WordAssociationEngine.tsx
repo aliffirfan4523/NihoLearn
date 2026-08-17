@@ -23,10 +23,30 @@ import {
 } from "lucide-react";
 import { playJapaneseAudio } from "@/lib/audio";
 import { JapaneseLoader } from "@/components/ui/JapaneseLoader";
-import { WORD_PAIRS, type WordPair } from "@/lib/data/vocab-practice-suite";
 import { VOCAB_THEMES, type VocabTheme } from "@/lib/vocab-themes";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 export type AssociationMode = "matrix_match" | "antonyms_opposites" | "category_sort";
+
+interface WordPair {
+  id: string;
+  pairType: "antonym" | "synonym" | "theme";
+  themeCategory: string | null;
+  wordA: {
+    kanji: string;
+    reading: string;
+    romaji: string;
+    meaning: string;
+  };
+  wordB: {
+    kanji: string;
+    reading: string;
+    romaji: string;
+    meaning: string;
+  };
+  relationLabel: string;
+  level: "N5" | "N4" | "N3";
+}
 
 interface MatrixCard {
   id: string;
@@ -43,6 +63,10 @@ export function WordAssociationEngine() {
   const [mode, setMode] = useState<AssociationMode>("matrix_match");
   const [level, setLevel] = useState<string>("N5");
   const [cardCount, setCardCount] = useState<number>(12);
+
+  // Word pair pool fetched from the database
+  const [wordPairs, setWordPairs] = useState<WordPair[]>([]);
+  const [isPoolLoading, setIsPoolLoading] = useState<boolean>(true);
 
   // Session state
   const [isSessionActive, setIsSessionActive] = useState<boolean>(false);
@@ -87,6 +111,20 @@ export function WordAssociationEngine() {
   const [moves, setMoves] = useState<number>(0);
   const [timerSeconds, setTimerSeconds] = useState<number>(0);
 
+  // Fetch word pairs from the database on mount
+  useEffect(() => {
+    fetch("/api/content/word-pairs")
+      .then((res) => res.json())
+      .then((json) => {
+        setWordPairs(json.data || []);
+        setIsPoolLoading(false);
+      })
+      .catch(() => {
+        setWordPairs([]);
+        setIsPoolLoading(false);
+      });
+  }, []);
+
   // Timer runner
   useEffect(() => {
     let interval: any = null;
@@ -113,9 +151,9 @@ export function WordAssociationEngine() {
     try {
       if (mode === "matrix_match") {
         // Fetch or use curated pairs
-        let pairsPool = WORD_PAIRS.filter((p) => level === "ALL" || p.level === level);
+        let pairsPool = wordPairs.filter((p) => level === "ALL" || p.level === level);
         if (pairsPool.length < 6) {
-          pairsPool = WORD_PAIRS;
+          pairsPool = wordPairs;
         }
 
         const selectedPairs = [...pairsPool].sort(() => Math.random() - 0.5).slice(0, cardCount / 2);
@@ -144,8 +182,8 @@ export function WordAssociationEngine() {
 
         setCards(cardList.sort(() => Math.random() - 0.5));
       } else if (mode === "antonyms_opposites") {
-        let pool = WORD_PAIRS.filter((p) => p.type === "antonym" && (level === "ALL" || p.level === level));
-        if (pool.length < 4) pool = WORD_PAIRS.filter((p) => p.type === "antonym");
+        let pool = wordPairs.filter((p) => p.pairType === "antonym" && (level === "ALL" || p.level === level));
+        if (pool.length < 4) pool = wordPairs.filter((p) => p.pairType === "antonym");
 
         const qList = pool.map((pair) => {
           const others = pool.filter((p) => p.id !== pair.id).map((p) => p.wordB);
@@ -199,7 +237,7 @@ export function WordAssociationEngine() {
     } finally {
       setIsLoading(false);
     }
-  }, [mode, level, cardCount]);
+  }, [mode, level, cardCount, wordPairs]);
 
   // Matrix Card Click Handler
   const handleCardClick = (card: MatrixCard) => {
@@ -345,6 +383,11 @@ export function WordAssociationEngine() {
     return `${mins}:${remSecs.toString().padStart(2, "0")}`;
   };
 
+  // 0. WORD PAIR POOL LOADING STATE
+  if (!isSessionActive && isPoolLoading) {
+    return <JapaneseLoader message="Loading word association pairs..." />;
+  }
+
   // 1. SETUP SCREEN
   if (!isSessionActive) {
     return (
@@ -360,6 +403,18 @@ export function WordAssociationEngine() {
             Test semantic connections, antonym pairs, and thematic vocabulary categories with combo multipliers!
           </p>
         </div>
+
+        <HowToPlay
+          gameKey="word-association"
+          steps={[
+            "Pick a mode on the setup screen: match card pairs on a matrix grid, drill opposite antonyms, or sort words into semantic theme categories.",
+            "In Card Matrix mode, click one card and then its matching partner — matched pairs clear in green, while a mismatch shakes red and resets your combo.",
+            "In the two quiz modes, one Japanese word appears at a time; click the matching opposite word or the correct theme category from the 4 choices.",
+            "Each correct answer adds a combo level worth a 20% bonus on top of the 100 base points; a miss drops the combo back to zero.",
+            "Clear every pair or answer every question to finish and see your total score, max combo, and elapsed time.",
+          ]}
+          note="Tip: tapping cards and answering questions both play the word's pronunciation — use it to reinforce the reading."
+        />
 
         <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           {/* Mode Selector */}

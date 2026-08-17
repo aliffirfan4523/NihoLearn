@@ -9,6 +9,7 @@ import {
   type VerbType,
   type ConjugationFormKey,
 } from "@/lib/data/conjugation";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 export interface ConjugationDrillConfig {
   questionCount: number;
@@ -65,6 +66,18 @@ export function ConjugationDrillSetup({
           Configure your verb drill parameters, select target conjugation forms, and train instant recall.
         </p>
       </div>
+
+      <HowToPlay
+        gameKey="conjugation-drill"
+        steps={[
+          "Configure the drill below: question count, JLPT level, verb group, and which conjugation forms to train — at least one form must stay selected.",
+          "Each question shows a verb and a target form badge; pick its correct conjugation from four options.",
+          "Distractors are other conjugations of the same verb, so read the target form carefully.",
+          "Every answer reveals the correct form and the rule behind it; click Continue to advance.",
+          "Correct answers build your streak; your score, accuracy, and max streak are recorded to your progress at the end.",
+        ]}
+        note="Tip: furigana shows each verb reading during the drill, and audio pronounces the correct answer after you respond — turn both off for a harder challenge."
+      />
 
       {/* Learn Conjugation Banner */}
       <Link

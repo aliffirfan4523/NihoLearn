@@ -22,11 +22,21 @@ import {
   ArrowUpDown,
   Compass,
 } from "lucide-react";
-import { KEIGO_EXERCISES, type KeigoExercise } from "@/lib/data/practice-content";
 import { playJapaneseAudio } from "@/lib/audio";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 type KeigoTargetType = "sonkeigo" | "kenjougo" | "polite";
 type AppMode = "quiz" | "flashcards";
+
+interface KeigoExercise {
+  id: string;
+  plain: string;
+  polite: string;
+  sonkeigo: string; // Honorific (respect for others' actions)
+  kenjougo: string; // Humble (lowering oneself/in-group actions)
+  meaning: string;
+  contextNote: string | null;
+}
 
 interface KeigoQuizQuestion {
   id: string;
@@ -48,6 +58,10 @@ export function KeigoConverterEngine() {
   const [appMode, setAppMode] = useState<AppMode>("quiz");
   const [selectedTargetType, setSelectedTargetType] = useState<"all" | KeigoTargetType>("all");
 
+  // Content pool fetched from the database
+  const [allExercises, setAllExercises] = useState<KeigoExercise[]>([]);
+  const [loading, setLoading] = useState(true);
+
   // Quiz state
   const [questions, setQuestions] = useState<KeigoQuizQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -64,14 +78,14 @@ export function KeigoConverterEngine() {
   const [searchQuery, setSearchQuery] = useState("");
   const [flashcardFlipped, setFlashcardFlipped] = useState<Record<string, boolean>>({});
 
-  // Generate Quiz Questions from KEIGO_EXERCISES
+  // Generate Quiz Questions from the fetched exercise pool
   const generateQuestions = useCallback(
     (typeFilter: "all" | KeigoTargetType) => {
       const qList: KeigoQuizQuestion[] = [];
       const typesToUse: KeigoTargetType[] =
         typeFilter === "all" ? ["sonkeigo", "kenjougo", "polite"] : [typeFilter];
 
-      KEIGO_EXERCISES.forEach((ex) => {
+      allExercises.forEach((ex) => {
         typesToUse.forEach((targetType) => {
           let correctAnswer = "";
           let typeLabel = "";
@@ -98,7 +112,7 @@ export function KeigoConverterEngine() {
           if (targetType !== "polite") candidates.push(ex.polite);
 
           // Add distractors from other verbs to make 4 options total
-          KEIGO_EXERCISES.filter((other) => other.id !== ex.id).forEach((other) => {
+          allExercises.filter((other) => other.id !== ex.id).forEach((other) => {
             if (targetType === "sonkeigo") candidates.push(other.sonkeigo);
             else if (targetType === "kenjougo") candidates.push(other.kenjougo);
             else candidates.push(other.polite);
@@ -137,12 +151,36 @@ export function KeigoConverterEngine() {
       setSessionResults([]);
       setStartTime(Date.now());
     },
-    []
+    [allExercises]
   );
 
   useEffect(() => {
     generateQuestions(selectedTargetType);
   }, [selectedTargetType, generateQuestions]);
+
+  // Fetch the full exercise pool from the database once on mount
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/content/keigo");
+        const json = await res.json();
+
+        if (json.data && Array.isArray(json.data) && !cancelled) {
+          setAllExercises(json.data as KeigoExercise[]);
+        }
+      } catch (err) {
+        console.error("Failed to load keigo exercises:", err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const currentQ = questions[currentIndex];
 
@@ -264,9 +302,9 @@ export function KeigoConverterEngine() {
 
   // Filtered flashcards list
   const filteredFlashcards = useMemo(() => {
-    if (!searchQuery.trim()) return KEIGO_EXERCISES;
+    if (!searchQuery.trim()) return allExercises;
     const q = searchQuery.toLowerCase();
-    return KEIGO_EXERCISES.filter(
+    return allExercises.filter(
       (item) =>
         item.plain.toLowerCase().includes(q) ||
         item.meaning.toLowerCase().includes(q) ||
@@ -274,12 +312,21 @@ export function KeigoConverterEngine() {
         item.kenjougo.toLowerCase().includes(q) ||
         item.polite.toLowerCase().includes(q)
     );
-  }, [searchQuery]);
+  }, [searchQuery, allExercises]);
 
   // Toggle flashcard flip
   const toggleFlip = (id: string) => {
     setFlashcardFlipped((prev) => ({ ...prev, [id]: !prev[id] }));
   };
+
+  // While the exercise pool is being fetched
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-3xl p-12 text-center text-sm text-gray-500">
+        Loading keigo exercises from database...
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -321,6 +368,18 @@ export function KeigoConverterEngine() {
           </button>
         </div>
       </div>
+
+      <HowToPlay
+        gameKey="keigo-converter"
+        steps={[
+          "A plain casual verb appears with a target-form badge — pick the correct conversion (honorific 尊敬語, humble 謙譲語, or polite 丁寧語) from the 4 options.",
+          "After answering you see the correct form plus an explanation of the politeness perspective; click Continue to move on.",
+          "Speed things up with the keyboard: press 1-4 to choose an option and Enter, Space, or ArrowRight to continue.",
+          "Correct answers extend your streak (a miss resets it); the results screen shows your score, accuracy, max streak, and a full review.",
+          "Narrow the drill with the filter bar, or switch to Keigo Matrix mode for a searchable chart of every verb in all three forms.",
+        ]}
+        note="Tip: 尊敬語 elevates the other person's actions while 謙譲語 humbles your own — thinking about who is acting usually reveals the answer."
+      />
 
       {/* ─── FLASHCARDS & REFERENCE MATRIX VIEW ────────────────────────────── */}
       {appMode === "flashcards" && (

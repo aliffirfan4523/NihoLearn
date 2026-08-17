@@ -17,13 +17,21 @@ import {
   MessageSquareQuote,
   Lightbulb,
 } from "lucide-react";
-import {
-  GRAMMAR_PATTERN_EXERCISES,
-  type GrammarPatternExercise,
-} from "@/lib/data/practice-content";
 import { playJapaneseAudio } from "@/lib/audio";
+import { HowToPlay } from "@/components/practice/HowToPlay";
 
 type LevelFilter = "ALL" | "N5" | "N4" | "N3";
+
+interface GrammarPatternExercise {
+  id: string;
+  level: "N5" | "N4" | "N3";
+  scenario: string;
+  sentence: string;
+  correctPattern: string;
+  options: string[];
+  meaning: string;
+  explanation: string;
+}
 
 interface SessionResultItem {
   exercise: GrammarPatternExercise;
@@ -33,6 +41,11 @@ interface SessionResultItem {
 
 export function GrammarPatternsEngine() {
   const [levelFilter, setLevelFilter] = useState<LevelFilter>("ALL");
+
+  // Content pool fetched from the database
+  const [allExercises, setAllExercises] = useState<GrammarPatternExercise[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const [quizPool, setQuizPool] = useState<GrammarPatternExercise[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -50,8 +63,8 @@ export function GrammarPatternsEngine() {
       const source =
         customPool ??
         (level === "ALL"
-          ? GRAMMAR_PATTERN_EXERCISES
-          : GRAMMAR_PATTERN_EXERCISES.filter((ex) => ex.level === level));
+          ? allExercises
+          : allExercises.filter((ex) => ex.level === level));
 
       const shuffled = [...source].sort(() => Math.random() - 0.5);
       setQuizPool(shuffled);
@@ -65,12 +78,36 @@ export function GrammarPatternsEngine() {
       setSessionResults([]);
       setStartTime(Date.now());
     },
-    []
+    [allExercises]
   );
 
   useEffect(() => {
     startQuiz(levelFilter);
   }, [levelFilter, startQuiz]);
+
+  // Fetch the full exercise pool from the database once on mount
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/content/grammar-patterns");
+        const json = await res.json();
+
+        if (json.data && Array.isArray(json.data) && !cancelled) {
+          setAllExercises(json.data as GrammarPatternExercise[]);
+        }
+      } catch (err) {
+        console.error("Failed to load grammar pattern exercises:", err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const currentExercise = quizPool[currentIndex];
 
@@ -196,6 +233,15 @@ export function GrammarPatternsEngine() {
       loggedRef.current = false;
     }
   }, [isFinished, quizPool, score, levelFilter, maxStreak, startTime]);
+
+  // While the exercise pool is being fetched
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-xl p-12 text-center text-sm text-gray-500">
+        Loading grammar pattern exercises from database...
+      </div>
+    );
+  }
 
   if (quizPool.length === 0) {
     return (
@@ -403,6 +449,18 @@ export function GrammarPatternsEngine() {
           style={{ width: `${((currentIndex + 1) / quizPool.length) * 100}%` }}
         />
       </div>
+
+      <HowToPlay
+        gameKey="grammar-patterns"
+        steps={[
+          "Read the conversational scenario, then pick the grammar pattern that correctly fills the blank in the Japanese sentence.",
+          "Click an option or press keys 1-4 — the completed sentence is pronounced the moment you answer.",
+          "Each answer reveals the pattern rule and its nuance; click Continue or press Enter to move on.",
+          "Correct answers build your streak; a wrong answer resets it. Switch the N5-N3 filter to restart with a fresh set.",
+          "At the end you get score, accuracy, and max streak, plus a per-pattern breakdown — replay only the ones you missed.",
+        ]}
+        note="Tip: the Listen Sentence button reads the completed sentence aloud, so you can judge it by ear before answering."
+      />
 
       {/* Main Question Card */}
       <div className="rounded-3xl border border-black/10 bg-white p-6 sm:p-8 shadow-lg dark:border-white/10 dark:bg-[#161B22] space-y-6">

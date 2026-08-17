@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${notoSansJp.variable}`}>
+    <html lang="en" className={`${inter.variable} ${notoSansJp.variable}`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

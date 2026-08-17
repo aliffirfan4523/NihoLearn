@@ -6,10 +6,24 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password, name } = (await request.json()) as {
+    const {
+      email,
+      password,
+      name,
+      knowsKana,
+      dailyVocabGoal,
+      dailyGrammarGoal,
+      japaneseLevel,
+      profileCompleted,
+    } = (await request.json()) as {
       email?: string;
       password?: string;
       name?: string;
+      knowsKana?: boolean;
+      dailyVocabGoal?: number;
+      dailyGrammarGoal?: number;
+      japaneseLevel?: string;
+      profileCompleted?: boolean;
     };
 
     if (!email || !password) {
@@ -37,7 +51,16 @@ export async function POST(request: NextRequest) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: name ?? "" } },
+      options: {
+        data: {
+          full_name: name ?? "",
+          knows_kana: knowsKana ?? false,
+          daily_vocab_goal: dailyVocabGoal ?? 5,
+          daily_grammar_goal: dailyGrammarGoal ?? 2,
+          japanese_level: japaneseLevel ?? "Complete Beginner",
+          profile_completed: profileCompleted ?? false,
+        },
+      },
     });
 
     if (error) {
