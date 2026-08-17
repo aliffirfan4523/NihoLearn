@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Noto_Sans_JP } from "next/font/google";
 import { AppShell } from "@/components/layout/AppShell";
 import { UserMenu } from "@/components/auth/UserMenu";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const inter = Inter({
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body>
         <AppShell userMenu={<UserMenu />}>{children}</AppShell>
+        <SpeedInsights />
       </body>
     </html>
   );
