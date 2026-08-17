@@ -36,6 +36,10 @@ export function AppShell({
       <main className="mx-auto max-w-6xl px-4 py-6 pb-28 sm:px-6 lg:px-8">
         {children}
       </main>
+      <footer className="border-t border-black/10 px-4 py-3 text-center text-xs text-[#6B6B6B] dark:border-white/10 dark:text-[#A0A0A0]">
+        This app is still in early development. Any issues? Email{" "}
+        <a href="mailto:aliffirfan4523@gmail.com" className="font-medium underline">aliffirfan4523@gmail.com</a>
+      </footer>
       <BottomNavbar />
     </div>
   );
