@@ -67,10 +67,6 @@ export default function LoginPage() {
     }
   }
 
-  function handleApple() {
-    alert("Apple sign-in is not configured for this project yet. Please use Google sign-in instead.");
-  }
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#0E1117] py-12 px-4 text-[#F0F4F8] dark:bg-[#0E1117]">
       <div className="w-full max-w-md space-y-6">
@@ -115,23 +111,7 @@ export default function LoginPage() {
               Continue with Google
             </button>
 
-            {/* Social Apple */}
-            <button
-              type="button"
-              onClick={handleApple}
-              disabled={loading}
-              className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-[#21262D] px-4 py-3 font-semibold text-white transition hover:bg-[#30363D] disabled:opacity-50"
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M13.785 10.314c.022-2.457 2.016-3.262 2.036-3.272-1.139-1.666-2.909-1.893-3.535-1.933-1.498-.152-2.923.884-3.682.884-.76 0-1.961-.865-3.243-.842-1.688.026-3.242.984-4.11 2.498-1.753 3.056-.448 7.575 1.254 10.027.832 1.2 1.8 2.533 3.097 2.484 1.25-.05 1.723-.807 3.238-.807 1.515 0 1.942.807 3.24.782 1.32-.024 2.164-1.2 2.973-2.383.935-1.367 1.32-2.69 1.341-2.756-.045-.02-2.613-1.002-2.659-4.985zM11.696 2.76C12.37 1.944 12.822.812 12.698 0c-.973.04-2.15.65-2.848 1.465-.6.697-1.127 1.844-.985 2.64 1.085.084 2.186-.527 2.831-1.346z"
-                  fill="white"
-                />
-              </svg>
-              Continue with Apple
-            </button>
+
           </div>
 
           <div className="my-6 flex items-center gap-3">
