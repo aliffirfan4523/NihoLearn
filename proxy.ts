@@ -6,8 +6,20 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 const PUBLIC_PATHS = ["/login", "/signup", "/terms", "/privacy", "/api/auth", "/_next", "/favicon.ico"];
 
+// ─── MAINTENANCE MODE ────────────────────────────────────────────────────────
+// HOW TO USE:
+//   • true  = maintenance ON  → every visitor sees /maintenance, no exceptions
+//   • false = maintenance OFF → app works normally
+// Just flip this one value, commit, and redeploy. That's it.
+const MAINTENANCE_MODE = true;
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Maintenance gate: block everything except the maintenance page itself.
+  if (MAINTENANCE_MODE && pathname !== "/maintenance") {
+    return NextResponse.rewrite(new URL("/maintenance", request.url));
+  }
 
   const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
 
