@@ -236,8 +236,8 @@ export function DictationEngine() {
 
     return (
       <div className="mx-auto max-w-2xl space-y-6">
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-xl dark:border-white/15 dark:bg-[#1A1A1A]">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/15 text-amber-500 shadow-xs">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500 shadow-xs">
             <Trophy size={40} />
           </div>
 
@@ -248,7 +248,7 @@ export function DictationEngine() {
             Outstanding listening transcription practice. Here is your summary:
           </p>
 
-          <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 text-center dark:bg-[#2A2A2A]">
+          <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 text-center dark:bg-[#1E232B]">
             <div>
               <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Score</div>
               <div className="mt-1 font-mono text-2xl font-bold text-[#C84B31] dark:text-[#E85C40]">
@@ -285,7 +285,7 @@ export function DictationEngine() {
                       {item.isCorrect ? (
                         <CheckCircle2 size={16} className="shrink-0 text-emerald-500" />
                       ) : (
-                        <XCircle size={16} className="shrink-0 text-rose-500" />
+                        <XCircle size={16} className="shrink-0 text-red-500" />
                       )}
                       <span className="font-serif text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
                         {item.exercise.japanese}
@@ -297,7 +297,7 @@ export function DictationEngine() {
                         className={
                           item.isCorrect
                             ? "font-medium text-emerald-700 dark:text-emerald-300"
-                            : "font-medium text-rose-600 dark:text-rose-400"
+                            : "font-medium text-red-600 dark:text-red-400"
                         }
                       >
                         {item.userInput || "(blank)"}
@@ -324,7 +324,7 @@ export function DictationEngine() {
           <div className="mt-7 flex gap-3">
             <Link
               href="/practice"
-              className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3.5 text-center text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+              className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3.5 text-center text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               Practice Dojo
             </Link>
@@ -383,7 +383,7 @@ export function DictationEngine() {
         </div>
 
         {/* Streak Indicator */}
-        <div className="flex items-center gap-1 rounded-xl bg-orange-500/15 px-2.5 py-1 text-xs font-bold text-orange-600 dark:text-orange-400">
+        <div className="flex items-center gap-1 rounded-xl bg-amber-500/15 px-2.5 py-1 text-xs font-bold text-amber-600 dark:text-amber-400">
           <Flame size={15} />
           <span>{streak}</span>
         </div>
@@ -399,7 +399,7 @@ export function DictationEngine() {
             {currentExercise.level}
           </span>
         </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-[#E5E5E5] dark:bg-[#2A2A2A]">
+        <div className="h-2 w-full overflow-hidden rounded-full bg-[#E5E5E5] dark:bg-[#1E232B]">
           <div
             className="h-full bg-[#C84B31] transition-all duration-300 dark:bg-[#E85C40]"
             style={{ width: `${((currentIndex + 1) / exercises.length) * 100}%` }}
@@ -408,7 +408,7 @@ export function DictationEngine() {
       </div>
 
       {/* Main Dictation Studio Card */}
-      <div className="rounded-3xl border border-black/10 bg-white p-6 shadow-xl dark:border-white/15 dark:bg-[#1A1A1A] sm:p-8">
+      <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A] sm:p-8">
         <div className="mx-auto mb-6 max-w-md text-left">
           <HowToPlay
             gameKey="dictation"
@@ -442,7 +442,7 @@ export function DictationEngine() {
                 type="button"
                 onClick={() => handlePlayAudio()}
                 disabled={isPlayingAudio}
-                className={`relative flex h-24 w-24 items-center justify-center rounded-3xl shadow-xl transition hover:scale-105 active:scale-95 ${
+                className={`relative flex h-24 w-24 items-center justify-center rounded-2xl shadow-xs transition ${
                   isPlayingAudio
                     ? "bg-amber-600 text-white animate-pulse"
                     : "bg-amber-500 text-white hover:bg-amber-600"
@@ -469,7 +469,7 @@ export function DictationEngine() {
                   className={`rounded-xl px-2.5 py-1 text-xs font-bold transition ${
                     playbackSpeed === spd
                       ? "bg-black text-white dark:bg-white dark:text-black shadow-xs"
-                      : "border border-black/10 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#A0A0A0]"
+                      : "border border-black/10 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#A0A0A0]"
                   }`}
                 >
                   {spd}x
@@ -501,7 +501,7 @@ export function DictationEngine() {
                 autoComplete="off"
                 autoCapitalize="off"
                 spellCheck="false"
-                className="w-full rounded-2xl border-2 border-black/15 bg-[#FAFAF8] px-4 py-4 text-center font-serif text-lg font-medium text-[#1A1A1A] placeholder:font-sans placeholder:text-sm placeholder:text-gray-400 focus:border-[#C84B31] focus:outline-none focus:ring-4 focus:ring-[#C84B31]/15 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA] dark:focus:border-[#E85C40] dark:focus:ring-[#E85C40]/20 sm:text-xl"
+                className="w-full rounded-2xl border-2 border-black/15 bg-[#FAFAF8] px-4 py-4 text-center font-serif text-lg font-medium text-[#1A1A1A] placeholder:font-sans placeholder:text-sm placeholder:text-gray-400 focus:border-[#C84B31] focus:outline-none focus:ring-4 focus:ring-[#C84B31]/15 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA] dark:focus:border-[#E85C40] dark:focus:ring-[#E85C40]/20 sm:text-xl"
               />
             </div>
 
@@ -511,7 +511,7 @@ export function DictationEngine() {
                 <button
                   type="button"
                   onClick={handleConvertToKana}
-                  className="flex items-center gap-1 rounded-lg border border-black/10 bg-[#FAFAF8] px-2.5 py-1 font-semibold text-gray-700 hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-gray-300"
+                  className="flex items-center gap-1 rounded-lg border border-black/10 bg-[#FAFAF8] px-2.5 py-1 font-semibold text-gray-700 hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-gray-300"
                 >
                   <Sparkles size={13} className="text-[#C84B31] dark:text-[#E85C40]" />
                   <span>Convert Romaji → かな</span>
@@ -521,7 +521,7 @@ export function DictationEngine() {
                   <button
                     type="button"
                     onClick={() => setShowHint((h) => !h)}
-                    className="flex items-center gap-1 rounded-lg border border-black/10 bg-[#FAFAF8] px-2.5 py-1 font-semibold text-gray-700 hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-gray-300"
+                    className="flex items-center gap-1 rounded-lg border border-black/10 bg-[#FAFAF8] px-2.5 py-1 font-semibold text-gray-700 hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-gray-300"
                   >
                     <HelpCircle size={13} className="text-amber-500" />
                     <span>{showHint ? "Hide Hint" : "Hint"}</span>
@@ -530,7 +530,7 @@ export function DictationEngine() {
                   <button
                     type="button"
                     onClick={() => setShowTranslation((t) => !t)}
-                    className="flex items-center gap-1 rounded-lg border border-black/10 bg-[#FAFAF8] px-2.5 py-1 font-semibold text-gray-700 hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-gray-300"
+                    className="flex items-center gap-1 rounded-lg border border-black/10 bg-[#FAFAF8] px-2.5 py-1 font-semibold text-gray-700 hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-gray-300"
                   >
                     {showTranslation ? <EyeOff size={13} /> : <Eye size={13} />}
                     <span>{showTranslation ? "Hide English" : "Show English"}</span>
@@ -579,7 +579,7 @@ export function DictationEngine() {
                       <span>Excellent! ({matchScore}% Match)</span>
                     </div>
                   ) : (
-                    <div className="flex items-center gap-1.5 text-sm font-bold text-rose-600 dark:text-rose-400">
+                    <div className="flex items-center gap-1.5 text-sm font-bold text-red-600 dark:text-red-400">
                       <XCircle size={20} />
                       <span>Review Needed ({matchScore}% Match)</span>
                     </div>
@@ -621,7 +621,7 @@ export function DictationEngine() {
                         "bg-amber-500/20 text-amber-800 border-amber-500/40 line-through dark:text-amber-300";
                     } else if (d.type === "extra" || d.type === "incorrect") {
                       badgeClass =
-                        "bg-rose-500/20 text-rose-800 border-rose-500/40 dark:text-rose-300";
+                        "bg-red-500/20 text-red-800 border-red-500/40 dark:text-red-300";
                     }
 
                     return (

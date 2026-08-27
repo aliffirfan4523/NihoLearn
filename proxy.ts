@@ -11,7 +11,7 @@ const PUBLIC_PATHS = ["/login", "/signup", "/terms", "/privacy", "/api/auth", "/
 //   • true  = maintenance ON  → every visitor sees /maintenance, no exceptions
 //   • false = maintenance OFF → app works normally
 // Just flip this one value, commit, and redeploy. That's it.
-const MAINTENANCE_MODE = true;
+const MAINTENANCE_MODE = false;
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

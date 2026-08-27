@@ -407,7 +407,7 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
   // Not implemented levels
   if (level !== "kana" && level !== "n5") {
     return (
-      <div className="bg-white dark:bg-[#1A1A1A] border border-black/10 rounded-3xl p-8 text-center shadow-sm">
+      <div className="bg-white dark:bg-[#1A1A1A] border border-black/10 rounded-2xl p-8 text-center shadow-sm">
         <div className="mb-6 flex justify-center">
           <AlertCircle className="w-16 h-16 text-[#C84B31]" />
         </div>
@@ -441,7 +441,7 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
           <ArrowLeft className="w-4 h-4" /> Back to Progress
         </Link>
         
-        <div className="bg-white dark:bg-[#1A1A1A] border border-black/10 rounded-3xl p-8 shadow-sm">
+        <div className="bg-white dark:bg-[#1A1A1A] border border-black/10 rounded-2xl p-8 shadow-sm">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-100 dark:bg-red-950/40 text-[#C84B31] rounded-full text-sm font-semibold mb-4">
             Official Simulation
           </div>
@@ -451,14 +451,14 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
           </p>
 
           <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="border border-black/5 bg-[#FAFAF8] dark:bg-[#2A2A2A] rounded-2xl p-4 flex items-center gap-3">
+            <div className="border border-black/5 bg-[#FAFAF8] dark:bg-[#1E232B] rounded-2xl p-4 flex items-center gap-3">
               <Clock className="w-6 h-6 text-[#C84B31]" />
               <div>
                 <div className="text-xs text-muted-foreground">Time Limit</div>
                 <div className="font-bold">{Math.round(config.duration / 60)} Minutes</div>
               </div>
             </div>
-            <div className="border border-black/5 bg-[#FAFAF8] dark:bg-[#2A2A2A] rounded-2xl p-4 flex items-center gap-3">
+            <div className="border border-black/5 bg-[#FAFAF8] dark:bg-[#1E232B] rounded-2xl p-4 flex items-center gap-3">
               <CheckCircle2 className="w-6 h-6 text-green-600" />
               <div>
                 <div className="text-xs text-muted-foreground">Passing Score</div>
@@ -492,7 +492,7 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
 
           <button
             onClick={startExam}
-            className="w-full mt-8 bg-[#C84B31] text-white py-4 rounded-2xl font-bold text-lg hover:bg-[#b04028] transition-all shadow-md active:scale-[0.99]"
+            className="w-full mt-8 bg-[#C84B31] text-white py-4 rounded-2xl font-bold text-lg hover:bg-[#b04028] transition-all shadow-md"
           >
             Start Exam
           </button>
@@ -509,8 +509,8 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
 
     return (
       <div className="max-w-2xl mx-auto space-y-6">
-        <div className="bg-white dark:bg-[#1A1A1A] border border-black/10 rounded-3xl p-8 shadow-sm text-center">
-          <div className="inline-flex p-4 rounded-full mb-4 bg-[#FAFAF8] dark:bg-[#2A2A2A]">
+        <div className="bg-white dark:bg-[#1A1A1A] border border-black/10 rounded-2xl p-8 shadow-sm text-center">
+          <div className="inline-flex p-4 rounded-full mb-4 bg-[#FAFAF8] dark:bg-[#1E232B]">
             {passed ? (
               <CheckCircle2 className="w-16 h-16 text-green-600" />
             ) : (
@@ -602,7 +602,7 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
         </div>
 
         <div className={`flex items-center gap-2 px-4 py-2 rounded-xl font-mono font-bold text-base ${
-          timeLeft < 300 ? 'bg-red-100 text-red-600 dark:bg-red-950/40 animate-pulse' : 'bg-[#FAFAF8] dark:bg-[#2A2A2A]'
+          timeLeft < 300 ? 'bg-red-100 text-red-600 dark:bg-red-950/40 animate-pulse' : 'bg-[#FAFAF8] dark:bg-[#1E232B]'
         }`}>
           <Clock className="w-4 h-4" />
           {formatTime(timeLeft)}
@@ -613,9 +613,9 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {/* Question Area */}
         <div className="md:col-span-3 space-y-6">
-          <div className="bg-white dark:bg-[#1A1A1A] border border-black/10 rounded-3xl p-6 sm:p-8 shadow-sm">
+          <div className="bg-white dark:bg-[#1A1A1A] border border-black/10 rounded-2xl p-6 sm:p-8 shadow-sm">
             {currentQ?.metadata?.storyText && (
-              <div className="mb-6 p-4 bg-[#FAFAF8] dark:bg-[#2A2A2A] rounded-2xl text-sm leading-relaxed border border-black/5">
+              <div className="mb-6 p-4 bg-[#FAFAF8] dark:bg-[#1E232B] rounded-2xl text-sm leading-relaxed border border-black/5">
                 <div className="font-bold text-xs text-muted-foreground mb-1 uppercase tracking-wider">Reading Passage:</div>
                 <div className="font-serif text-base">{currentQ.metadata.storyText}</div>
               </div>
@@ -637,7 +637,7 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
                     className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center gap-4 ${
                       isSelected
                         ? "border-[#C84B31] bg-red-50/50 dark:bg-red-950/20 text-[#C84B31] font-semibold"
-                        : "border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 bg-[#FAFAF8] dark:bg-[#2A2A2A]"
+                        : "border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 bg-[#FAFAF8] dark:bg-[#1E232B]"
                     }`}
                   >
                     <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border ${
@@ -674,7 +674,7 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
         </div>
 
         {/* Question Grid Navigator */}
-        <div className="bg-white dark:bg-[#1A1A1A] border border-black/10 rounded-3xl p-5 shadow-sm h-fit space-y-4">
+        <div className="bg-white dark:bg-[#1A1A1A] border border-black/10 rounded-2xl p-5 shadow-sm h-fit space-y-4">
           <div className="font-bold text-sm">Question Grid</div>
           
           <div className="grid grid-cols-5 gap-2">
@@ -682,7 +682,7 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
               const isAnswered = answers[idx] !== undefined
               const isCurrent = currentQuestionIndex === idx
 
-              let bgClass = "bg-[#FAFAF8] dark:bg-[#2A2A2A] text-muted-foreground border-black/5"
+              let bgClass = "bg-[#FAFAF8] dark:bg-[#1E232B] text-muted-foreground border-black/5"
               if (isAnswered) bgClass = "bg-green-100 dark:bg-green-950/40 text-green-700 font-bold border-green-300"
               if (isCurrent) bgClass += " ring-2 ring-[#C84B31]"
 
@@ -704,7 +704,7 @@ export default function LevelExam({ level = "n5" }: { level?: ExamLevel }) {
               <span>Answered</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded bg-[#FAFAF8] dark:bg-[#2A2A2A] border border-black/5" />
+              <div className="w-3 h-3 rounded bg-[#FAFAF8] dark:bg-[#1E232B] border border-black/5" />
               <span>Unanswered</span>
             </div>
           </div>

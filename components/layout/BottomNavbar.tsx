@@ -3,20 +3,18 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard,
-  Compass,
-  BookOpen,
-  BarChart3,
-  MoreHorizontal,
-  X,
-  History,
-  Database,
-  User,
-  Layers,
-  ChevronRight
-} from "lucide-react";
+import { X, ChevronRight } from "lucide-react";
 import { jlptLevels, formatLevel } from "@/lib/routes";
+
+// 間 (ma): flat bottom nav — kanji glyph + small label, vermillion dot marks the active item.
+// No glassmorphism, no shadow, no active pill.
+const navGlyphs: Record<string, string> = {
+  Dashboard: "家",
+  Roadmap: "道",
+  Practice: "練",
+  Progress: "績",
+  More: "…",
+};
 
 export function BottomNavbar() {
   const pathname = usePathname();
@@ -35,58 +33,53 @@ export function BottomNavbar() {
     {
       label: "Dashboard",
       href: "/",
-      icon: LayoutDashboard,
       active: isDashboard,
     },
     {
       label: "Roadmap",
       href: "/roadmap",
-      icon: Compass,
       active: isRoadmap,
     },
     {
       label: "Practice",
       href: "/practice",
-      icon: BookOpen,
       active: isPractice,
     },
     {
       label: "Progress",
       href: "/progress",
-      icon: BarChart3,
       active: isProgress,
     },
     {
       label: "More",
       onClick: () => setMoreOpen(true),
-      icon: MoreHorizontal,
       active: isMore || moreOpen,
     },
   ];
 
   return (
     <>
-      {/* Bottom Navigation Bar */}
+      {/* Bottom Navigation Bar — solid, flat, hairline top border */}
       <nav
-        className="fixed bottom-0 inset-x-0 z-40 border-t border-black/10 bg-white/95 backdrop-blur-md dark:border-white/10 dark:bg-[#1A1A1A]/95 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.4)]"
+        className="fixed bottom-0 inset-x-0 z-40 border-t border-black/10 bg-[#FAFAF8] dark:border-white/10 dark:bg-[#161B22]"
         aria-label="Bottom Navigation"
       >
-        <div className="mx-auto flex max-w-lg items-center justify-around px-2 py-2">
+        <div className="mx-auto flex max-w-lg items-stretch justify-around px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
           {navItems.map((item) => {
-            const Icon = item.icon;
             const content = (
-              <div className="flex flex-col items-center gap-1 py-1">
-                <div
-                  className={`flex h-8 w-12 items-center justify-center rounded-full transition-all ${
+              <div className="flex min-h-[44px] flex-col items-center justify-center gap-0.5 px-2">
+                <span
+                  aria-hidden="true"
+                  className={`font-serif text-lg leading-none transition-colors ${
                     item.active
-                      ? "bg-[#C84B31] text-white shadow-sm dark:bg-[#E85C40]"
-                      : "text-[#6B6B6B] hover:text-[#1A1A1A] dark:text-[#A0A0A0] dark:hover:text-[#FAFAFA]"
+                      ? "text-[#C84B31] dark:text-[#E85C40]"
+                      : "text-[#1A1A1A] dark:text-[#F0F4F8]"
                   }`}
                 >
-                  <Icon size={20} />
-                </div>
+                  {navGlyphs[item.label]}
+                </span>
                 <span
-                  className={`text-[11px] font-medium transition-colors ${
+                  className={`text-xs leading-none transition-colors ${
                     item.active
                       ? "font-semibold text-[#C84B31] dark:text-[#E85C40]"
                       : "text-[#6B6B6B] dark:text-[#A0A0A0]"
@@ -94,6 +87,13 @@ export function BottomNavbar() {
                 >
                   {item.label}
                 </span>
+                {/* active marker: vermillion dot */}
+                <span
+                  aria-hidden="true"
+                  className={`h-1 w-1 rounded-full transition-colors ${
+                    item.active ? "bg-[#C84B31] dark:bg-[#E85C40]" : "bg-transparent"
+                  }`}
+                />
               </div>
             );
 
@@ -103,7 +103,8 @@ export function BottomNavbar() {
                   key={item.label}
                   href={item.href}
                   prefetch={true}
-                  className="flex-1 text-center transition hover:opacity-80 focus:outline-none"
+                  aria-current={item.active ? "page" : undefined}
+                  className="flex-1 rounded-xl text-center transition hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C84B31]/50 dark:focus-visible:ring-[#E85C40]/50"
                 >
                   {content}
                 </Link>
@@ -115,7 +116,8 @@ export function BottomNavbar() {
                 key={item.label}
                 type="button"
                 onClick={item.onClick}
-                className="flex-1 text-center transition hover:opacity-80 focus:outline-none"
+                aria-expanded={moreOpen}
+                className="flex-1 rounded-xl text-center transition hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C84B31]/50 dark:focus-visible:ring-[#E85C40]/50"
               >
                 {content}
               </button>
@@ -127,29 +129,24 @@ export function BottomNavbar() {
       {/* More Options Modal Sheet */}
       {moreOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 backdrop-blur-xs sm:items-center sm:p-4"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center sm:p-4"
           onClick={() => setMoreOpen(false)}
           role="dialog"
           aria-modal="true"
         >
           <div
-            className="w-full max-w-md rounded-t-3xl border border-black/10 bg-white p-6 shadow-2xl dark:border-white/15 dark:bg-[#1A1A1A] sm:rounded-3xl animate-in slide-in-from-bottom duration-200"
+            className="w-full max-w-md rounded-t-2xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-[#161B22] sm:rounded-2xl animate-in slide-in-from-bottom duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-4 border-b border-black/5 dark:border-white/10">
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#C84B31]/10 text-[#C84B31] dark:bg-[#E85C40]/15 dark:text-[#E85C40]">
-                  <Layers size={18} />
-                </div>
-                <h3 className="text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Explore NihoLearn</h3>
-              </div>
+              <h3 className="font-serif text-lg font-semibold text-[#1A1A1A] dark:text-[#F0F4F8]">Explore NihoLearn</h3>
               <button
                 type="button"
                 onClick={() => setMoreOpen(false)}
-                className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-[#2A2A2A] dark:hover:text-gray-200"
+                className="rounded-full p-2 text-[#6B6B6B] transition hover:bg-black/5 hover:text-[#1A1A1A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:text-[#A0A0A0] dark:hover:bg-white/5 dark:hover:text-[#F0F4F8] dark:focus-visible:ring-white/20"
                 aria-label="Close menu"
               >
-                <X size={20} />
+                <X size={20} aria-hidden="true" />
               </button>
             </div>
 
@@ -163,15 +160,13 @@ export function BottomNavbar() {
                   className="flex items-center justify-between rounded-2xl p-3.5 transition hover:bg-black/5 dark:hover:bg-white/5"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-600 dark:bg-orange-950/40 dark:text-orange-400">
-                      <History size={20} />
-                    </div>
+                    <span aria-hidden="true" className="w-6 text-center font-serif text-lg font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">動</span>
                     <div>
-                      <div className="font-semibold text-[#1A1A1A] dark:text-[#FAFAFA]">Study Sessions</div>
+                      <div className="font-semibold text-[#1A1A1A] dark:text-[#F0F4F8]">Study Sessions</div>
                       <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Practice timer & study log history</div>
                     </div>
                   </div>
-                  <ChevronRight size={18} className="text-gray-400" />
+                  <ChevronRight size={18} aria-hidden="true" className="text-[#6B6B6B] dark:text-[#A0A0A0]" />
                 </Link>
 
                 <Link
@@ -181,15 +176,13 @@ export function BottomNavbar() {
                   className="flex items-center justify-between rounded-2xl p-3.5 transition hover:bg-black/5 dark:hover:bg-white/5"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400">
-                      <Database size={20} />
-                    </div>
+                    <span aria-hidden="true" className="w-6 text-center font-serif text-lg font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">集</span>
                     <div>
-                      <div className="font-semibold text-[#1A1A1A] dark:text-[#FAFAFA]">Data Editor</div>
+                      <div className="font-semibold text-[#1A1A1A] dark:text-[#F0F4F8]">Data Editor</div>
                       <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Edit Kana & JLPT learning data</div>
                     </div>
                   </div>
-                  <ChevronRight size={18} className="text-gray-400" />
+                  <ChevronRight size={18} aria-hidden="true" className="text-[#6B6B6B] dark:text-[#A0A0A0]" />
                 </Link>
 
                 <Link
@@ -199,20 +192,18 @@ export function BottomNavbar() {
                   className="flex items-center justify-between rounded-2xl p-3.5 transition hover:bg-black/5 dark:hover:bg-white/5"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400">
-                      <User size={20} />
-                    </div>
+                    <span aria-hidden="true" className="w-6 text-center font-serif text-lg font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">人</span>
                     <div>
-                      <div className="font-semibold text-[#1A1A1A] dark:text-[#FAFAFA]">User Profile</div>
+                      <div className="font-semibold text-[#1A1A1A] dark:text-[#F0F4F8]">User Profile</div>
                       <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Account settings & JLPT level target</div>
                     </div>
                   </div>
-                  <ChevronRight size={18} className="text-gray-400" />
+                  <ChevronRight size={18} aria-hidden="true" className="text-[#6B6B6B] dark:text-[#A0A0A0]" />
                 </Link>
               </div>
 
               {/* Quick Hub Links */}
-              <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/10 dark:bg-[#2A2A2A]">
+              <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/10 dark:bg-[#1E232B]">
                 <div className="text-xs font-semibold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
                   Learning Hubs
                 </div>
@@ -221,25 +212,25 @@ export function BottomNavbar() {
                     href="/progress/kana"
                     prefetch={true}
                     onClick={() => setMoreOpen(false)}
-                    className="flex items-center justify-between rounded-xl bg-white p-3 text-sm font-medium text-[#1A1A1A] shadow-xs hover:border-[#C84B31] hover:text-[#C84B31] dark:bg-[#1A1A1A] dark:text-[#FAFAFA] dark:hover:text-[#E85C40]"
+                    className="flex items-center justify-between rounded-xl bg-white p-3 text-sm font-medium text-[#1A1A1A] transition hover:text-[#C84B31] dark:bg-[#161B22] dark:text-[#F0F4F8] dark:hover:text-[#E85C40]"
                   >
                     <span>あ Kana Progress</span>
-                    <ChevronRight size={14} className="text-gray-400" />
+                    <ChevronRight size={14} aria-hidden="true" className="text-[#6B6B6B] dark:text-[#A0A0A0]" />
                   </Link>
                   <Link
                     href="/progress/kanji"
                     prefetch={true}
                     onClick={() => setMoreOpen(false)}
-                    className="flex items-center justify-between rounded-xl bg-white p-3 text-sm font-medium text-[#1A1A1A] shadow-xs hover:border-[#C84B31] hover:text-[#C84B31] dark:bg-[#1A1A1A] dark:text-[#FAFAFA] dark:hover:text-[#E85C40]"
+                    className="flex items-center justify-between rounded-xl bg-white p-3 text-sm font-medium text-[#1A1A1A] transition hover:text-[#C84B31] dark:bg-[#161B22] dark:text-[#F0F4F8] dark:hover:text-[#E85C40]"
                   >
                     <span>漢 Kanji List</span>
-                    <ChevronRight size={14} className="text-gray-400" />
+                    <ChevronRight size={14} aria-hidden="true" className="text-[#6B6B6B] dark:text-[#A0A0A0]" />
                   </Link>
                 </div>
               </div>
 
               {/* JLPT Levels Quick Roadmap */}
-              <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/10 dark:bg-[#2A2A2A]">
+              <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/10 dark:bg-[#1E232B]">
                 <div className="text-xs font-semibold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
                   JLPT Levels
                 </div>
@@ -249,7 +240,7 @@ export function BottomNavbar() {
                       key={lvl}
                       href={`/${lvl}`}
                       onClick={() => setMoreOpen(false)}
-                      className="flex flex-col items-center justify-center rounded-xl bg-white py-2.5 text-xs font-bold text-[#2D5F8A] shadow-xs transition hover:bg-[#C84B31] hover:text-white dark:bg-[#1A1A1A] dark:text-[#4A86B8] dark:hover:bg-[#E85C40] dark:hover:text-white"
+                      className="flex flex-col items-center justify-center rounded-xl bg-white py-2.5 text-xs font-bold text-[#1A1A1A] transition hover:bg-[#C84B31] hover:text-white dark:bg-[#161B22] dark:text-[#F0F4F8] dark:hover:bg-[#E85C40] dark:hover:text-white"
                     >
                       {formatLevel(lvl)}
                     </Link>

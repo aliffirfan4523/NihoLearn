@@ -76,7 +76,7 @@ export function HowToPlay({ gameKey, title = "How to Play", steps, note }: HowTo
           onClick={close}
         >
           <div
-            className="w-full max-w-md rounded-3xl border border-black/10 bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-150 dark:border-white/15 dark:bg-[#1A1A1A]"
+            className="w-full max-w-md rounded-2xl border border-black/10 bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-150 dark:border-white/15 dark:bg-[#1A1A1A]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
@@ -120,7 +120,7 @@ export function HowToPlay({ gameKey, title = "How to Play", steps, note }: HowTo
               ref={gotItRef}
               type="button"
               onClick={close}
-              className="mt-5 w-full rounded-2xl bg-amber-500 py-3 text-sm font-bold text-white shadow-md transition hover:bg-amber-600 active:scale-[0.98]"
+              className="mt-5 w-full rounded-2xl bg-amber-500 py-3 text-sm font-bold text-white shadow-md transition hover:bg-amber-600"
             >
               Got it!
             </button>

@@ -155,14 +155,14 @@ export function ConjugationDrillGame({
   if (isFinished) {
     const accuracy = Math.round((score / questions.length) * 100);
     return (
-      <div className="mx-auto max-w-md rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/15 text-amber-500 shadow-sm">
+      <div className="mx-auto max-w-md rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500 shadow-sm">
           <Trophy size={40} />
         </div>
         <h2 className="mt-5 text-2xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Drill Complete!</h2>
         <p className="mt-1 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">Conjugation session summary:</p>
 
-        <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#2A2A2A]">
+        <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#1E232B]">
           <div>
             <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Score</div>
             <div className="mt-1 text-xl font-bold text-[#C84B31] dark:text-[#E85C40]">
@@ -183,7 +183,7 @@ export function ConjugationDrillGame({
           <button
             type="button"
             onClick={onExit}
-            className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+            className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
           >
             Change Settings
           </button>
@@ -222,7 +222,7 @@ export function ConjugationDrillGame({
         </button>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-xs font-bold text-orange-600 dark:text-orange-400">
+          <div className="flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-400">
             <Flame size={16} />
             <span>{streak}</span>
           </div>
@@ -232,7 +232,7 @@ export function ConjugationDrillGame({
         </div>
       </div>
 
-      <div className="h-2 w-full overflow-hidden rounded-full bg-[#F0F0F0] dark:bg-[#2A2A2A]">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-[#F0F0F0] dark:bg-[#1E232B]">
         <div
           className="h-full bg-[#C84B31] transition-all duration-300 dark:bg-[#E85C40]"
           style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
@@ -240,7 +240,7 @@ export function ConjugationDrillGame({
       </div>
 
       {/* Main Question Card */}
-      <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
+      <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
         <div className="inline-flex items-center gap-2 rounded-full bg-blue-500/10 px-3 py-1 text-xs font-bold text-blue-600 dark:bg-blue-500/20 dark:text-blue-300">
           Target: {formMeta?.label ?? currentQ.targetForm}
         </div>
@@ -267,13 +267,13 @@ export function ConjugationDrillGame({
             const isChosen = selectedAnswer === option;
 
             let btnStyle =
-              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]";
+              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]";
 
             if (status !== "idle") {
               if (isCorrect) {
                 btnStyle = "border-emerald-500 bg-emerald-500 text-white font-bold";
               } else if (isChosen && !isCorrect) {
-                btnStyle = "border-rose-500 bg-rose-500 text-white font-bold";
+                btnStyle = "border-red-500 bg-red-500 text-white font-bold";
               } else {
                 btnStyle = "opacity-40 border-black/5 dark:border-white/5";
               }
@@ -300,7 +300,7 @@ export function ConjugationDrillGame({
               className={`flex items-center justify-between rounded-2xl p-4 ${
                 status === "correct"
                   ? "bg-emerald-500/15 text-emerald-800 dark:text-emerald-300"
-                  : "bg-rose-500/15 text-rose-800 dark:text-rose-300"
+                  : "bg-red-500/15 text-red-800 dark:text-red-300"
               }`}
             >
               <div className="flex items-center gap-2">
@@ -327,7 +327,7 @@ export function ConjugationDrillGame({
             </div>
 
             {/* Rule Explanation */}
-            <div className="rounded-xl border border-black/5 bg-[#FAFAF8] p-3 text-left text-xs text-[#6B6B6B] dark:border-white/10 dark:bg-[#2A2A2A] dark:text-[#A0A0A0]">
+            <div className="rounded-xl border border-black/5 bg-[#FAFAF8] p-3 text-left text-xs text-[#6B6B6B] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#A0A0A0]">
               <strong className="text-[#1A1A1A] dark:text-[#FAFAFA]">Rule:</strong> {currentQ.rule}
             </div>
           </div>

@@ -314,7 +314,7 @@ export function SentenceScrambleEngine() {
 
   if (quizPool.length === 0) {
     return (
-      <div className="mx-auto max-w-2xl rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/10 dark:bg-[#161B22]">
+      <div className="mx-auto max-w-2xl rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22]">
         <h2 className="text-xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">No Exercises Found</h2>
         <p className="mt-2 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
           Try switching your JLPT level filter.
@@ -322,7 +322,7 @@ export function SentenceScrambleEngine() {
         <button
           type="button"
           onClick={() => setLevelFilter("ALL")}
-          className="mt-4 rounded-xl bg-[var(--color-vermillion)] px-4 py-2 text-xs font-bold text-white shadow-xs"
+          className="mt-4 rounded-xl bg-[#C84B31] dark:bg-[#E85C40] px-4 py-2 text-xs font-bold text-white shadow-xs"
         >
           Reset to ALL Levels
         </button>
@@ -337,8 +337,8 @@ export function SentenceScrambleEngine() {
 
     return (
       <div className="mx-auto max-w-2xl space-y-6">
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/10 dark:bg-[#161B22]">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/15 text-amber-500 shadow-sm">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22]">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500 shadow-sm">
             <Trophy size={40} />
           </div>
 
@@ -352,7 +352,7 @@ export function SentenceScrambleEngine() {
           <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#1E232B]">
             <div>
               <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Score</div>
-              <div className="mt-1 text-2xl font-bold text-[var(--color-vermillion)]">
+              <div className="mt-1 text-2xl font-bold text-[#C84B31] dark:text-[#E85C40]">
                 {score} / {quizPool.length}
               </div>
             </div>
@@ -364,14 +364,14 @@ export function SentenceScrambleEngine() {
             </div>
             <div>
               <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Max Streak</div>
-              <div className="mt-1 text-2xl font-bold text-orange-500">{maxStreak}</div>
+              <div className="mt-1 text-2xl font-bold text-amber-500">{maxStreak}</div>
             </div>
           </div>
 
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href="/practice"
-              className="flex-1 min-w-[140px] rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-center text-xs font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
+              className="flex-1 min-w-0 sm:min-w-[140px] rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-center text-xs font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               Practice Hub
             </Link>
@@ -385,7 +385,7 @@ export function SentenceScrambleEngine() {
                     missed.map((m) => m.exercise)
                   )
                 }
-                className="flex-1 min-w-[140px] rounded-2xl border border-rose-500/30 bg-rose-500/10 py-3 text-xs font-bold text-rose-700 dark:text-rose-300 transition hover:bg-rose-500/20"
+                className="flex-1 min-w-0 sm:min-w-[140px] rounded-2xl border border-red-500/30 bg-red-500/10 py-3 text-xs font-bold text-red-700 dark:text-red-300 transition hover:bg-red-500/20"
               >
                 Retry {missed.length} Missed
               </button>
@@ -394,7 +394,7 @@ export function SentenceScrambleEngine() {
             <button
               type="button"
               onClick={() => startQuiz(levelFilter)}
-              className="flex-1 min-w-[140px] rounded-2xl bg-[var(--color-vermillion)] py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90"
+              className="flex-1 min-w-0 sm:min-w-[140px] rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90"
             >
               Practice Again
             </button>
@@ -404,7 +404,7 @@ export function SentenceScrambleEngine() {
         {/* Detailed Sentence Breakdown */}
         <div className="space-y-3">
           <h3 className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA] flex items-center gap-2">
-            <BookOpen size={16} className="text-[var(--color-vermillion)]" />
+            <BookOpen size={16} className="text-[#C84B31] dark:text-[#E85C40]" />
             <span>Sentence Order Review ({sessionResults.length})</span>
           </h3>
 
@@ -421,7 +421,7 @@ export function SentenceScrambleEngine() {
                         <Check size={14} />
                       </span>
                     ) : (
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/15 text-red-600 dark:text-red-400">
                         <XCircle size={14} />
                       </span>
                     )}
@@ -482,7 +482,7 @@ export function SentenceScrambleEngine() {
               onClick={() => setLevelFilter(lvl)}
               className={`rounded-lg px-2.5 py-1 text-xs font-bold transition ${
                 levelFilter === lvl
-                  ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                  ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                   : "text-[#6B6B6B] hover:text-[#1A1A1A] dark:text-[#A0A0A0] dark:hover:text-white"
               }`}
             >
@@ -493,7 +493,7 @@ export function SentenceScrambleEngine() {
 
         {/* Streak and Count */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-xs font-bold text-orange-500">
+          <div className="flex items-center gap-1 text-xs font-bold text-amber-500">
             <Flame size={16} className={streak > 0 ? "animate-bounce" : ""} />
             <span>{streak} Streak</span>
           </div>
@@ -506,7 +506,7 @@ export function SentenceScrambleEngine() {
       {/* Progress Bar */}
       <div className="h-2 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
         <div
-          className="h-full bg-[var(--color-vermillion)] transition-all duration-300"
+          className="h-full bg-[#C84B31] dark:bg-[#E85C40] transition-all duration-300"
           style={{ width: `${((currentIndex + 1) / quizPool.length) * 100}%` }}
         />
       </div>
@@ -525,7 +525,7 @@ export function SentenceScrambleEngine() {
       />
 
       {/* Main Assembly Arena Card */}
-      <div className="rounded-3xl border border-black/10 bg-white p-6 sm:p-8 shadow-lg dark:border-white/10 dark:bg-[#161B22] space-y-6">
+      <div className="rounded-2xl border border-black/10 bg-white p-6 sm:p-8 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
         {/* Card Header */}
         <div className="flex items-center justify-between">
           <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-bold text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300 flex items-center gap-1.5">
@@ -539,7 +539,7 @@ export function SentenceScrambleEngine() {
               onClick={() => setShowFurigana(!showFurigana)}
               className={`rounded-lg border px-2.5 py-1 text-[11px] font-semibold transition ${
                 showFurigana
-                  ? "border-[var(--color-vermillion)] bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)]"
+                  ? "border-[#C84B31] dark:border-[#E85C40] bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40]"
                   : "border-black/10 text-gray-500 dark:border-white/10"
               }`}
               title="Toggle Furigana reading"
@@ -581,7 +581,7 @@ export function SentenceScrambleEngine() {
                 type="button"
                 onClick={handleClearAll}
                 disabled={status !== "idle" || placedTiles.length === 0}
-                className="flex items-center gap-1 text-[11px] font-bold text-rose-500 hover:text-rose-600 disabled:opacity-30"
+                className="flex items-center gap-1 text-[11px] font-bold text-red-500 hover:text-red-600 disabled:opacity-30"
               >
                 <Trash2 size={12} /> Clear
               </button>
@@ -593,7 +593,7 @@ export function SentenceScrambleEngine() {
               status === "correct"
                 ? "border-emerald-500 bg-emerald-500/5"
                 : status === "incorrect"
-                ? "border-rose-500 bg-rose-500/5"
+                ? "border-red-500 bg-red-500/5"
                 : "border-dashed border-black/15 bg-[#FAFAF8] dark:border-white/15 dark:bg-[#1E232B]"
             }`}
           >
@@ -609,17 +609,17 @@ export function SentenceScrambleEngine() {
                 type="button"
                 disabled={status !== "idle"}
                 onClick={() => handleRemoveTile(tile)}
-                className={`group flex items-center gap-1.5 rounded-xl border px-3.5 py-2 font-serif text-base sm:text-lg font-bold shadow-xs transition transform active:scale-95 ${
+                className={`group flex items-center gap-1.5 rounded-xl border px-3.5 py-2 font-serif text-base sm:text-lg font-bold shadow-xs transition ${
                   status === "correct"
                     ? "border-emerald-500 bg-emerald-500 text-white"
                     : status === "incorrect"
-                    ? "border-rose-500 bg-rose-500 text-white"
-                    : "border-black/10 bg-white text-[#1A1A1A] hover:border-rose-500 hover:bg-rose-50 dark:border-white/10 dark:bg-[#161B22] dark:text-[#FAFAFA] dark:hover:bg-rose-950/30"
+                    ? "border-red-500 bg-red-500 text-white"
+                    : "border-black/10 bg-white text-[#1A1A1A] hover:border-red-500 hover:bg-red-50 dark:border-white/10 dark:bg-[#161B22] dark:text-[#FAFAFA] dark:hover:bg-red-950/30"
                 }`}
               >
                 <span>{tile.text}</span>
                 {status === "idle" && (
-                  <span className="text-[10px] opacity-40 group-hover:opacity-100 text-rose-500">
+                  <span className="text-[10px] opacity-40 group-hover:opacity-100 text-red-500">
                     ✕
                   </span>
                 )}
@@ -649,7 +649,7 @@ export function SentenceScrambleEngine() {
                 type="button"
                 disabled={status !== "idle"}
                 onClick={() => handlePlaceTile(tile)}
-                className="relative flex items-center justify-center rounded-2xl border border-black/10 bg-[#FAFAF8] px-4 py-3 font-serif text-lg sm:text-xl font-bold text-[#1A1A1A] shadow-xs transition hover:scale-105 hover:border-[var(--color-vermillion)] hover:shadow-md active:scale-95 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
+                className="relative flex items-center justify-center rounded-2xl border border-black/10 bg-[#FAFAF8] px-4 py-3 font-serif text-lg sm:text-xl font-bold text-[#1A1A1A] shadow-xs transition hover:border-[#C84B31] dark:border-[#E85C40] hover:shadow-xs dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
               >
                 <span className="absolute left-2 top-1.5 text-[9px] font-bold text-gray-400">
                   {idx + 1}
@@ -671,9 +671,9 @@ export function SentenceScrambleEngine() {
           <button
             type="button"
             onClick={() => playJapaneseAudio(currentExercise.fullSentence)}
-            className="flex items-center gap-1.5 rounded-full border border-black/10 bg-[#FAFAF8] px-4 py-2 text-xs font-bold text-[#1A1A1A] shadow-2xs transition hover:border-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
+            className="flex items-center gap-1.5 rounded-full border border-black/10 bg-[#FAFAF8] px-4 py-2 text-xs font-bold text-[#1A1A1A] shadow-2xs transition hover:border-[#C84B31] dark:border-[#E85C40] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
           >
-            <Volume2 size={16} className="text-[var(--color-vermillion)]" />
+            <Volume2 size={16} className="text-[#C84B31] dark:text-[#E85C40]" />
             <span>Audio Clue</span>
           </button>
 
@@ -682,7 +682,7 @@ export function SentenceScrambleEngine() {
               type="button"
               disabled={!allPlaced}
               onClick={handleVerify}
-              className="flex items-center gap-2 rounded-2xl bg-[var(--color-vermillion)] px-6 py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90 disabled:opacity-40"
+              className="flex items-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] px-6 py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90 disabled:opacity-40"
             >
               <span>Check Sentence</span>
               <ArrowRight size={14} />
@@ -707,14 +707,14 @@ export function SentenceScrambleEngine() {
               className={`flex items-center justify-between rounded-2xl p-4 ${
                 status === "correct"
                   ? "bg-emerald-500/15 text-emerald-900 dark:text-emerald-300"
-                  : "bg-rose-500/15 text-rose-900 dark:text-rose-300"
+                  : "bg-red-500/15 text-red-900 dark:text-red-300"
               }`}
             >
               <div className="flex items-center gap-2.5">
                 {status === "correct" ? (
                   <CheckCircle2 size={24} className="text-emerald-600 dark:text-emerald-400" />
                 ) : (
-                  <XCircle size={24} className="text-rose-600 dark:text-rose-400" />
+                  <XCircle size={24} className="text-red-600 dark:text-red-400" />
                 )}
                 <div>
                   <div className="text-sm font-bold">
@@ -739,7 +739,7 @@ export function SentenceScrambleEngine() {
 
             {status === "incorrect" && (
               <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 text-xs leading-relaxed text-[#1A1A1A] dark:border-white/5 dark:bg-[#1E232B] dark:text-[#FAFAFA] space-y-1">
-                <div className="font-bold text-[var(--color-vermillion)]">
+                <div className="font-bold text-[#C84B31] dark:text-[#E85C40]">
                   Correct Sentence Order:
                 </div>
                 <div className="font-serif text-base font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">

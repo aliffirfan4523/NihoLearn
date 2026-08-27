@@ -268,7 +268,7 @@ export function VocabPracticeEngine() {
     return (
       <div className="mx-auto max-w-2xl space-y-8 animate-in fade-in duration-200">
         <div className="text-center space-y-2">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)]">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40]">
             <BookOpen size={28} />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#F0F4F8]">
@@ -291,7 +291,7 @@ export function VocabPracticeEngine() {
           note="Tip: in Typing Recall, typing the kanji word itself also counts as correct."
         />
 
-        <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+        <div className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           {/* JLPT Level Selection */}
           <div>
             <label className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
@@ -305,7 +305,7 @@ export function VocabPracticeEngine() {
                   onClick={() => setSelectedLevel(lvl)}
                   className={`rounded-2xl py-2.5 text-xs font-bold transition ${
                     selectedLevel === lvl
-                      ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8] dark:hover:bg-white/5"
                   }`}
                 >
@@ -337,14 +337,14 @@ export function VocabPracticeEngine() {
                     onClick={() => setMode(m.id as PracticeMode)}
                     className={`flex flex-col items-center justify-center rounded-2xl border p-4 text-center transition ${
                       isSelected
-                        ? "border-[var(--color-vermillion)] bg-[var(--color-vermillion)]/5 ring-1 ring-[var(--color-vermillion)] dark:bg-[var(--color-vermillion)]/10"
+                        ? "border-[#C84B31] dark:border-[#E85C40] bg-[#C84B31]/5 dark:bg-[#E85C40]/5 ring-1 ring-[#C84B31] dark:ring-[#E85C40] dark:bg-[#C84B31]/10 dark:bg-[#E85C40]/10"
                         : "border-black/10 bg-[#FAFAF8] hover:border-black/20 dark:border-white/10 dark:bg-[#1E232B] dark:hover:border-white/20"
                     }`}
                   >
                     <Icon
                       size={22}
                       className={
-                        isSelected ? "text-[var(--color-vermillion)]" : "text-[#64748B] dark:text-[#94A3B8]"
+                        isSelected ? "text-[#C84B31] dark:text-[#E85C40]" : "text-[#6B6B6B] dark:text-[#A0A0A0]"
                       }
                     />
                     <div className="mt-2 text-xs font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
@@ -370,7 +370,7 @@ export function VocabPracticeEngine() {
                   onClick={() => setQuestionCount(count)}
                   className={`rounded-2xl py-2 text-xs font-bold transition ${
                     questionCount === count
-                      ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8] dark:hover:bg-white/5"
                   }`}
                 >
@@ -385,7 +385,7 @@ export function VocabPracticeEngine() {
             type="button"
             onClick={handleStartPractice}
             disabled={isLoading}
-            className="w-full rounded-2xl bg-[var(--color-vermillion)] py-4 text-sm font-bold text-white shadow-md transition hover:opacity-90 disabled:opacity-50"
+            className="w-full rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-4 text-sm font-bold text-white shadow-md transition hover:opacity-90 disabled:opacity-50"
           >
             {isLoading ? "Preparing Word Pool..." : "Start Practice Session"}
           </button>
@@ -400,8 +400,8 @@ export function VocabPracticeEngine() {
 
     return (
       <div className="mx-auto max-w-xl space-y-6 animate-in zoom-in-95 duration-200">
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-5">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-5">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400">
             <Trophy size={32} />
           </div>
 
@@ -429,7 +429,7 @@ export function VocabPracticeEngine() {
             </div>
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-3 text-center dark:border-white/5 dark:bg-[#1E232B]">
               <div className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">Max Streak</div>
-              <div className="mt-1 text-lg font-bold text-orange-500">🔥 {maxStreak}</div>
+              <div className="mt-1 text-lg font-bold text-amber-500">🔥 {maxStreak}</div>
             </div>
           </div>
 
@@ -438,7 +438,7 @@ export function VocabPracticeEngine() {
             <button
               type="button"
               onClick={handleStartPractice}
-              className="flex-1 rounded-2xl bg-[var(--color-vermillion)] py-3 text-xs font-bold text-white shadow-xs transition hover:opacity-90"
+              className="flex-1 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3 text-xs font-bold text-white shadow-xs transition hover:opacity-90"
             >
               Practice Again
             </button>
@@ -452,7 +452,7 @@ export function VocabPracticeEngine() {
         </div>
 
         {/* Breakdown List */}
-        <div className="rounded-3xl border border-black/10 bg-white p-6 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-3">
+        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-3">
           <h3 className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
             Word Review Breakdown ({history.length})
           </h3>
@@ -481,14 +481,14 @@ export function VocabPracticeEngine() {
                   <button
                     type="button"
                     onClick={() => playJapaneseAudio(entry.item.word)}
-                    className="rounded-full bg-black/5 p-1.5 text-gray-600 transition hover:bg-[var(--color-vermillion)] hover:text-white dark:bg-white/5 dark:text-gray-400 dark:hover:bg-[var(--color-vermillion)] dark:hover:text-white"
+                    className="rounded-full bg-black/5 p-1.5 text-gray-600 transition hover:bg-[#C84B31] dark:bg-[#E85C40] hover:text-white dark:bg-white/5 dark:text-gray-400 dark:hover:bg-[#C84B31] dark:bg-[#E85C40] dark:hover:text-white"
                   >
                     <Play size={10} className="fill-current" />
                   </button>
                   {entry.isCorrect ? (
                     <CheckCircle2 size={16} className="text-emerald-500" />
                   ) : (
-                    <XCircle size={16} className="text-rose-500" />
+                    <XCircle size={16} className="text-red-500" />
                   )}
                 </div>
               </div>
@@ -519,7 +519,7 @@ export function VocabPracticeEngine() {
 
         <div className="flex items-center gap-3">
           {streak > 1 && (
-            <span className="flex items-center gap-1 rounded-full bg-orange-500/15 px-2.5 py-0.5 text-xs font-bold text-orange-600 dark:text-orange-400 animate-pulse">
+            <span className="flex items-center gap-1 rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-bold text-amber-600 dark:text-amber-400 animate-pulse">
               <Flame size={13} className="fill-current" /> {streak} streak
             </span>
           )}
@@ -532,7 +532,7 @@ export function VocabPracticeEngine() {
       {/* Progress Bar */}
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
         <div
-          className="h-full rounded-full bg-[var(--color-vermillion)] transition-all duration-300"
+          className="h-full rounded-full bg-[#C84B31] dark:bg-[#E85C40] transition-all duration-300"
           style={{ width: `${progressPct}%` }}
         />
       </div>
@@ -545,7 +545,7 @@ export function VocabPracticeEngine() {
               setIsFlipped(!isFlipped);
               if (!isFlipped) playJapaneseAudio(currentItem.word);
             }}
-            className="group relative flex min-h-[260px] cursor-pointer flex-col items-center justify-center rounded-3xl border border-black/10 bg-white p-8 text-center shadow-sm transition hover:border-[var(--color-vermillion)]/50 hover:shadow-md dark:border-white/10 dark:bg-[#161B22]"
+            className="group relative flex min-h-[260px] cursor-pointer flex-col items-center justify-center rounded-2xl border border-black/10 bg-white p-8 text-center shadow-sm transition hover:border-[#C84B31]/50 dark:border-[#E85C40]/50 hover:shadow-xs dark:border-white/10 dark:bg-[#161B22]"
           >
             <span className="absolute top-4 right-4 rounded-md bg-black/5 px-2 py-0.5 text-[11px] font-bold text-[#64748B] dark:bg-white/5 dark:text-[#94A3B8]">
               {currentItem.level}
@@ -553,7 +553,7 @@ export function VocabPracticeEngine() {
 
             {!isFlipped ? (
               <div className="space-y-3">
-                <div className="font-serif text-5xl font-bold text-[#1A1A1A] group-hover:scale-105 transition dark:text-[#F0F4F8]">
+                <div className="font-serif text-5xl font-bold text-[#1A1A1A] transition dark:text-[#F0F4F8]">
                   {currentItem.word}
                 </div>
                 <p className="text-xs italic text-[#64748B] dark:text-[#94A3B8]">
@@ -562,7 +562,7 @@ export function VocabPracticeEngine() {
               </div>
             ) : (
               <div className="space-y-3 animate-in fade-in duration-150">
-                <div className="font-serif text-3xl font-bold text-[var(--color-vermillion)]">
+                <div className="font-serif text-3xl font-bold text-[#C84B31] dark:text-[#E85C40]">
                   {currentItem.reading}
                 </div>
                 <div className="font-mono text-xs text-[#64748B] dark:text-[#94A3B8]">
@@ -583,7 +583,7 @@ export function VocabPracticeEngine() {
                 e.stopPropagation();
                 playJapaneseAudio(currentItem.word);
               }}
-              className="absolute bottom-4 rounded-full bg-black/5 p-2 text-gray-600 transition hover:bg-[var(--color-vermillion)] hover:text-white dark:bg-white/5 dark:text-gray-400 dark:hover:bg-[var(--color-vermillion)] dark:hover:text-white"
+              className="absolute bottom-4 rounded-full bg-black/5 p-2 text-gray-600 transition hover:bg-[#C84B31] dark:bg-[#E85C40] hover:text-white dark:bg-white/5 dark:text-gray-400 dark:hover:bg-[#C84B31] dark:bg-[#E85C40] dark:hover:text-white"
             >
               <Volume2 size={16} />
             </button>
@@ -613,7 +613,7 @@ export function VocabPracticeEngine() {
       {(mode === "quiz" || mode === "listening") && (
         <div className="space-y-5">
           {/* Question Prompt Box */}
-          <div className="relative flex flex-col items-center justify-center rounded-3xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22]">
+          <div className="relative flex flex-col items-center justify-center rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22]">
             <span className="absolute top-4 right-4 rounded-md bg-black/5 px-2 py-0.5 text-[11px] font-bold text-[#64748B] dark:bg-white/5 dark:text-[#94A3B8]">
               {currentItem.level}
             </span>
@@ -624,10 +624,10 @@ export function VocabPracticeEngine() {
                 onClick={() => playJapaneseAudio(currentItem.word)}
                 className="group flex flex-col items-center justify-center gap-3 py-4"
               >
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)] transition group-hover:scale-110">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40] transition">
                   <Volume2 size={32} />
                 </div>
-                <span className="text-xs font-bold text-[var(--color-vermillion)]">
+                <span className="text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
                   Click to replay pronunciation
                 </span>
               </button>
@@ -643,7 +643,7 @@ export function VocabPracticeEngine() {
                   <button
                     type="button"
                     onClick={() => playJapaneseAudio(currentItem.word)}
-                    className="rounded-full bg-black/5 p-1 text-gray-500 hover:text-[var(--color-vermillion)] dark:bg-white/5"
+                    className="rounded-full bg-black/5 p-1 text-gray-500 hover:text-[#C84B31] dark:text-[#E85C40] dark:bg-white/5"
                   >
                     <Volume2 size={13} />
                   </button>
@@ -665,7 +665,7 @@ export function VocabPracticeEngine() {
                 if (isCorrectOpt) {
                   style = "border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 ring-1 ring-emerald-500";
                 } else if (isSelected && !isCorrectOpt) {
-                  style = "border-rose-500 bg-rose-500/10 text-rose-600 dark:text-rose-400 ring-1 ring-rose-500";
+                  style = "border-red-500 bg-red-500/10 text-red-600 dark:text-red-400 ring-1 ring-red-500";
                 }
               }
 
@@ -680,7 +680,7 @@ export function VocabPracticeEngine() {
                   <span>{opt}</span>
                   {isAnswered && isCorrectOpt && <Check size={16} className="text-emerald-500" />}
                   {isAnswered && isSelected && !isCorrectOpt && (
-                    <X size={16} className="text-rose-500" />
+                    <X size={16} className="text-red-500" />
                   )}
                 </button>
               );
@@ -692,7 +692,7 @@ export function VocabPracticeEngine() {
             <button
               type="button"
               onClick={handleNextQuestion}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 animate-in fade-in"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 animate-in fade-in"
             >
               <span>Next Question</span>
               <ArrowRight size={14} />
@@ -704,7 +704,7 @@ export function VocabPracticeEngine() {
       {/* ── MODE 3: TYPING RECALL ── */}
       {mode === "typing" && (
         <div className="space-y-5">
-          <div className="relative flex flex-col items-center justify-center rounded-3xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-2">
+          <div className="relative flex flex-col items-center justify-center rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-2">
             <span className="absolute top-4 right-4 rounded-md bg-black/5 px-2 py-0.5 text-[11px] font-bold text-[#64748B] dark:bg-white/5 dark:text-[#94A3B8]">
               {currentItem.level}
             </span>
@@ -728,13 +728,13 @@ export function VocabPracticeEngine() {
               onChange={(e) => setTypedInput(e.target.value)}
               disabled={isAnswered}
               autoFocus
-              className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-center font-serif text-lg font-bold text-[#1A1A1A] outline-none transition focus:border-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]"
+              className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-center font-serif text-lg font-bold text-[#1A1A1A] outline-none transition focus:border-[#C84B31] dark:border-[#E85C40] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]"
             />
 
             {!isAnswered ? (
               <button
                 type="submit"
-                className="w-full rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90"
+                className="w-full rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90"
               >
                 Submit Answer
               </button>
@@ -744,7 +744,7 @@ export function VocabPracticeEngine() {
                   className={`rounded-2xl p-4 text-center text-xs font-bold ${
                     isCorrect
                       ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                      : "bg-rose-500/10 text-rose-600 dark:text-rose-400"
+                      : "bg-red-500/10 text-red-600 dark:text-red-400"
                   }`}
                 >
                   {isCorrect ? "Correct! Perfect recall." : `Correct reading is: ${currentItem.reading} (${currentItem.romaji})`}
@@ -752,7 +752,7 @@ export function VocabPracticeEngine() {
                 <button
                   type="button"
                   onClick={handleNextQuestion}
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90"
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90"
                 >
                   <span>Next Question</span>
                   <ArrowRight size={14} />

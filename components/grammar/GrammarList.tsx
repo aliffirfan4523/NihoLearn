@@ -7,9 +7,9 @@ import type { GrammarPoint, ProgressStatus } from "@/types";
 const statusOrder: ProgressStatus[] = ["unlearned", "reviewing", "mastered"];
 
 const statusStyles: Record<ProgressStatus, string> = {
-  unlearned: "bg-[#F0F0F0] text-[#6B6B6B] dark:bg-[#2A2A2A] dark:text-[#A0A0A0]",
-  reviewing: "bg-[#FFF3CD] text-[#856404] dark:bg-[#332E00] dark:text-[#FEF3C7]",
-  mastered: "bg-[#D4EDDA] text-[#155724] dark:bg-[#0F2D1A] dark:text-[#D1FAE5]",
+  unlearned: "bg-[#F4F4F0] text-[#6B6B6B] dark:bg-[#1E232B] dark:text-[#A0A0A0]",
+  reviewing: "bg-amber-500/10 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400",
+  mastered: "bg-[#3D7D52]/10 text-[#3D7D52] dark:bg-[#34D399]/15 dark:text-[#34D399]",
 };
 
 type GrammarWithProgress = GrammarPoint & { status: ProgressStatus };
@@ -40,7 +40,7 @@ export function GrammarList({ points, progressMap }: { points: GrammarPoint[]; p
       {items.map((item) => {
         const isOpen = expanded === item.id;
         return (
-          <article key={item.id} className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
+          <article key={item.id} className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xs dark:border-white/15 dark:bg-[#161B22]">
             <button
               onClick={() => setExpanded(isOpen ? null : item.id)}
               className="flex w-full items-center gap-4 p-5 text-left"
@@ -55,7 +55,7 @@ export function GrammarList({ points, progressMap }: { points: GrammarPoint[]; p
                   e.stopPropagation();
                   cycleStatus(item.id);
                 }}
-                className="rounded-lg border border-black/10 px-3 py-1 text-xs text-[#6B6B6B] hover:bg-[#FAFAF8] dark:border-white/20 dark:text-[#A0A0A0] dark:hover:bg-[#2A2A2A]"
+                className="rounded-xl border border-black/10 px-3 py-1.5 text-xs font-semibold text-[#6B6B6B] transition hover:bg-black/5 dark:border-white/15 dark:text-[#A0A0A0] dark:hover:bg-white/5"
               >
                 Cycle
               </button>
@@ -64,8 +64,8 @@ export function GrammarList({ points, progressMap }: { points: GrammarPoint[]; p
 
             {isOpen && (
               <div className="border-t border-black/5 dark:border-white/10 p-5">
-                <div className="mb-4 rounded-xl bg-[#FAFAF8] p-3 dark:bg-[#2A2A2A]">
-                  <span className="text-xs font-semibold uppercase text-[#2D5F8A] dark:text-[#4A86B8]">Structure</span>
+                <div className="mb-4 rounded-xl bg-[#F4F4F0] p-3 dark:bg-[#1E232B]">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-[#2D5F8A] dark:text-[#60A5FA]">Structure</span>
                   <p className="mt-1 font-mono text-sm text-[#1A1A1A] dark:text-[#FAFAFA]">{item.structure}</p>
                 </div>
                 <div className="space-y-3">
@@ -73,7 +73,7 @@ export function GrammarList({ points, progressMap }: { points: GrammarPoint[]; p
                     <div key={i} className="rounded-xl border border-black/5 dark:border-white/10 p-3">
                       <p className="font-serif text-lg text-[#1A1A1A] dark:text-[#FAFAFA]">{ex.japanese}</p>
                       <p className="mt-1 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">{ex.reading}</p>
-                      <p className="mt-1 text-sm text-[#2D5F8A] dark:text-[#4A86B8]">{ex.english}</p>
+                      <p className="mt-1 text-sm text-[#2D5F8A] dark:text-[#60A5FA]">{ex.english}</p>
                     </div>
                   ))}
                 </div>

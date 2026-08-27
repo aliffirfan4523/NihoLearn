@@ -346,7 +346,7 @@ export function KeigoConverterEngine() {
             onClick={() => setAppMode("quiz")}
             className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition ${
               appMode === "quiz"
-                ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                 : "text-[#6B6B6B] hover:text-[#1A1A1A] dark:text-[#A0A0A0] dark:hover:text-white"
             }`}
           >
@@ -359,7 +359,7 @@ export function KeigoConverterEngine() {
             onClick={() => setAppMode("flashcards")}
             className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition ${
               appMode === "flashcards"
-                ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                 : "text-[#6B6B6B] hover:text-[#1A1A1A] dark:text-[#A0A0A0] dark:hover:text-white"
             }`}
           >
@@ -385,11 +385,11 @@ export function KeigoConverterEngine() {
       {appMode === "flashcards" && (
         <div className="space-y-6 animate-in fade-in duration-200">
           {/* Header Banner */}
-          <div className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#161B22] space-y-4">
+          <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#161B22] space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
                 <h2 className="text-xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA] flex items-center gap-2">
-                  <Briefcase size={20} className="text-[var(--color-vermillion)]" />
+                  <Briefcase size={20} className="text-[#C84B31] dark:text-[#E85C40]" />
                   <span>Keigo & Politeness Matrix Deck</span>
                 </h2>
                 <p className="mt-1 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
@@ -408,7 +408,7 @@ export function KeigoConverterEngine() {
                   placeholder="Search verb..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-xl border border-black/10 bg-[#FAFAF8] pl-8 pr-3 py-1.5 text-xs text-[#1A1A1A] placeholder-gray-400 focus:border-[var(--color-vermillion)] focus:outline-hidden dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
+                  className="w-full rounded-xl border border-black/10 bg-[#FAFAF8] pl-8 pr-3 py-1.5 text-xs text-[#1A1A1A] placeholder-gray-400 focus:border-[#C84B31] dark:border-[#E85C40] focus:outline-hidden dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
                 />
               </div>
             </div>
@@ -441,7 +441,7 @@ export function KeigoConverterEngine() {
             {filteredFlashcards.map((ex) => (
               <div
                 key={ex.id}
-                className="rounded-2xl border border-black/10 bg-white p-5 shadow-xs transition hover:shadow-md dark:border-white/10 dark:bg-[#161B22] space-y-3"
+                className="rounded-2xl border border-black/10 bg-white p-5 shadow-xs transition hover:shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-3"
               >
                 <div className="flex items-start justify-between">
                   <div>
@@ -451,7 +451,7 @@ export function KeigoConverterEngine() {
                     <h3 className="font-serif text-xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
                       {ex.plain}
                     </h3>
-                    <p className="text-xs font-semibold text-[var(--color-vermillion)]">
+                    <p className="text-xs font-semibold text-[#C84B31] dark:text-[#E85C40]">
                       &quot;{ex.meaning}&quot;
                     </p>
                   </div>
@@ -480,7 +480,7 @@ export function KeigoConverterEngine() {
                     <button
                       type="button"
                       onClick={() => playJapaneseAudio(ex.polite)}
-                      className="text-blue-600 hover:scale-110 dark:text-blue-400"
+                      className="text-blue-600 dark:text-blue-400"
                     >
                       <Volume2 size={14} />
                     </button>
@@ -499,7 +499,7 @@ export function KeigoConverterEngine() {
                     <button
                       type="button"
                       onClick={() => playJapaneseAudio(ex.sonkeigo)}
-                      className="text-emerald-600 hover:scale-110 dark:text-emerald-400"
+                      className="text-emerald-600 dark:text-emerald-400"
                     >
                       <Volume2 size={14} />
                     </button>
@@ -518,7 +518,7 @@ export function KeigoConverterEngine() {
                     <button
                       type="button"
                       onClick={() => playJapaneseAudio(ex.kenjougo)}
-                      className="text-purple-600 hover:scale-110 dark:text-purple-400"
+                      className="text-purple-600 dark:text-purple-400"
                     >
                       <Volume2 size={14} />
                     </button>
@@ -538,7 +538,7 @@ export function KeigoConverterEngine() {
             <button
               type="button"
               onClick={() => setAppMode("quiz")}
-              className="rounded-2xl bg-[var(--color-vermillion)] px-6 py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90"
+              className="rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] px-6 py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90"
             >
               Start Keigo Conversion Quiz
             </button>
@@ -566,7 +566,7 @@ export function KeigoConverterEngine() {
                   }
                   className={`rounded-lg px-2.5 py-1 text-xs font-bold transition ${
                     selectedTargetType === item.key
-                      ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                       : "text-[#6B6B6B] hover:text-[#1A1A1A] dark:text-[#A0A0A0] dark:hover:text-white"
                   }`}
                 >
@@ -577,7 +577,7 @@ export function KeigoConverterEngine() {
 
             {/* Streak & Counter */}
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1 text-xs font-bold text-orange-500">
+              <div className="flex items-center gap-1 text-xs font-bold text-amber-500">
                 <Flame size={16} className={streak > 0 ? "animate-bounce" : ""} />
                 <span>{streak} Streak</span>
               </div>
@@ -590,7 +590,7 @@ export function KeigoConverterEngine() {
           {/* Progress Bar */}
           <div className="h-2 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
             <div
-              className="h-full bg-[var(--color-vermillion)] transition-all duration-300"
+              className="h-full bg-[#C84B31] dark:bg-[#E85C40] transition-all duration-300"
               style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
             />
           </div>
@@ -598,8 +598,8 @@ export function KeigoConverterEngine() {
           {/* ── Finished Screen ── */}
           {isFinished ? (
             <div className="space-y-6">
-              <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/10 dark:bg-[#161B22]">
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/15 text-amber-500 shadow-sm">
+              <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22]">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500 shadow-sm">
                   <Trophy size={40} />
                 </div>
 
@@ -613,7 +613,7 @@ export function KeigoConverterEngine() {
                 <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#1E232B]">
                   <div>
                     <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Score</div>
-                    <div className="mt-1 text-2xl font-bold text-[var(--color-vermillion)]">
+                    <div className="mt-1 text-2xl font-bold text-[#C84B31] dark:text-[#E85C40]">
                       {score} / {questions.length}
                     </div>
                   </div>
@@ -625,14 +625,14 @@ export function KeigoConverterEngine() {
                   </div>
                   <div>
                     <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Max Streak</div>
-                    <div className="mt-1 text-2xl font-bold text-orange-500">{maxStreak}</div>
+                    <div className="mt-1 text-2xl font-bold text-amber-500">{maxStreak}</div>
                   </div>
                 </div>
 
                 <div className="mt-7 flex flex-wrap gap-3">
                   <Link
                     href="/practice"
-                    className="flex-1 min-w-[140px] rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-center text-xs font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
+                    className="flex-1 min-w-0 sm:min-w-[140px] rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-center text-xs font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
                   >
                     Practice Hub
                   </Link>
@@ -640,7 +640,7 @@ export function KeigoConverterEngine() {
                   <button
                     type="button"
                     onClick={() => setAppMode("flashcards")}
-                    className="flex-1 min-w-[140px] rounded-2xl border border-purple-500/30 bg-purple-500/10 py-3 text-xs font-bold text-purple-700 dark:text-purple-300 transition hover:bg-purple-500/20"
+                    className="flex-1 min-w-0 sm:min-w-[140px] rounded-2xl border border-purple-500/30 bg-purple-500/10 py-3 text-xs font-bold text-purple-700 dark:text-purple-300 transition hover:bg-purple-500/20"
                   >
                     Review Keigo Matrix
                   </button>
@@ -648,7 +648,7 @@ export function KeigoConverterEngine() {
                   <button
                     type="button"
                     onClick={() => generateQuestions(selectedTargetType)}
-                    className="flex-1 min-w-[140px] rounded-2xl bg-[var(--color-vermillion)] py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90"
+                    className="flex-1 min-w-0 sm:min-w-[140px] rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90"
                   >
                     Practice Again
                   </button>
@@ -658,7 +658,7 @@ export function KeigoConverterEngine() {
               {/* Review List */}
               <div className="space-y-3">
                 <h3 className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA] flex items-center gap-2">
-                  <BookOpen size={16} className="text-[var(--color-vermillion)]" />
+                  <BookOpen size={16} className="text-[#C84B31] dark:text-[#E85C40]" />
                   <span>Keigo Conversion Review ({sessionResults.length})</span>
                 </h3>
 
@@ -675,7 +675,7 @@ export function KeigoConverterEngine() {
                               <Check size={14} />
                             </span>
                           ) : (
-                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400">
+                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/15 text-red-600 dark:text-red-400">
                               <XCircle size={14} />
                             </span>
                           )}
@@ -695,7 +695,7 @@ export function KeigoConverterEngine() {
 
                       <div className="font-serif text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
                         {result.question.promptText} ➔{" "}
-                        <span className="text-[var(--color-vermillion)]">
+                        <span className="text-[#C84B31] dark:text-[#E85C40]">
                           {result.question.correctAnswer}
                         </span>
                       </div>
@@ -715,7 +715,7 @@ export function KeigoConverterEngine() {
           ) : (
             /* ── Active Question Card ── */
             currentQ && (
-              <div className="rounded-3xl border border-black/10 bg-white p-6 sm:p-8 shadow-lg dark:border-white/10 dark:bg-[#161B22] space-y-6">
+              <div className="rounded-2xl border border-black/10 bg-white p-6 sm:p-8 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
                 {/* Target Form Badge */}
                 <div className="flex items-center justify-between">
                   <span
@@ -754,7 +754,7 @@ export function KeigoConverterEngine() {
                     {currentQ.promptText}
                   </div>
 
-                  <div className="text-sm font-semibold text-[var(--color-vermillion)]">
+                  <div className="text-sm font-semibold text-[#C84B31] dark:text-[#E85C40]">
                     &quot;{currentQ.exercise.meaning}&quot;
                   </div>
                 </div>
@@ -766,14 +766,14 @@ export function KeigoConverterEngine() {
                     const isCorrect = option === currentQ.correctAnswer;
 
                     let btnStyle =
-                      "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[var(--color-vermillion)] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA] dark:hover:bg-white/5";
+                      "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-[#E85C40] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA] dark:hover:bg-white/5";
 
                     if (status !== "idle") {
                       if (isCorrect) {
                         btnStyle =
                           "border-emerald-500 bg-emerald-500 text-white font-bold scale-[1.02] shadow-md";
                       } else if (isChosen && !isCorrect) {
-                        btnStyle = "border-rose-500 bg-rose-500 text-white font-bold";
+                        btnStyle = "border-red-500 bg-red-500 text-white font-bold";
                       } else {
                         btnStyle = "opacity-40 border-black/5 dark:border-white/5";
                       }
@@ -811,14 +811,14 @@ export function KeigoConverterEngine() {
                       className={`flex items-center justify-between rounded-2xl p-4 ${
                         status === "correct"
                           ? "bg-emerald-500/15 text-emerald-900 dark:text-emerald-300"
-                          : "bg-rose-500/15 text-rose-900 dark:text-rose-300"
+                          : "bg-red-500/15 text-red-900 dark:text-red-300"
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
                         {status === "correct" ? (
                           <CheckCircle2 size={24} className="text-emerald-600 dark:text-emerald-400" />
                         ) : (
-                          <XCircle size={24} className="text-rose-600 dark:text-rose-400" />
+                          <XCircle size={24} className="text-red-600 dark:text-red-400" />
                         )}
                         <div>
                           <div className="text-sm font-bold">
@@ -843,7 +843,7 @@ export function KeigoConverterEngine() {
 
                     {/* Keigo Explanation Note */}
                     <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 text-left text-xs leading-relaxed text-[#1A1A1A] dark:border-white/5 dark:bg-[#1E232B] dark:text-[#FAFAFA] space-y-1.5 whitespace-pre-line">
-                      <div className="flex items-center gap-1.5 font-bold text-[var(--color-vermillion)]">
+                      <div className="flex items-center gap-1.5 font-bold text-[#C84B31] dark:text-[#E85C40]">
                         <Sparkles size={14} />
                         <span>Keigo Politeness Perspective:</span>
                       </div>

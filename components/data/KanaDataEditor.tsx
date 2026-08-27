@@ -47,7 +47,7 @@ export function KanaDataEditor({ initialKana }: { initialKana: KanaCharacter[] }
 
       <div className="overflow-hidden rounded-3xl border border-black/10 bg-white shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
         <div className="max-h-[70vh] overflow-auto">
-          <table className="w-full min-w-[900px] border-collapse text-sm">
+          <table className="w-full min-w-[900px] border-collapse text-sm [&_td:first-child]:sticky [&_td:first-child]:left-0 [&_td:first-child]:z-10 [&_td:first-child]:bg-white [&_td:first-child]:dark:bg-[#1A1A1A] [&_th:first-child]:sticky [&_th:first-child]:left-0 [&_th:first-child]:z-10">
             <thead className="sticky top-0 bg-[#FAFAF8] text-left text-[#6B6B6B] dark:bg-[#2A2A2A] dark:text-[#A0A0A0]">
               <tr>
                 <th className="p-3">ID</th>

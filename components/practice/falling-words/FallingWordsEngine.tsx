@@ -561,7 +561,7 @@ export function FallingWordsEngine() {
       />
 
       {/* Main Arcade Frame */}
-      <div className="overflow-hidden rounded-3xl border border-black/10 bg-white shadow-2xl dark:border-white/10 dark:bg-[#0E1117]">
+      <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-2xl dark:border-white/10 dark:bg-[#0E1117]">
         {/* Header Bar */}
         <div className="flex items-center justify-between border-b border-black/10 bg-[#F8FAFC] px-6 py-3 text-gray-800 dark:border-white/10 dark:bg-[#161B22] dark:text-white">
           <div className="flex items-center gap-5">
@@ -570,7 +570,7 @@ export function FallingWordsEngine() {
                 <Heart
                   key={i}
                   size={18}
-                  className={`transition ${i <= lives ? "fill-rose-500 text-rose-500" : "text-gray-400 dark:text-gray-600"}`}
+                  className={`transition ${i <= lives ? "fill-red-500 text-red-500" : "text-gray-400 dark:text-gray-600"}`}
                 />
               ))}
             </div>
@@ -578,7 +578,7 @@ export function FallingWordsEngine() {
               Wave: <span className="font-mono text-gray-800 dark:text-white">{level}</span>
             </div>
             {combo > 1 && (
-              <div className="flex items-center gap-1 text-xs font-bold text-orange-500 dark:text-orange-400 animate-pulse">
+              <div className="flex items-center gap-1 text-xs font-bold text-amber-500 dark:text-amber-400 animate-pulse">
                 <Flame size={14} className="fill-current" />
                 <span>{combo}x Combo!</span>
               </div>
@@ -629,7 +629,7 @@ export function FallingWordsEngine() {
                   }`}
                 >
                   <div
-                    className={`flex flex-col items-center rounded-2xl border px-3.5 py-2 shadow-lg backdrop-blur-md transition-colors ${
+                    className={`flex flex-col items-center rounded-2xl border px-3.5 py-2 shadow-xs backdrop-blur-md transition-colors ${
                       blasted
                         ? "border-emerald-500 bg-emerald-500 text-white"
                         : highlighted
@@ -637,9 +637,9 @@ export function FallingWordsEngine() {
                         : fw.powerUp === "freeze"
                         ? "border-cyan-400 bg-cyan-100 text-cyan-800 dark:bg-cyan-950/80 dark:text-cyan-200"
                         : fw.powerUp === "bomb"
-                        ? "border-orange-500 bg-orange-100 text-orange-800 dark:bg-orange-950/80 dark:text-orange-200"
+                        ? "border-amber-500 bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-200"
                         : fw.powerUp === "heart"
-                        ? "border-rose-400 bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-200"
+                        ? "border-red-400 bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-200"
                         : "border-black/10 bg-white/95 text-gray-800 dark:border-white/15 dark:bg-[#1E232B]/90 dark:text-white"
                     }`}
                   >
@@ -671,12 +671,12 @@ export function FallingWordsEngine() {
             })}
 
           {/* Laser barrier */}
-          <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-rose-500 shadow-[0_0_12px_#F43F5E]" />
+          <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-red-500 shadow-[0_0_12px_#F43F5E]" />
 
           {/* Start Menu */}
           {gameState === "idle" && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 px-6 py-4 text-center dark:bg-[#0E1117]/95">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-lg">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-xs">
                 <Flame size={26} />
               </div>
               <h1 className="mt-2 text-2xl font-bold text-gray-800 dark:text-white">Falling Words Arcade</h1>
@@ -759,7 +759,7 @@ export function FallingWordsEngine() {
                 type="button"
                 onClick={startGame}
                 disabled={!poolsLoaded}
-                className="mt-3 flex items-center gap-2 rounded-2xl bg-amber-500 px-7 py-2.5 text-xs font-bold text-white shadow-xl transition hover:bg-amber-600 active:scale-95 disabled:opacity-40"
+                className="mt-3 flex items-center gap-2 rounded-2xl bg-amber-500 px-7 py-2.5 text-xs font-bold text-white shadow-xs transition hover:bg-amber-600 disabled:opacity-40"
               >
                 <Play size={15} />
                 <span>{poolsLoaded ? `Launch Arcade (${scoreMultiplier}x Boost)` : "Loading words…"}</span>
@@ -770,7 +770,7 @@ export function FallingWordsEngine() {
           {/* Game Over Screen */}
           {gameState === "gameover" && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 p-6 text-center dark:bg-[#0E1117]/95 animate-in fade-in zoom-in-95 duration-200">
-              <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-rose-500/20 text-rose-500">
+              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-red-500/20 text-red-500">
                 <ShieldAlert size={44} />
               </div>
               <h2 className="mt-4 text-3xl font-bold text-gray-800 dark:text-white">Defense Breached!</h2>
@@ -785,7 +785,7 @@ export function FallingWordsEngine() {
                 </div>
                 <div>
                   <div className="text-[11px] text-gray-500 dark:text-gray-400">Max Combo</div>
-                  <div className="mt-1 font-mono text-2xl font-bold text-orange-600 dark:text-orange-400">{maxCombo}x 🔥</div>
+                  <div className="mt-1 font-mono text-2xl font-bold text-amber-600 dark:text-amber-400">{maxCombo}x 🔥</div>
                 </div>
               </div>
               <div className="mt-7 flex gap-3">

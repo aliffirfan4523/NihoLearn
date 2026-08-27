@@ -164,7 +164,7 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
       <div className="grid gap-8 lg:grid-cols-12">
         {/* Left Settings Sidebar */}
         <div className="space-y-6 lg:col-span-4">
-          <div className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-[#1A1A1A]">
+          <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/15 dark:bg-[#1A1A1A]">
             <h2 className="text-sm font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
               Game Modes
             </h2>
@@ -179,7 +179,7 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
                     className={`flex flex-col items-center justify-center rounded-2xl border p-3 text-center transition ${
                       isSelected
                         ? "border-[#C84B31] bg-[#C84B31] text-white font-bold dark:border-[#E85C40] dark:bg-[#E85C40]"
-                        : "border-black/5 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/10 dark:bg-[#2A2A2A] dark:text-[#A0A0A0]"
+                        : "border-black/5 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#A0A0A0]"
                     }`}
                   >
                     <span className="font-mono text-sm">{opt.icon}</span>
@@ -193,7 +193,7 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
             <div className="mt-6 space-y-4 border-t border-black/10 pt-5 dark:border-white/10">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#FAFAFA]">Order</span>
-                <div className="flex rounded-xl bg-[#FAFAF8] p-1 dark:bg-[#2A2A2A]">
+                <div className="flex rounded-xl bg-[#FAFAF8] p-1 dark:bg-[#1E232B]">
                   <button
                     type="button"
                     onClick={() => setOrder("random")}
@@ -230,7 +230,7 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
                       className={`h-8 w-8 rounded-xl text-xs font-bold transition ${
                         sessionSize === num
                           ? "bg-[#C84B31] text-white shadow-xs dark:bg-[#E85C40]"
-                          : "border border-black/5 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/10 dark:bg-[#2A2A2A] dark:text-[#A0A0A0]"
+                          : "border border-black/5 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#A0A0A0]"
                       }`}
                     >
                       {num}
@@ -265,7 +265,7 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
           {/* Speed Sprint Banner */}
           <Link
             href="/practice/kana-speed"
-            className="flex items-center gap-4 rounded-3xl border border-purple-500/20 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 p-5 transition hover:scale-[1.02] dark:border-purple-500/30"
+            className="flex items-center gap-4 rounded-2xl border border-purple-500/20 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 p-5 transition dark:border-purple-500/30"
           >
             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-purple-600 text-white shadow-md">
               <Zap size={22} />
@@ -289,14 +289,14 @@ export function KanaPracticeSetup({ onStart }: { onStart: (config: KanaPracticeC
             <button
               type="button"
               onClick={selectAll}
-              className="rounded-xl border border-black/10 bg-white px-3 py-1.5 text-xs font-semibold text-[#1A1A1A] shadow-xs hover:border-[#C84B31] dark:border-white/20 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+              className="rounded-xl border border-black/10 bg-white px-3 py-1.5 text-xs font-semibold text-[#1A1A1A] shadow-xs hover:border-[#C84B31] dark:border-white/20 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               Select All Rows
             </button>
           </div>
 
           {!kanaLoaded ? (
-            <div className="rounded-3xl border border-black/10 bg-white p-10 text-center text-sm text-[#6B6B6B] shadow-sm dark:border-white/15 dark:bg-[#1A1A1A] dark:text-[#A0A0A0]">
+            <div className="rounded-2xl border border-black/10 bg-white p-10 text-center text-sm text-[#6B6B6B] shadow-sm dark:border-white/15 dark:bg-[#1A1A1A] dark:text-[#A0A0A0]">
               Loading kana…
             </div>
           ) : (

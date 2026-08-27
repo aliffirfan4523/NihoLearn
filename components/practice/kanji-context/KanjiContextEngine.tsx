@@ -229,7 +229,7 @@ export function KanjiContextEngine() {
     return (
       <span className="leading-relaxed">
         {parts[0]}
-        <span className="inline-block px-2 py-0.5 mx-1 rounded-xl bg-[var(--color-vermillion)]/15 border border-[var(--color-vermillion)]/40 font-bold text-[var(--color-vermillion)] shadow-xs animate-pulse">
+        <span className="inline-block px-2 py-0.5 mx-1 rounded-xl bg-[#C84B31]/15 dark:bg-[#E85C40]/15 border border-[#C84B31]/40 dark:border-[#E85C40]/40 font-bold text-[#C84B31] dark:text-[#E85C40] shadow-xs animate-pulse">
           {targetKanji}
         </span>
         {parts[1]}
@@ -245,7 +245,7 @@ export function KanjiContextEngine() {
       case "Shopping & Food":
         return <Utensils size={16} className="text-amber-500" />;
       case "Weather & Safety":
-        return <ShieldAlert size={16} className="text-rose-500" />;
+        return <ShieldAlert size={16} className="text-red-500" />;
       default:
         return <Building size={16} className="text-purple-500" />;
     }
@@ -261,7 +261,7 @@ export function KanjiContextEngine() {
     return (
       <div className="mx-auto max-w-2xl space-y-8 animate-in fade-in duration-200">
         <div className="text-center space-y-2">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)]">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40]">
             <FileText size={28} />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#F0F4F8]">
@@ -284,7 +284,7 @@ export function KanjiContextEngine() {
           note="Tip: press the Audio button on a scenario to hear the whole snippet read aloud before you commit to an answer."
         />
 
-        <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+        <div className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           {/* JLPT Level Selection */}
           <div>
             <label className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
@@ -298,7 +298,7 @@ export function KanjiContextEngine() {
                   onClick={() => setLevel(lvl)}
                   className={`rounded-2xl py-2.5 text-xs font-bold transition ${
                     level === lvl
-                      ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                   }`}
                 >
@@ -321,7 +321,7 @@ export function KanjiContextEngine() {
                   onClick={() => setQuestionCount(count)}
                   className={`rounded-2xl py-2.5 text-xs font-bold transition ${
                     questionCount === count
-                      ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                   }`}
                 >
@@ -336,7 +336,7 @@ export function KanjiContextEngine() {
             type="button"
             onClick={handleStartPractice}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-4 text-sm font-bold text-white shadow-md transition hover:opacity-90 active:scale-[0.99] cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-4 text-sm font-bold text-white shadow-md transition hover:opacity-90 cursor-pointer"
           >
             {isLoading ? (
               <span>Loading Contexts...</span>
@@ -364,13 +364,13 @@ export function KanjiContextEngine() {
 
     return (
       <div className="mx-auto max-w-2xl space-y-6 animate-in fade-in duration-300">
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/10 dark:bg-[#161B22] space-y-6">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)]">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40]">
             <Trophy size={40} />
           </div>
 
           <div>
-            <span className="rounded-full bg-[var(--color-vermillion)]/10 px-3 py-1 text-xs font-bold text-[var(--color-vermillion)]">
+            <span className="rounded-full bg-[#C84B31]/10 dark:bg-[#E85C40]/10 px-3 py-1 text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
               Kanji in Context Complete
             </span>
             <h2 className="mt-3 text-3xl font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
@@ -385,11 +385,11 @@ export function KanjiContextEngine() {
           <div className="grid grid-cols-3 gap-3">
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1E232B]">
               <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] block">Accuracy</span>
-              <span className="text-2xl font-bold text-[var(--color-vermillion)]">{accuracy}%</span>
+              <span className="text-2xl font-bold text-[#C84B31] dark:text-[#E85C40]">{accuracy}%</span>
             </div>
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1E232B]">
               <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] block">Max Streak</span>
-              <span className="text-2xl font-bold text-orange-500 flex items-center justify-center gap-1">
+              <span className="text-2xl font-bold text-amber-500 flex items-center justify-center gap-1">
                 <Flame size={20} />
                 {maxStreak}
               </span>
@@ -414,7 +414,7 @@ export function KanjiContextEngine() {
                   className="rounded-2xl border border-black/10 bg-[#FAFAF8] p-4 text-xs dark:border-white/10 dark:bg-[#1E232B] space-y-1.5"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-[var(--color-vermillion)] text-base">
+                    <span className="font-bold text-[#C84B31] dark:text-[#E85C40] text-base">
                       {item.snippet.targetKanji} ({item.snippet.targetReading})
                     </span>
                     <span className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">
@@ -425,10 +425,10 @@ export function KanjiContextEngine() {
                     Meaning: {item.snippet.targetMeaning}
                   </div>
                   <div className="flex items-center gap-4 text-[11px] font-bold">
-                    <span className={item.isMeaningCorrect ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}>
+                    <span className={item.isMeaningCorrect ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}>
                       Meaning: {item.isMeaningCorrect ? "✓ Correct" : "✗ Missed"}
                     </span>
-                    <span className={item.isReadingCorrect ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}>
+                    <span className={item.isReadingCorrect ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}>
                       Reading: {item.isReadingCorrect ? "✓ Correct" : "✗ Missed"}
                     </span>
                   </div>
@@ -442,7 +442,7 @@ export function KanjiContextEngine() {
             <button
               type="button"
               onClick={handleStartPractice}
-              className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white transition hover:opacity-90 shadow-md cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white transition hover:opacity-90 shadow-md cursor-pointer"
             >
               <RotateCcw size={16} />
               <span>Practice Again</span>
@@ -477,7 +477,7 @@ export function KanjiContextEngine() {
 
         <div className="flex items-center gap-3">
           {streak > 1 && (
-            <div className="flex items-center gap-1 rounded-full bg-orange-500/10 px-3 py-1 text-xs font-bold text-orange-600 dark:text-orange-400 animate-bounce">
+            <div className="flex items-center gap-1 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-600 dark:text-amber-400 animate-bounce">
               <Flame size={14} />
               <span>{streak} Streak!</span>
             </div>
@@ -492,13 +492,13 @@ export function KanjiContextEngine() {
       {/* Progress Bar */}
       <div className="h-2 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/5">
         <div
-          className="h-full rounded-full bg-[var(--color-vermillion)] transition-all duration-300 ease-out"
+          className="h-full rounded-full bg-[#C84B31] dark:bg-[#E85C40] transition-all duration-300 ease-out"
           style={{ width: `${progressPercent}%` }}
         />
       </div>
 
       {/* Scenario Environment Card */}
-      <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+      <div className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
         {/* Scenario Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -518,7 +518,7 @@ export function KanjiContextEngine() {
           <button
             type="button"
             onClick={() => playJapaneseAudio(currentSnippet.snippetText)}
-            className="flex items-center gap-1.5 rounded-xl border border-black/10 bg-[#FAFAF8] px-3 py-1.5 text-xs font-bold text-[#1A1A1A] transition hover:bg-[var(--color-vermillion)]/10 hover:text-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
+            className="flex items-center gap-1.5 rounded-xl border border-black/10 bg-[#FAFAF8] px-3 py-1.5 text-xs font-bold text-[#1A1A1A] transition hover:bg-[#C84B31]/10 dark:bg-[#E85C40]/10 hover:text-[#C84B31] dark:text-[#E85C40] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
           >
             <Volume2 size={15} />
             <span>Audio</span>
@@ -552,13 +552,13 @@ export function KanjiContextEngine() {
               const isTarget = idx === currentSnippet.contextQuestion.correctIndex;
 
               let style =
-                "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
+                "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-[#E85C40] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
 
               if (isMeaningAnswered) {
                 if (isTarget) {
                   style = "border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-bold";
                 } else if (isSelected && !isTarget) {
-                  style = "border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300";
+                  style = "border-red-500 bg-red-500/15 text-red-700 dark:text-red-300";
                 } else {
                   style = "opacity-40 border-black/5";
                 }
@@ -574,7 +574,7 @@ export function KanjiContextEngine() {
                 >
                   <span>{opt}</span>
                   {isMeaningAnswered && isTarget && <CheckCircle2 size={16} className="text-emerald-500" />}
-                  {isMeaningAnswered && isSelected && !isTarget && <XCircle size={16} className="text-rose-500" />}
+                  {isMeaningAnswered && isSelected && !isTarget && <XCircle size={16} className="text-red-500" />}
                 </button>
               );
             })}
@@ -604,13 +604,13 @@ export function KanjiContextEngine() {
                 const isTarget = idx === currentSnippet.readingQuestion.correctIndex;
 
                 let style =
-                  "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
+                  "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-[#E85C40] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
 
                 if (isReadingAnswered) {
                   if (isTarget) {
                     style = "border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-bold";
                   } else if (isSelected && !isTarget) {
-                    style = "border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300";
+                    style = "border-red-500 bg-red-500/15 text-red-700 dark:text-red-300";
                   } else {
                     style = "opacity-40 border-black/5";
                   }
@@ -626,7 +626,7 @@ export function KanjiContextEngine() {
                   >
                     <span>{opt}</span>
                     {isReadingAnswered && isTarget && <CheckCircle2 size={16} className="text-emerald-500" />}
-                    {isReadingAnswered && isSelected && !isTarget && <XCircle size={16} className="text-rose-500" />}
+                    {isReadingAnswered && isSelected && !isTarget && <XCircle size={16} className="text-red-500" />}
                   </button>
                 );
               })}
@@ -638,7 +638,7 @@ export function KanjiContextEngine() {
         {isReadingAnswered && (
           <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-5 dark:border-white/5 dark:bg-[#1E232B] space-y-4 animate-in fade-in">
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
-              <Layers size={14} className="text-[var(--color-vermillion)]" />
+              <Layers size={14} className="text-[#C84B31] dark:text-[#E85C40]" />
               <span>Jukugo Compound Breakdown</span>
             </div>
 
@@ -648,7 +648,7 @@ export function KanjiContextEngine() {
                   key={idx}
                   className="rounded-xl border border-black/5 bg-white p-3 text-center dark:border-white/5 dark:bg-[#161B22] space-y-1"
                 >
-                  <div className="text-2xl font-bold text-[var(--color-vermillion)]">{item.char}</div>
+                  <div className="text-2xl font-bold text-[#C84B31] dark:text-[#E85C40]">{item.char}</div>
                   <div className="text-[11px] font-semibold text-[#1A1A1A] dark:text-[#F0F4F8]">
                     {item.onyomi}
                   </div>
@@ -666,7 +666,7 @@ export function KanjiContextEngine() {
             <button
               type="button"
               onClick={handleNextSnippet}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 active:scale-[0.99] cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 cursor-pointer"
             >
               <span>{currentIndex + 1 >= snippets.length ? "Finish & View Results" : "Next Scenario (Enter)"}</span>
               <ArrowRight size={16} />

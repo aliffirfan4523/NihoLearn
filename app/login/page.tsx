@@ -68,16 +68,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0E1117] py-12 px-4 text-[#F0F4F8] dark:bg-[#0E1117]">
+    <div className="flex min-h-screen items-center justify-center bg-[#FAFAF8] px-4 py-12 text-[#1A1A1A] dark:bg-[#0E1117] dark:text-[#F0F4F8]">
       <div className="w-full max-w-md space-y-6">
-        <div className="rounded-3xl border border-white/10 bg-[#161B22] p-8 shadow-xl">
+        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-xs dark:border-white/15 dark:bg-[#161B22]">
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold tracking-tight text-white">Welcome back</h1>
-            <p className="mt-2 text-sm text-gray-400">Sign in to continue your Japanese learning journey.</p>
+            <p className="font-serif text-sm font-semibold tracking-widest text-[#C84B31] dark:text-[#E85C40]">
+              ニホラーン
+            </p>
+            <h1 className="mt-2 text-2xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#FAFAFA]">Welcome back</h1>
+            <p className="mt-2 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">Sign in to continue your Japanese learning journey.</p>
           </div>
 
           {error && (
-            <div className="mb-4 rounded-xl bg-red-950/40 px-4 py-3 text-sm text-red-300 border border-red-900/30">
+            <div className="mb-4 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-600 dark:bg-red-500/15 dark:text-red-400">
               {error}
             </div>
           )}
@@ -88,7 +91,7 @@ export default function LoginPage() {
               type="button"
               onClick={handleGoogle}
               disabled={loading}
-              className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-[#21262D] px-4 py-3 font-semibold text-white transition hover:bg-[#30363D] disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-3 rounded-xl border border-black/10 bg-white px-4 py-2.5 text-xs font-semibold text-[#1A1A1A] shadow-xs transition hover:bg-black/5 active:bg-black/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 disabled:opacity-50 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#F0F4F8] dark:hover:bg-white/5 dark:focus-visible:ring-white/20"
             >
               <svg width="18" height="18" viewBox="0 0 48 48">
                 <path
@@ -115,41 +118,42 @@ export default function LoginPage() {
           </div>
 
           <div className="my-6 flex items-center gap-3">
-            <div className="h-px flex-1 bg-white/10" />
-            <span className="text-xs text-gray-400">OR</span>
-            <div className="h-px flex-1 bg-white/10" />
+            <div className="h-px flex-1 bg-black/10 dark:bg-white/10" />
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#6B6B6B] dark:text-[#A0A0A0]">or</span>
+            <div className="h-px flex-1 bg-black/10 dark:bg-white/10" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email */}
             <div>
-              <label className="block text-sm font-semibold text-white">Email</label>
+              <label className="block text-sm font-semibold text-[#1A1A1A] dark:text-[#F0F4F8]">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="mt-2 w-full rounded-xl border border-white/10 bg-[#21262D] px-4 py-3 outline-none focus:border-[#C84B31] text-white placeholder-gray-500"
+                className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-2.5 text-sm text-[#1A1A1A] placeholder-[#6B6B6B]/60 outline-none transition focus:border-[#C84B31] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C84B31]/50 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#F0F4F8] dark:placeholder-[#A0A0A0]/60 dark:focus:border-[#E85C40] dark:focus-visible:ring-[#E85C40]/50"
                 placeholder="you@example.com"
               />
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-semibold text-white">Password</label>
+              <label className="block text-sm font-semibold text-[#1A1A1A] dark:text-[#F0F4F8]">Password</label>
               <div className="relative mt-2">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-white/10 bg-[#21262D] pl-4 pr-11 py-3 outline-none focus:border-[#C84B31] text-white placeholder-gray-500"
+                  className="w-full rounded-xl border border-black/10 bg-white py-2.5 pl-4 pr-11 text-sm text-[#1A1A1A] placeholder-[#6B6B6B]/60 outline-none transition focus:border-[#C84B31] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C84B31]/50 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#F0F4F8] dark:placeholder-[#A0A0A0]/60 dark:focus:border-[#E85C40] dark:focus-visible:ring-[#E85C40]/50"
                   placeholder="Enter your password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-3.5 text-gray-400 hover:text-white"
+                  className="absolute right-3.5 top-2.5 text-[#6B6B6B] transition hover:text-[#1A1A1A] dark:text-[#A0A0A0] dark:hover:text-[#F0F4F8]"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -160,15 +164,15 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-2xl bg-[#5865F2] py-3.5 font-bold text-white transition hover:bg-[#4752C4] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full min-h-[44px] rounded-xl bg-[#C84B31] px-3.5 py-3 text-xs font-bold text-white shadow-xs transition hover:opacity-90 active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C84B31]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#E85C40] dark:focus-visible:ring-[#E85C40]/50 dark:focus-visible:ring-offset-[#0E1117]"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-gray-400">
+          <p className="mt-6 text-center text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="font-semibold text-[#5865F2] hover:underline">
+            <Link href="/signup" className="font-semibold text-[#C84B31] underline-offset-2 hover:underline dark:text-[#E85C40]">
               Sign up
             </Link>
           </p>

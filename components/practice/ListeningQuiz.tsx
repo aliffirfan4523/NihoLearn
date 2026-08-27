@@ -169,14 +169,14 @@ export function ListeningQuiz() {
   if (isFinished) {
     const accuracy = Math.round((score / questions.length) * 100);
     return (
-      <div className="mx-auto max-w-md rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/15 text-amber-500 shadow-sm">
+      <div className="mx-auto max-w-md rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500 shadow-sm">
           <Trophy size={40} />
         </div>
         <h2 className="mt-5 text-2xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Listening Quiz Complete!</h2>
         <p className="mt-1 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">Your audio recognition score:</p>
 
-        <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#2A2A2A]">
+        <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#1E232B]">
           <div>
             <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Score</div>
             <div className="mt-1 text-xl font-bold text-[#C84B31] dark:text-[#E85C40]">
@@ -196,7 +196,7 @@ export function ListeningQuiz() {
         <div className="mt-7 flex gap-3">
           <Link
             href="/practice"
-            className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+            className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
           >
             Practice Hub
           </Link>
@@ -232,7 +232,7 @@ export function ListeningQuiz() {
         </Link>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-xs font-bold text-orange-600 dark:text-orange-400">
+          <div className="flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-400">
             <Flame size={16} />
             <span>{streak}</span>
           </div>
@@ -242,7 +242,7 @@ export function ListeningQuiz() {
         </div>
       </div>
 
-      <div className="h-2 w-full overflow-hidden rounded-full bg-[#F0F0F0] dark:bg-[#2A2A2A]">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-[#F0F0F0] dark:bg-[#1E232B]">
         <div
           className="h-full bg-[#C84B31] transition-all duration-300 dark:bg-[#E85C40]"
           style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
@@ -250,7 +250,7 @@ export function ListeningQuiz() {
       </div>
 
       {/* Main Question Card */}
-      <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
+      <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
         <div className="mx-auto mb-6 max-w-md text-left">
           <HowToPlay
             gameKey="listening-quiz"
@@ -273,7 +273,7 @@ export function ListeningQuiz() {
           <button
             type="button"
             onClick={() => playAudio(currentQ.reading || currentQ.word)}
-            className="flex h-28 w-28 items-center justify-center rounded-3xl bg-amber-500 text-white shadow-xl transition hover:scale-105 hover:bg-amber-600"
+            className="flex h-28 w-28 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-xs transition hover:bg-amber-600"
             aria-label="Replay audio"
           >
             <Volume2 size={48} />
@@ -298,13 +298,13 @@ export function ListeningQuiz() {
             const isChosen = selectedOption === option;
 
             let btnStyle =
-              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]";
+              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]";
 
             if (status !== "idle") {
               if (isCorrect) {
                 btnStyle = "border-emerald-500 bg-emerald-500 text-white font-bold";
               } else if (isChosen && !isCorrect) {
-                btnStyle = "border-rose-500 bg-rose-500 text-white font-bold";
+                btnStyle = "border-red-500 bg-red-500 text-white font-bold";
               } else {
                 btnStyle = "opacity-40 border-black/5 dark:border-white/5";
               }
@@ -328,7 +328,7 @@ export function ListeningQuiz() {
         {status !== "idle" && (
           <div className="mt-6 flex items-center justify-between rounded-2xl bg-emerald-500/15 p-4 text-emerald-900 dark:text-emerald-300 animate-in fade-in duration-150">
             <div className="flex items-center gap-2">
-              {status === "correct" ? <CheckCircle2 size={22} /> : <XCircle size={22} className="text-rose-500" />}
+              {status === "correct" ? <CheckCircle2 size={22} /> : <XCircle size={22} className="text-red-500" />}
               <span className="font-bold text-sm">
                 {status === "correct" ? "Correct!" : `Correct meaning: ${currentQ.meaning}`}
               </span>

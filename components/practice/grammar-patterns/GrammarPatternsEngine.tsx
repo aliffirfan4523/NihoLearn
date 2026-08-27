@@ -245,7 +245,7 @@ export function GrammarPatternsEngine() {
 
   if (quizPool.length === 0) {
     return (
-      <div className="mx-auto max-w-2xl rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/10 dark:bg-[#161B22]">
+      <div className="mx-auto max-w-2xl rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22]">
         <h2 className="text-xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">No Exercises Found</h2>
         <p className="mt-2 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
           Try switching your JLPT level filter.
@@ -253,7 +253,7 @@ export function GrammarPatternsEngine() {
         <button
           type="button"
           onClick={() => setLevelFilter("ALL")}
-          className="mt-4 rounded-xl bg-[var(--color-vermillion)] px-4 py-2 text-xs font-bold text-white shadow-xs"
+          className="mt-4 rounded-xl bg-[#C84B31] dark:bg-[#E85C40] px-4 py-2 text-xs font-bold text-white shadow-xs"
         >
           Reset to ALL Levels
         </button>
@@ -268,8 +268,8 @@ export function GrammarPatternsEngine() {
 
     return (
       <div className="mx-auto max-w-2xl space-y-6">
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/10 dark:bg-[#161B22]">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/15 text-amber-500 shadow-sm">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22]">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500 shadow-sm">
             <Trophy size={40} />
           </div>
 
@@ -283,7 +283,7 @@ export function GrammarPatternsEngine() {
           <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#1E232B]">
             <div>
               <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Score</div>
-              <div className="mt-1 text-2xl font-bold text-[var(--color-vermillion)]">
+              <div className="mt-1 text-2xl font-bold text-[#C84B31] dark:text-[#E85C40]">
                 {score} / {quizPool.length}
               </div>
             </div>
@@ -295,14 +295,14 @@ export function GrammarPatternsEngine() {
             </div>
             <div>
               <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Max Streak</div>
-              <div className="mt-1 text-2xl font-bold text-orange-500">{maxStreak}</div>
+              <div className="mt-1 text-2xl font-bold text-amber-500">{maxStreak}</div>
             </div>
           </div>
 
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href="/practice"
-              className="flex-1 min-w-[140px] rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-center text-xs font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
+              className="flex-1 min-w-0 sm:min-w-[140px] rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-center text-xs font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               Practice Hub
             </Link>
@@ -316,7 +316,7 @@ export function GrammarPatternsEngine() {
                     missed.map((m) => m.exercise)
                   )
                 }
-                className="flex-1 min-w-[140px] rounded-2xl border border-rose-500/30 bg-rose-500/10 py-3 text-xs font-bold text-rose-700 dark:text-rose-300 transition hover:bg-rose-500/20"
+                className="flex-1 min-w-0 sm:min-w-[140px] rounded-2xl border border-red-500/30 bg-red-500/10 py-3 text-xs font-bold text-red-700 dark:text-red-300 transition hover:bg-red-500/20"
               >
                 Review {missed.length} Missed
               </button>
@@ -325,7 +325,7 @@ export function GrammarPatternsEngine() {
             <button
               type="button"
               onClick={() => startQuiz(levelFilter)}
-              className="flex-1 min-w-[140px] rounded-2xl bg-[var(--color-vermillion)] py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90"
+              className="flex-1 min-w-0 sm:min-w-[140px] rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90"
             >
               Practice Again
             </button>
@@ -335,7 +335,7 @@ export function GrammarPatternsEngine() {
         {/* Detailed Breakdown Review */}
         <div className="space-y-3">
           <h3 className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA] flex items-center gap-2">
-            <BookOpen size={16} className="text-[var(--color-vermillion)]" />
+            <BookOpen size={16} className="text-[#C84B31] dark:text-[#E85C40]" />
             <span>Grammar Pattern Breakdown & Explanations ({sessionResults.length})</span>
           </h3>
 
@@ -352,7 +352,7 @@ export function GrammarPatternsEngine() {
                         <Check size={14} />
                       </span>
                     ) : (
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/15 text-red-600 dark:text-red-400">
                         <XCircle size={14} />
                       </span>
                     )}
@@ -387,7 +387,7 @@ export function GrammarPatternsEngine() {
                 </div>
 
                 <div className="rounded-xl bg-[#FAFAF8] p-3 text-xs leading-relaxed text-[#1A1A1A] dark:bg-[#1E232B] dark:text-[#FAFAFA]">
-                  <strong className="text-[var(--color-vermillion)]">Rule Breakdown:</strong>{" "}
+                  <strong className="text-[#C84B31] dark:text-[#E85C40]">Rule Breakdown:</strong>{" "}
                   {result.exercise.explanation}
                 </div>
               </div>
@@ -421,7 +421,7 @@ export function GrammarPatternsEngine() {
               onClick={() => setLevelFilter(lvl)}
               className={`rounded-lg px-2.5 py-1 text-xs font-bold transition ${
                 levelFilter === lvl
-                  ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                  ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                   : "text-[#6B6B6B] hover:text-[#1A1A1A] dark:text-[#A0A0A0] dark:hover:text-white"
               }`}
             >
@@ -432,7 +432,7 @@ export function GrammarPatternsEngine() {
 
         {/* Streak and Count */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-xs font-bold text-orange-500">
+          <div className="flex items-center gap-1 text-xs font-bold text-amber-500">
             <Flame size={16} className={streak > 0 ? "animate-bounce" : ""} />
             <span>{streak} Streak</span>
           </div>
@@ -445,7 +445,7 @@ export function GrammarPatternsEngine() {
       {/* Progress Bar */}
       <div className="h-2 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
         <div
-          className="h-full bg-[var(--color-vermillion)] transition-all duration-300"
+          className="h-full bg-[#C84B31] dark:bg-[#E85C40] transition-all duration-300"
           style={{ width: `${((currentIndex + 1) / quizPool.length) * 100}%` }}
         />
       </div>
@@ -463,7 +463,7 @@ export function GrammarPatternsEngine() {
       />
 
       {/* Main Question Card */}
-      <div className="rounded-3xl border border-black/10 bg-white p-6 sm:p-8 shadow-lg dark:border-white/10 dark:bg-[#161B22] space-y-6">
+      <div className="rounded-2xl border border-black/10 bg-white p-6 sm:p-8 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
         {/* Scenario Banner */}
         <div className="rounded-2xl border border-purple-500/20 bg-purple-500/10 p-4 text-xs dark:border-purple-500/30 dark:bg-purple-500/15 space-y-1">
           <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300">
@@ -486,10 +486,10 @@ export function GrammarPatternsEngine() {
             <span
               className={`inline-flex min-w-[90px] items-center justify-center rounded-xl border-2 px-3 py-1 text-center transition-all ${
                 status === "idle"
-                  ? "border-dashed border-[var(--color-vermillion)]/60 bg-[var(--color-vermillion)]/5 text-[var(--color-vermillion)] shadow-inner"
+                  ? "border-dashed border-[#C84B31]/60 dark:border-[#E85C40]/60 bg-[#C84B31]/5 dark:bg-[#E85C40]/5 text-[#C84B31] dark:text-[#E85C40] shadow-inner"
                   : status === "correct"
                   ? "border-emerald-500 bg-emerald-500 text-white font-bold"
-                  : "border-rose-500 bg-rose-500 text-white font-bold"
+                  : "border-red-500 bg-red-500 text-white font-bold"
               }`}
             >
               {status === "idle"
@@ -508,9 +508,9 @@ export function GrammarPatternsEngine() {
                   getCompletedSentence(currentExercise, currentExercise.correctPattern)
                 )
               }
-              className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-[#FAFAF8] px-4 py-1.5 text-xs font-bold text-[#1A1A1A] shadow-2xs transition hover:scale-105 hover:border-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
+              className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-[#FAFAF8] px-4 py-1.5 text-xs font-bold text-[#1A1A1A] shadow-2xs transition hover:border-[#C84B31] dark:border-[#E85C40] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
-              <Volume2 size={16} className="text-[var(--color-vermillion)]" />
+              <Volume2 size={16} className="text-[#C84B31] dark:text-[#E85C40]" />
               <span>Listen Sentence</span>
             </button>
           </div>
@@ -523,14 +523,14 @@ export function GrammarPatternsEngine() {
             const isCorrect = option === currentExercise.correctPattern;
 
             let btnStyle =
-              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[var(--color-vermillion)] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA] dark:hover:bg-white/5";
+              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-[#E85C40] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA] dark:hover:bg-white/5";
 
             if (status !== "idle") {
               if (isCorrect) {
                 btnStyle =
                   "border-emerald-500 bg-emerald-500 text-white font-bold scale-[1.02] shadow-md";
               } else if (isChosen && !isCorrect) {
-                btnStyle = "border-rose-500 bg-rose-500 text-white font-bold";
+                btnStyle = "border-red-500 bg-red-500 text-white font-bold";
               } else {
                 btnStyle = "opacity-40 border-black/5 dark:border-white/5";
               }
@@ -568,14 +568,14 @@ export function GrammarPatternsEngine() {
               className={`flex items-center justify-between rounded-2xl p-4 ${
                 status === "correct"
                   ? "bg-emerald-500/15 text-emerald-900 dark:text-emerald-300"
-                  : "bg-rose-500/15 text-rose-900 dark:text-rose-300"
+                  : "bg-red-500/15 text-red-900 dark:text-red-300"
               }`}
             >
               <div className="flex items-center gap-2.5">
                 {status === "correct" ? (
                   <CheckCircle2 size={24} className="text-emerald-600 dark:text-emerald-400" />
                 ) : (
-                  <XCircle size={24} className="text-rose-600 dark:text-rose-400" />
+                  <XCircle size={24} className="text-red-600 dark:text-red-400" />
                 )}
                 <div>
                   <div className="text-sm font-bold">
@@ -600,7 +600,7 @@ export function GrammarPatternsEngine() {
 
             {/* Explanation box */}
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 text-left text-xs leading-relaxed text-[#1A1A1A] dark:border-white/5 dark:bg-[#1E232B] dark:text-[#FAFAFA] space-y-1.5">
-              <div className="flex items-center gap-1.5 font-bold text-[var(--color-vermillion)]">
+              <div className="flex items-center gap-1.5 font-bold text-[#C84B31] dark:text-[#E85C40]">
                 <Lightbulb size={14} />
                 <span>Pattern Rule & Nuance:</span>
               </div>

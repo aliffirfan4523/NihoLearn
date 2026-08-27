@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
-import { ActivityChart } from "@/components/dashboard/ActivityChart";
+import { WeeklyActivity } from "@/components/dashboard/WeeklyActivity";
 
 export default async function StatsPage() {
   const user = await requireUser();
@@ -32,41 +32,41 @@ export default async function StatsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <section className="relative overflow-hidden rounded-3xl border border-black/10 bg-white p-8 shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
-        <div className="pointer-events-none absolute -right-6 -top-12 font-serif text-[12rem] leading-none text-[#C84B31]/5 dark:text-[#C84B31]/10">統</div>
-        <div className="relative">
-          <p className="text-sm font-semibold uppercase tracking-widest text-[#C84B31] dark:text-[#E85C40]">Statistics</p>
-          <h2 className="mt-3 text-4xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#FAFAFA]">Study Statistics</h2>
-          <p className="mt-4 text-[#6B6B6B] dark:text-[#A0A0A0]">Track your study activity and progress over time.</p>
-        </div>
+    <div className="space-y-8">
+      {/* Hero — flat editorial header, no oversized kanji ghost, no filler subtitle */}
+      <section className="border-b border-black/10 pb-6 dark:border-white/10">
+        <p className="text-xs font-semibold uppercase tracking-widest text-[#C84B31] dark:text-[#E85C40]">Statistics</p>
+        <h2 className="mt-3 font-serif text-3xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#FAFAFA]">Study Statistics</h2>
       </section>
 
-      <div className="grid gap-5 sm:grid-cols-3">
-        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
-          <p className="text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">Total Sessions</p>
-          <p className="mt-2 text-3xl font-bold text-[#C84B31] dark:text-[#E85C40]">{totalSessions}</p>
+      {/* Stats — inline text, single vermillion accent on the hero metric */}
+      <div className="grid gap-6 sm:grid-cols-3">
+        <div className="border-t-2 border-[#C84B31] pt-3 dark:border-[#E85C40]">
+          <p className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Total Sessions</p>
+          <p className="mt-1 text-3xl font-bold text-[#C84B31] dark:text-[#E85C40]">{totalSessions}</p>
         </div>
-        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
-          <p className="text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">Total Minutes</p>
-          <p className="mt-2 text-3xl font-bold text-[#2D5F8A] dark:text-[#4A86B8]">{totalMinutes}</p>
+        <div className="border-t border-black/10 pt-3 dark:border-white/10">
+          <p className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Total Minutes</p>
+          <p className="mt-1 text-3xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">{totalMinutes}</p>
         </div>
-        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
-          <p className="text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">Avg / Session</p>
-          <p className="mt-2 text-3xl font-bold text-[#3D7D52] dark:text-[#4D9D6A]">{avgPerSession} min</p>
+        <div className="border-t border-black/10 pt-3 dark:border-white/10">
+          <p className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Avg / Session</p>
+          <p className="mt-1 text-3xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">{avgPerSession} min</p>
         </div>
       </div>
 
-      <section className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
-        <h3 className="mb-4 text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Weekly Activity</h3>
-        <ActivityChart data={days} />
+      {/* Weekly Activity — flat section, hairline below */}
+      <section className="space-y-4 border-b border-black/10 pb-6 dark:border-white/10">
+        <h3 className="font-serif text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Weekly Activity</h3>
+        <WeeklyActivity data={days} />
       </section>
 
-      <section className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/20 dark:bg-[#1A1A1A]">
-        <h3 className="mb-4 text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Level Distribution</h3>
+      {/* Level Distribution — flat section */}
+      <section className="space-y-4">
+        <h3 className="font-serif text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Level Distribution</h3>
         <div className="space-y-3">
           {Object.entries(levelCounts).length === 0 ? (
-            <p className="text-[#6B6B6B] dark:text-[#A0A0A0]">No sessions logged yet.</p>
+            <p className="text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">No sessions logged yet.</p>
           ) : (
             Object.entries(levelCounts).map(([level, count]) => {
               const pct = totalSessions > 0 ? Math.round((count / totalSessions) * 100) : 0;
@@ -76,7 +76,7 @@ export default async function StatsPage() {
                     <span className="font-semibold text-[#1A1A1A] dark:text-[#FAFAFA]">{level}</span>
                     <span className="text-[#6B6B6B] dark:text-[#A0A0A0]">{count} sessions ({pct}%)</span>
                   </div>
-                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-[#F0F0F0] dark:bg-[#2A2A2A]">
+                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
                     <div className="h-full rounded-full bg-[#C84B31] dark:bg-[#E85C40]" style={{ width: `${pct}%` }} />
                   </div>
                 </div>

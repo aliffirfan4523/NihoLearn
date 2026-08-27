@@ -351,7 +351,7 @@ export function ShiritoriEngine() {
       </div>
 
       {/* Opponent Selection & Status Bar */}
-      <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm dark:border-white/15 dark:bg-[#1A1A1A]">
+      <div className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm dark:border-white/15 dark:bg-[#1A1A1A]">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-black/5 text-2xl dark:bg-white/10">
@@ -383,7 +383,7 @@ export function ShiritoriEngine() {
                   className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${
                     selectedOpponent.id === opp.id
                       ? "bg-[#C84B31] text-white shadow-2xs dark:bg-[#E85C40]"
-                      : "border border-black/10 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#A0A0A0]"
+                      : "border border-black/10 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#A0A0A0]"
                   }`}
                 >
                   {opp.avatar} {opp.level}
@@ -485,7 +485,7 @@ export function ShiritoriEngine() {
           </div>
 
           {/* Player Typing Input Area */}
-          <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-xl dark:border-white/15 dark:bg-[#1A1A1A] space-y-3">
+          <div className="rounded-2xl border border-black/10 bg-white p-5 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A] space-y-3">
             <div className="relative">
               <input
                 ref={inputRef}
@@ -500,13 +500,13 @@ export function ShiritoriEngine() {
                 autoComplete="off"
                 autoCapitalize="off"
                 spellCheck="false"
-                className="w-full rounded-2xl border-2 border-black/15 bg-[#FAFAF8] px-4 py-3.5 text-center font-serif text-lg font-bold text-[#1A1A1A] placeholder:font-sans placeholder:text-sm placeholder:text-gray-400 focus:border-[#C84B31] focus:outline-none focus:ring-4 focus:ring-[#C84B31]/15 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA] dark:focus:border-[#E85C40]"
+                className="w-full rounded-2xl border-2 border-black/15 bg-[#FAFAF8] px-4 py-3.5 text-center font-serif text-lg font-bold text-[#1A1A1A] placeholder:font-sans placeholder:text-sm placeholder:text-gray-400 focus:border-[#C84B31] focus:outline-none focus:ring-4 focus:ring-[#C84B31]/15 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA] dark:focus:border-[#E85C40]"
               />
             </div>
 
             {/* Error Feedback */}
             {inputError && (
-              <div className="flex items-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 p-2.5 text-xs font-semibold text-rose-700 dark:text-rose-400 animate-in fade-in duration-100">
+              <div className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/10 p-2.5 text-xs font-semibold text-red-700 dark:text-red-400 animate-in fade-in duration-100">
                 <AlertTriangle size={14} className="shrink-0" />
                 <span>{inputError}</span>
               </div>
@@ -517,7 +517,7 @@ export function ShiritoriEngine() {
               <button
                 type="button"
                 onClick={() => setShowHints((h) => !h)}
-                className="flex items-center gap-1 rounded-xl border border-black/10 bg-[#FAFAF8] px-3 py-1.5 font-bold text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#A0A0A0]"
+                className="flex items-center gap-1 rounded-xl border border-black/10 bg-[#FAFAF8] px-3 py-1.5 font-bold text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#A0A0A0]"
               >
                 <Lightbulb size={14} className="text-amber-500" />
                 <span>{showHints ? "Hide Word Hints" : "Sensei Hint"}</span>
@@ -546,7 +546,7 @@ export function ShiritoriEngine() {
                       key={idx}
                       type="button"
                       onClick={() => setUserInput(item.word)}
-                      className="rounded-xl border border-black/10 bg-white px-3 py-1 text-xs font-bold text-[#1A1A1A] shadow-2xs hover:border-[#C84B31] dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+                      className="rounded-xl border border-black/10 bg-white px-3 py-1 text-xs font-bold text-[#1A1A1A] shadow-2xs hover:border-[#C84B31] dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
                     >
                       <span className="font-serif">{item.word}</span> ({item.reading}) - {item.meaning}
                     </button>
@@ -560,8 +560,8 @@ export function ShiritoriEngine() {
 
       {/* ── Idle Menu ── */}
       {gameState === "idle" && (
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 shadow-xs text-4xl">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 shadow-xs text-4xl">
             ⛓️
           </div>
 
@@ -590,7 +590,7 @@ export function ShiritoriEngine() {
           <button
             type="button"
             onClick={startMatch}
-            className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#C84B31] py-4 text-base font-bold text-white shadow-xl transition hover:bg-[#b03e26] dark:bg-[#E85C40]"
+            className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#C84B31] py-4 text-base font-bold text-white shadow-xs transition hover:bg-[#b03e26] dark:bg-[#E85C40]"
           >
             <Sparkles size={20} />
             <span>Start Shiritori Match</span>
@@ -600,12 +600,12 @@ export function ShiritoriEngine() {
 
       {/* ── Game Over Screen ── */}
       {gameState === "gameover" && (
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-2xl dark:border-white/15 dark:bg-[#1A1A1A] animate-in zoom-in-95 duration-150">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-2xl dark:border-white/15 dark:bg-[#1A1A1A] animate-in zoom-in-95 duration-150">
           <div
-            className={`mx-auto flex h-20 w-20 items-center justify-center rounded-3xl text-4xl shadow-md ${
+            className={`mx-auto flex h-20 w-20 items-center justify-center rounded-2xl text-4xl shadow-md ${
               gameResult === "win"
                 ? "bg-amber-500/20 text-amber-500"
-                : "bg-rose-500/20 text-rose-500"
+                : "bg-red-500/20 text-red-500"
             }`}
           >
             {gameResult === "win" ? "🏆" : "💥"}
@@ -619,7 +619,7 @@ export function ShiritoriEngine() {
             {defeatReason}
           </p>
 
-          <div className="mt-6 grid grid-cols-2 gap-3 rounded-2xl bg-[#FAFAF8] p-4 text-center dark:bg-[#2A2A2A]">
+          <div className="mt-6 grid grid-cols-2 gap-3 rounded-2xl bg-[#FAFAF8] p-4 text-center dark:bg-[#1E232B]">
             <div>
               <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Words in Chain</div>
               <div className="mt-1 font-mono text-2xl font-bold text-[#C84B31] dark:text-[#E85C40]">
@@ -637,7 +637,7 @@ export function ShiritoriEngine() {
           <div className="mt-7 flex gap-3">
             <Link
               href="/practice"
-              className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3.5 text-center text-xs font-bold text-[#1A1A1A] hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+              className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3.5 text-center text-xs font-bold text-[#1A1A1A] hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               Practice Dojo
             </Link>

@@ -39,7 +39,7 @@ export function ReadingStoryModal({
       role="dialog"
       aria-modal="true"
     >
-      <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col rounded-3xl border border-black/10 bg-white shadow-2xl dark:border-white/15 dark:bg-[#1A1A1A]">
+      <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col rounded-2xl border border-black/10 bg-white shadow-2xl dark:border-white/15 dark:bg-[#1A1A1A]">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-black/10 p-5 dark:border-white/10">
           <div className="flex items-center gap-3">
@@ -58,7 +58,7 @@ export function ReadingStoryModal({
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex rounded-xl bg-[#FAFAF8] p-1 dark:bg-[#2A2A2A]">
+            <div className="flex rounded-xl bg-[#FAFAF8] p-1 dark:bg-[#1E232B]">
               <button
                 type="button"
                 onClick={() => setCurrentTab("story")}
@@ -86,7 +86,7 @@ export function ReadingStoryModal({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-[#2A2A2A] dark:hover:text-gray-200"
+              className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-[#1E232B] dark:hover:text-gray-200"
               aria-label="Close"
             >
               <X size={20} />
@@ -107,7 +107,7 @@ export function ReadingStoryModal({
                 {story.sentences.map((sent, idx) => (
                   <div
                     key={sent.id}
-                    className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4.5 dark:border-white/10 dark:bg-[#2A2A2A]"
+                    className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4.5 dark:border-white/10 dark:bg-[#1E232B]"
                   >
                     <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
                       <span>Sentence {idx + 1}</span>
@@ -165,7 +165,7 @@ export function ReadingStoryModal({
                         <button
                           type="button"
                           onClick={() => playJapaneseAudio(selectedToken.text)}
-                          className="rounded-full bg-white p-1 text-[#C84B31] shadow-xs hover:scale-110 dark:bg-[#1A1A1A] dark:text-[#E85C40]"
+                          className="rounded-full bg-white p-1 text-[#C84B31] shadow-xs dark:bg-[#1A1A1A] dark:text-[#E85C40]"
                         >
                           <Volume2 size={14} />
                         </button>
@@ -201,7 +201,7 @@ export function ReadingStoryModal({
                 return (
                   <div
                     key={qIndex}
-                    className="rounded-2xl border border-black/10 bg-[#FAFAF8] p-5 dark:border-white/10 dark:bg-[#2A2A2A]"
+                    className="rounded-2xl border border-black/10 bg-[#FAFAF8] p-5 dark:border-white/10 dark:bg-[#1E232B]"
                   >
                     <div className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
                       {qIndex + 1}. {q.question}
@@ -219,7 +219,7 @@ export function ReadingStoryModal({
                           if (isCorrect) {
                             style = "border-emerald-500 bg-emerald-500/10 text-emerald-800 font-bold dark:text-emerald-300";
                           } else if (isChosen && !isCorrect) {
-                            style = "border-rose-500 bg-rose-500/10 text-rose-800 font-bold dark:text-rose-300";
+                            style = "border-red-500 bg-red-500/10 text-red-800 font-bold dark:text-red-300";
                           }
                         } else if (isChosen) {
                           style = "border-[#C84B31] bg-[#C84B31]/10 text-[#C84B31] font-bold dark:border-[#E85C40] dark:bg-[#E85C40]/15 dark:text-[#E85C40]";
@@ -234,7 +234,7 @@ export function ReadingStoryModal({
                           >
                             <span>{opt}</span>
                             {showResults && isCorrect && <CheckCircle2 size={16} className="text-emerald-600" />}
-                            {showResults && isChosen && !isCorrect && <XCircle size={16} className="text-rose-600" />}
+                            {showResults && isChosen && !isCorrect && <XCircle size={16} className="text-red-600" />}
                           </button>
                         );
                       })}

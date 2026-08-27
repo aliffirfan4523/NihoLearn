@@ -8,6 +8,8 @@
   --color-washi: #FFFFFF;
   --color-surface: #F4F4F0;
   --color-vermillion: #C84B31;
+  /* AA: vermillion-as-text on #FAFAF8 needs ≥4.5:1 (#C84B31 itself is 4.46) */
+  --accent-text: color-mix(in srgb, var(--color-vermillion) 80%, black);
   --color-indigo: #2D5F8A;
   --color-forest: #3D7D52;
   --color-ink: #1A1A1A;
@@ -22,6 +24,8 @@
   --color-washi: #161B22;
   --color-surface: #1E232B;
   --color-vermillion: #E85C40;
+  /* AA: white text on vermillion fills needs ≥4.5:1 (#E85C40 gives 3.48) */
+  --accent-fill: color-mix(in srgb, var(--color-vermillion) 85%, black);
   --color-indigo: #60A5FA;
   --color-forest: #34D399;
   --color-ink: #F0F4F8;
@@ -81,7 +85,7 @@
 
 /* Dynamic theme color bridge across all existing vermillion utility classes */
 [class*="text-[#C84B31]"] {
-  color: var(--color-vermillion) !important;
+  color: var(--accent-text) !important;
 }
 .dark [class*="dark:text-[#E85C40]"] {
   color: var(--color-vermillion) !important;
@@ -91,7 +95,7 @@
   background-color: var(--color-vermillion) !important;
 }
 .dark [class*="dark:bg-[#E85C40]"] {
-  background-color: var(--color-vermillion) !important;
+  background-color: var(--accent-fill) !important;
 }
 
 [class*="border-[#C84B31]"] {

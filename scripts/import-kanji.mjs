@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Loading JLPT Kanji dictionary files...");
 
-  const baseDir = path.join(process.cwd(), "public", "jlpt-kanji-dictionary");
+  const baseDir = path.join(process.cwd(), "data", "jlpt-kanji-dictionary");
   const kanjiRaw = JSON.parse(fs.readFileSync(path.join(baseDir, "jlpt-kanji.json"), "utf8"));
 
   console.log(`Found ${kanjiRaw.length} kanji records in jlpt-kanji.json.`);

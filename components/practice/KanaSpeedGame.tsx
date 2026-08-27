@@ -227,8 +227,8 @@ export function KanaSpeedGame() {
       </div>
 
       {gameState === "idle" && (
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-purple-600 text-white shadow-md">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-purple-600 text-white shadow-md">
             <Zap size={40} />
           </div>
           <h1 className="mt-5 text-3xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Kana Speed Sprint</h1>
@@ -259,7 +259,7 @@ export function KanaSpeedGame() {
                 className={`rounded-xl px-4 py-2 text-sm font-bold capitalize transition ${
                   type === t
                     ? "bg-[#C84B31] text-white shadow-xs dark:bg-[#E85C40]"
-                    : "border border-black/10 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#A0A0A0]"
+                    : "border border-black/10 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#A0A0A0]"
                 }`}
               >
                 {t}
@@ -271,7 +271,7 @@ export function KanaSpeedGame() {
             type="button"
             onClick={startGame}
             disabled={!kanaLoaded}
-            className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-purple-600 py-4 text-base font-bold text-white shadow-lg transition hover:bg-purple-700 disabled:opacity-40"
+            className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-purple-600 py-4 text-base font-bold text-white shadow-xs transition hover:bg-purple-700 disabled:opacity-40"
           >
             <Zap size={20} />
             <span>{kanaLoaded ? "Start 60s Sprint" : "Loading kana…"}</span>
@@ -290,7 +290,7 @@ export function KanaSpeedGame() {
               </span>
             </div>
             <div className="flex items-center justify-center gap-2 rounded-2xl border border-black/10 bg-white p-3 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
-              <Flame size={18} className="text-orange-500" />
+              <Flame size={18} className="text-amber-500" />
               <span className="font-mono text-xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
                 {streak} streak
               </span>
@@ -304,7 +304,7 @@ export function KanaSpeedGame() {
           </div>
 
           {/* Current Kana Flashcard */}
-          <div className="rounded-3xl border border-black/10 bg-white p-12 text-center shadow-xl dark:border-white/15 dark:bg-[#1A1A1A]">
+          <div className="rounded-2xl border border-black/10 bg-white p-12 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
             <div className="font-serif text-9xl font-bold leading-none text-[#1A1A1A] dark:text-[#FAFAFA] animate-in zoom-in-95 duration-100">
               {currentChar.character}
             </div>
@@ -321,7 +321,7 @@ export function KanaSpeedGame() {
                 autoComplete="off"
                 autoCapitalize="off"
                 spellCheck="false"
-                className="w-full rounded-2xl border-2 border-purple-500/40 bg-[#FAFAF8] px-4 py-4 text-center font-mono text-2xl font-bold text-[#1A1A1A] focus:border-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-500/20 dark:border-purple-500/50 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+                className="w-full rounded-2xl border-2 border-purple-500/40 bg-[#FAFAF8] px-4 py-4 text-center font-mono text-2xl font-bold text-[#1A1A1A] focus:border-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-500/20 dark:border-purple-500/50 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
               />
             </div>
           </div>
@@ -329,14 +329,14 @@ export function KanaSpeedGame() {
       )}
 
       {gameState === "finished" && (
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-purple-600 text-white shadow-md">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-purple-600 text-white shadow-md">
             <Trophy size={40} />
           </div>
           <h2 className="mt-5 text-3xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Time&apos;s Up!</h2>
           <p className="mt-1 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">Sprint Results</p>
 
-          <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-5 dark:bg-[#2A2A2A]">
+          <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-5 dark:bg-[#1E232B]">
             <div>
               <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Speed (CPM)</div>
               <div className="mt-1 font-mono text-3xl font-bold text-purple-600 dark:text-purple-400">
@@ -351,7 +351,7 @@ export function KanaSpeedGame() {
             </div>
             <div>
               <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Max Streak</div>
-              <div className="mt-1 font-mono text-3xl font-bold text-orange-600 dark:text-orange-400">
+              <div className="mt-1 font-mono text-3xl font-bold text-amber-600 dark:text-amber-400">
                 {maxStreak}
               </div>
             </div>
@@ -360,7 +360,7 @@ export function KanaSpeedGame() {
           <div className="mt-8 flex gap-3">
             <Link
               href="/practice"
-              className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3.5 text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+              className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3.5 text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               Back to Practice
             </Link>

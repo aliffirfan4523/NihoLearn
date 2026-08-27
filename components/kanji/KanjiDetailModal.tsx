@@ -61,14 +61,14 @@ export function KanjiDetailModal({
       aria-modal="true"
     >
       <div
-        className="relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-black/10 bg-white p-6 text-[#1A1A1A] shadow-2xl dark:border-white/15 dark:bg-[#161920] dark:text-[#E2E8F0] animate-in zoom-in-95 duration-150"
+        className="relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-black/10 bg-white p-6 text-[#1A1A1A] shadow-xs dark:border-white/15 dark:bg-[#161B22] dark:text-[#F0F4F8] animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-5 top-5 rounded-full p-2 text-gray-400 transition hover:bg-black/5 hover:text-black dark:hover:bg-white/10 dark:hover:text-white"
+          className="absolute right-5 top-5 rounded-full p-2 text-[#6B6B6B] transition hover:bg-black/5 hover:text-[#1A1A1A] dark:text-[#A0A0A0] dark:hover:bg-white/10 dark:hover:text-white"
         >
           <X size={20} />
         </button>
@@ -80,52 +80,52 @@ export function KanjiDetailModal({
 
         <div className="space-y-4">
           {/* 2. READINGS & MEANING SECTION */}
-          <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-5 dark:border-white/5 dark:bg-[#1B1F28]">
-            <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+          <div className="rounded-2xl border border-black/5 bg-[#F4F4F0] p-5 dark:border-white/10 dark:bg-[#1E232B]">
+            <h4 className="text-xs font-semibold uppercase tracking-widest text-[#6B6B6B] dark:text-[#A0A0A0]">
               Readings &amp; Meaning
             </h4>
 
             {/* Onyomi */}
-            <div className="mt-4 flex items-baseline justify-between gap-4 border-b border-black/5 pb-3 dark:border-white/5">
-              <span className="text-xs font-medium text-[#64748B] dark:text-[#94A3B8]">Onyomi</span>
+            <div className="mt-4 flex items-baseline justify-between gap-4 border-b border-black/5 pb-3 dark:border-white/10">
+              <span className="text-xs font-medium text-[#6B6B6B] dark:text-[#A0A0A0]">Onyomi</span>
               <div className="flex flex-wrap items-center gap-3">
                 {kanji.onyomi.length > 0 ? (
                   kanji.onyomi.map((on, idx) => (
-                    <span key={idx} className="font-serif text-sm font-semibold text-[#4F46E5] dark:text-[#818CF8]">
+                    <span key={idx} className="font-serif text-sm font-semibold text-[#2D5F8A] dark:text-[#60A5FA]">
                       {on}
                     </span>
                   ))
                 ) : (
-                  <span className="text-xs text-gray-400 dark:text-gray-500">—</span>
+                  <span className="text-xs text-[#6B6B6B]/70 dark:text-[#A0A0A0]/70">—</span>
                 )}
               </div>
             </div>
 
             {/* Kunyomi */}
-            <div className="mt-3 flex items-baseline justify-between gap-4 border-b border-black/5 pb-3 dark:border-white/5">
-              <span className="text-xs font-medium text-[#64748B] dark:text-[#94A3B8]">Kunyomi</span>
+            <div className="mt-3 flex items-baseline justify-between gap-4 border-b border-black/5 pb-3 dark:border-white/10">
+              <span className="text-xs font-medium text-[#6B6B6B] dark:text-[#A0A0A0]">Kunyomi</span>
               <div className="flex flex-wrap items-center gap-2">
                 {primaryKunyomi && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-[#EC4899] px-3 py-0.5 text-xs font-bold text-white shadow-xs">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#C84B31] px-3 py-0.5 text-xs font-bold text-white shadow-xs dark:bg-[#E85C40]">
                     ★ {primaryKunyomi}
                   </span>
                 )}
                 {otherKunyomi.map((kun, idx) => (
-                  <span key={idx} className="font-serif text-sm font-semibold text-[#DB2777] dark:text-[#F472B6]">
+                  <span key={idx} className="font-serif text-sm font-semibold text-[#C84B31] dark:text-[#E85C40]">
                     {kun}
                   </span>
                 ))}
-                {kanji.kunyomi.length === 0 && <span className="text-xs text-gray-400 dark:text-gray-500">—</span>}
+                {kanji.kunyomi.length === 0 && <span className="text-xs text-[#6B6B6B]/70 dark:text-[#A0A0A0]/70">—</span>}
               </div>
             </div>
 
             {/* Subtitle helper note */}
-            <p className="mt-2 text-[11px] italic text-[#64748B] dark:text-[#64748B]">
+            <p className="mt-2 text-xs italic text-[#6B6B6B] dark:text-[#A0A0A0]">
               All readings shown. The JLPT tests readings through vocabulary, so focus on the highlighted ones.
             </p>
 
             {/* English Meanings */}
-            <div className="mt-3 font-medium text-sm text-[#1A1A1A] dark:text-[#F1F5F9]">
+            <div className="mt-3 font-medium text-sm text-[#1A1A1A] dark:text-[#F0F4F8]">
               {kanji.meaning}
             </div>
           </div>
@@ -133,31 +133,31 @@ export function KanjiDetailModal({
           {/* 3. RADICAL & COMPONENTS SECTION */}
           <div className="grid grid-cols-2 gap-3">
             {/* RADICAL */}
-            <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1B1F28]">
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+            <div className="rounded-2xl border border-black/5 bg-[#F4F4F0] p-4 dark:border-white/10 dark:bg-[#1E232B]">
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-[#6B6B6B] dark:text-[#A0A0A0]">
                 Radical
               </h4>
-              <div className="mt-3 flex flex-col items-center justify-center rounded-xl border border-black/5 bg-white p-4 dark:border-white/5 dark:bg-[#141720]">
-                <div className="font-serif text-4xl font-bold text-[#4F46E5] dark:text-[#818CF8]">
+              <div className="mt-3 flex flex-col items-center justify-center rounded-xl border border-black/5 bg-white p-4 dark:border-white/10 dark:bg-[#161B22]">
+                <div className="font-serif text-4xl font-bold text-[#2D5F8A] dark:text-[#60A5FA]">
                   {kanji.character}
                 </div>
-                <div className="mt-2 text-center text-xs font-semibold text-[#1A1A1A] dark:text-[#CBD5E1]">
+                <div className="mt-2 text-center text-xs font-semibold text-[#1A1A1A] dark:text-[#F0F4F8]">
                   {kanji.character}
                 </div>
-                <div className="text-[11px] text-[#64748B] capitalize dark:text-[#94A3B8]">
+                <div className="text-xs text-[#6B6B6B] capitalize dark:text-[#A0A0A0]">
                   {kanji.meaning.split(",")[0] || "radical"}
                 </div>
               </div>
             </div>
 
             {/* COMPONENTS */}
-            <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1B1F28]">
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+            <div className="rounded-2xl border border-black/5 bg-[#F4F4F0] p-4 dark:border-white/10 dark:bg-[#1E232B]">
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-[#6B6B6B] dark:text-[#A0A0A0]">
                 Components
               </h4>
-              <div className="mt-3 flex h-[104px] items-center justify-center rounded-xl border border-black/5 bg-white p-4 text-sm text-[#64748B] dark:border-white/5 dark:bg-[#141720] dark:text-[#64748B]">
+              <div className="mt-3 flex h-[104px] items-center justify-center rounded-xl border border-black/5 bg-white p-4 text-sm text-[#6B6B6B] dark:border-white/10 dark:bg-[#161B22] dark:text-[#A0A0A0]">
                 {kanji.strokes > 6 ? (
-                  <span className="font-serif text-xl font-bold text-[#1A1A1A] dark:text-[#CBD5E1]">
+                  <span className="font-serif text-xl font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
                     {kanji.character}
                   </span>
                 ) : (
@@ -168,8 +168,8 @@ export function KanjiDetailModal({
           </div>
 
           {/* 4. RELATED VOCABULARY SECTION */}
-          <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-5 dark:border-white/5 dark:bg-[#1B1F28]">
-            <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+          <div className="rounded-2xl border border-black/5 bg-[#F4F4F0] p-5 dark:border-white/10 dark:bg-[#1E232B]">
+            <h4 className="text-xs font-semibold uppercase tracking-widest text-[#6B6B6B] dark:text-[#A0A0A0]">
               Related Vocabulary
             </h4>
 
@@ -178,16 +178,16 @@ export function KanjiDetailModal({
                 {kanji.examples.map((ex, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between rounded-xl border border-black/5 bg-white p-3 transition hover:border-black/15 dark:border-white/5 dark:bg-[#141720] dark:hover:border-white/10"
+                    className="flex items-center justify-between rounded-xl border border-black/5 bg-white p-3 transition hover:border-black/20 hover:shadow-sm dark:border-white/10 dark:bg-[#161B22] dark:hover:border-white/25"
                   >
                     <div>
                       <div className="flex items-baseline gap-2">
-                        <span className="font-serif text-base font-bold text-[#1A1A1A] dark:text-[#F8FAFC]">
+                        <span className="font-serif text-base font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
                           {ex.word}
                         </span>
-                        <span className="text-xs text-[#64748B] dark:text-[#94A3B8]">{ex.reading}</span>
+                        <span className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">{ex.reading}</span>
                       </div>
-                      <div className="mt-0.5 text-xs text-[#475569] dark:text-[#CBD5E1]">{ex.meaning}</div>
+                      <div className="mt-0.5 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">{ex.meaning}</div>
                     </div>
 
                     <button
@@ -196,7 +196,7 @@ export function KanjiDetailModal({
                         e.stopPropagation();
                         playJapaneseAudio(ex.word);
                       }}
-                      className="rounded-full bg-black/5 p-2 text-gray-600 transition hover:bg-[#C84B31] hover:text-white dark:bg-white/5 dark:text-gray-400 dark:hover:bg-[#E85C40] dark:hover:text-white"
+                      className="rounded-full bg-black/5 p-2 text-[#6B6B6B] transition hover:bg-[#C84B31] hover:text-white dark:bg-white/5 dark:text-[#A0A0A0] dark:hover:bg-[#E85C40] dark:hover:text-white"
                       title="Play Pronunciation"
                     >
                       <Play size={13} className="fill-current" />
@@ -205,52 +205,52 @@ export function KanjiDetailModal({
                 ))}
               </div>
             ) : (
-              <div className="mt-3 text-xs text-gray-400 dark:text-gray-500 italic">
+              <div className="mt-3 text-xs text-[#6B6B6B]/70 dark:text-[#A0A0A0]/70 italic">
                 No vocabulary compounds recorded.
               </div>
             )}
           </div>
 
           {/* 5. PROGRESS & STATISTICS SECTION */}
-          <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-5 dark:border-white/5 dark:bg-[#1B1F28]">
-            <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+          <div className="rounded-2xl border border-black/5 bg-[#F4F4F0] p-5 dark:border-white/10 dark:bg-[#1E232B]">
+            <h4 className="text-xs font-semibold uppercase tracking-widest text-[#6B6B6B] dark:text-[#A0A0A0]">
               Progress &amp; Statistics
             </h4>
 
             <div className="mt-3 grid grid-cols-2 gap-3">
               {/* JLPT Level */}
-              <div className="rounded-xl border border-black/5 bg-white p-3.5 text-center dark:border-white/5 dark:bg-[#141720]">
-                <div className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">JLPT Level</div>
-                <div className="mt-1 text-lg font-bold text-[#1A1A1A] dark:text-[#F8FAFC]">{kanji.jlpt}</div>
+              <div className="rounded-xl border border-black/5 bg-white p-3.5 text-center dark:border-white/10 dark:bg-[#161B22]">
+                <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">JLPT Level</div>
+                <div className="mt-1 text-lg font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">{kanji.jlpt}</div>
               </div>
 
               {/* Status with interactive cycle */}
               <button
                 type="button"
                 onClick={handleCycleStatus}
-                className="group rounded-xl border border-black/5 bg-white p-3.5 text-center transition hover:border-[#C84B31]/30 hover:bg-[#F2F2EC] dark:border-white/5 dark:bg-[#141720] dark:hover:border-[#E85C40]/30 dark:hover:bg-[#1E232E]"
+                className="group rounded-xl border border-black/5 bg-white p-3.5 text-center transition hover:border-[#C84B31]/30 hover:bg-[#F4F4F0] dark:border-white/10 dark:bg-[#161B22] dark:hover:border-[#E85C40]/30 dark:hover:bg-[#1E232B]"
               >
-                <div className="flex items-center justify-center gap-1 text-[11px] text-[#64748B] dark:text-[#94A3B8]">
+                <div className="flex items-center justify-center gap-1 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
                   <span>Status</span>
                   <RotateCw size={10} className="transition group-hover:rotate-180" />
                 </div>
-                <div className="mt-1 text-base font-bold text-[#0284C7] dark:text-[#38BDF8]">
+                <div className="mt-1 text-base font-bold text-[#2D5F8A] dark:text-[#60A5FA]">
                   {statusDisplayNames[kanji.status] || "Not learned"}
                 </div>
               </button>
 
               {/* Practice Count */}
-              <div className="rounded-xl border border-black/5 bg-white p-3.5 text-center dark:border-white/5 dark:bg-[#141720]">
-                <div className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">Practice Count</div>
-                <div className="mt-1 text-lg font-bold text-[#1A1A1A] dark:text-[#F8FAFC]">
+              <div className="rounded-xl border border-black/5 bg-white p-3.5 text-center dark:border-white/10 dark:bg-[#161B22]">
+                <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Practice Count</div>
+                <div className="mt-1 text-lg font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
                   {kanji.practiceCount ?? 0}
                 </div>
               </div>
 
               {/* Success Rate */}
-              <div className="rounded-xl border border-black/5 bg-white p-3.5 text-center dark:border-white/5 dark:bg-[#141720]">
-                <div className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">Success Rate</div>
-                <div className="mt-1 text-lg font-bold text-emerald-600 dark:text-emerald-400">
+              <div className="rounded-xl border border-black/5 bg-white p-3.5 text-center dark:border-white/10 dark:bg-[#161B22]">
+                <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Success Rate</div>
+                <div className="mt-1 text-lg font-bold text-[#3D7D52] dark:text-[#34D399]">
                   {kanji.successRate ?? (kanji.status === "mastered" ? 100 : kanji.status === "reviewing" ? 60 : 0)}%
                 </div>
               </div>

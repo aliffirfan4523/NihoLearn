@@ -176,8 +176,8 @@ export function KanjiQuiz() {
   if (isFinished) {
     const accuracy = Math.round((score / questions.length) * 100);
     return (
-      <div className="mx-auto max-w-md rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/15 text-amber-500 shadow-sm">
+      <div className="mx-auto max-w-md rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500 shadow-sm">
           <Trophy size={40} />
         </div>
         <h2 className="mt-5 text-2xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
@@ -187,7 +187,7 @@ export function KanjiQuiz() {
           Great job! Results have been recorded to your progress.
         </p>
 
-        <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#2A2A2A]">
+        <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#1E232B]">
           <div>
             <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Score</div>
             <div className="mt-1 text-xl font-bold text-[#C84B31] dark:text-[#E85C40]">
@@ -207,7 +207,7 @@ export function KanjiQuiz() {
         <div className="mt-7 flex gap-3">
           <Link
             href="/practice"
-            className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+            className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
           >
             Practice Hub
           </Link>
@@ -226,7 +226,7 @@ export function KanjiQuiz() {
 
   if (questions.length === 0) {
     return (
-      <div className="mx-auto max-w-xl rounded-3xl border border-black/10 bg-white p-8 text-center dark:border-white/15 dark:bg-[#1A1A1A]">
+      <div className="mx-auto max-w-xl rounded-2xl border border-black/10 bg-white p-8 text-center dark:border-white/15 dark:bg-[#1A1A1A]">
         <p className="text-sm text-gray-500">No Kanji found for {level}.</p>
         <button
           type="button"
@@ -269,7 +269,7 @@ export function KanjiQuiz() {
         </div>
 
         {streak > 1 && (
-          <div className="flex items-center gap-1.5 rounded-full bg-orange-500/15 px-3 py-1 text-xs font-bold text-orange-600 dark:bg-orange-500/20 dark:text-orange-400">
+          <div className="flex items-center gap-1.5 rounded-full bg-amber-500/15 px-3 py-1 text-xs font-bold text-amber-600 dark:bg-amber-500/20 dark:text-amber-400">
             <Flame size={14} /> {streak} Streak
           </div>
         )}
@@ -301,7 +301,7 @@ export function KanjiQuiz() {
       />
 
       {/* Main Kanji Question Card */}
-      <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-white p-8 text-center shadow-sm dark:border-white/15 dark:bg-[#1A1A1A]">
+      <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-white p-8 text-center shadow-sm dark:border-white/15 dark:bg-[#1A1A1A]">
         <div className="flex justify-center">
           <span className="rounded-full bg-[#C84B31]/10 px-3 py-1 text-xs font-bold text-[#C84B31] dark:bg-[#E85C40]/20 dark:text-[#E85C40]">
             JLPT {level} Kanji
@@ -344,7 +344,7 @@ export function KanjiQuiz() {
             const isCorrect = option === currentQ.meaning;
 
             let btnStyle =
-              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] hover:bg-[#C84B31]/5 dark:border-white/10 dark:bg-[#2A2A2A] dark:text-[#FAFAFA] dark:hover:border-[#E85C40]";
+              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] hover:bg-[#C84B31]/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#FAFAFA] dark:hover:border-[#E85C40]";
 
             if (status !== "idle") {
               if (isCorrect) {
@@ -352,7 +352,7 @@ export function KanjiQuiz() {
                   "border-emerald-500 bg-emerald-500/15 text-emerald-800 font-bold dark:text-emerald-300 dark:border-emerald-500/50";
               } else if (isSelected && !isCorrect) {
                 btnStyle =
-                  "border-rose-500 bg-rose-500/15 text-rose-800 font-bold dark:text-rose-300 dark:border-rose-500/50";
+                  "border-red-500 bg-red-500/15 text-red-800 font-bold dark:text-red-300 dark:border-red-500/50";
               } else {
                 btnStyle = "border-black/5 bg-gray-50 text-gray-400 opacity-60 dark:bg-white/5 dark:text-gray-500";
               }
@@ -369,7 +369,7 @@ export function KanjiQuiz() {
                 <span>{option}</span>
                 {status !== "idle" && isCorrect && <CheckCircle2 size={18} className="text-emerald-600" />}
                 {status !== "idle" && isSelected && !isCorrect && (
-                  <XCircle size={18} className="text-rose-600" />
+                  <XCircle size={18} className="text-red-600" />
                 )}
               </button>
             );

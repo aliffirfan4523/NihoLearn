@@ -82,7 +82,7 @@ export function ConjugationDrillSetup({
       {/* Learn Conjugation Banner */}
       <Link
         href="/progress/conjugation"
-        className="flex items-center justify-between rounded-3xl border border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 p-5 shadow-xs transition hover:scale-[1.01] dark:border-blue-500/30"
+        className="flex items-center justify-between rounded-2xl border border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 p-5 shadow-xs transition dark:border-blue-500/30"
       >
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-md">
@@ -101,7 +101,7 @@ export function ConjugationDrillSetup({
       </Link>
 
       {/* Configuration Card */}
-      <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-lg dark:border-white/15 dark:bg-[#1A1A1A] space-y-7">
+      <div className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A] space-y-7">
         <div className="flex items-center gap-2 border-b border-black/10 pb-4 dark:border-white/10">
           <Sliders size={20} className="text-[#C84B31] dark:text-[#E85C40]" />
           <h2 className="text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Drill Settings</h2>
@@ -116,7 +116,7 @@ export function ConjugationDrillSetup({
             <select
               value={questionCount}
               onChange={(e) => setQuestionCount(Number(e.target.value))}
-              className="mt-2 w-full rounded-xl border border-black/10 bg-[#FAFAF8] px-3.5 py-2.5 text-sm font-semibold text-[#1A1A1A] focus:outline-none dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+              className="mt-2 w-full rounded-xl border border-black/10 bg-[#FAFAF8] px-3.5 py-2.5 text-sm font-semibold text-[#1A1A1A] focus:outline-none dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               <option value={5}>5 Questions</option>
               <option value={10}>10 Questions</option>
@@ -132,7 +132,7 @@ export function ConjugationDrillSetup({
             <select
               value={level}
               onChange={(e) => setLevel(e.target.value as any)}
-              className="mt-2 w-full rounded-xl border border-black/10 bg-[#FAFAF8] px-3.5 py-2.5 text-sm font-semibold text-[#1A1A1A] focus:outline-none dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+              className="mt-2 w-full rounded-xl border border-black/10 bg-[#FAFAF8] px-3.5 py-2.5 text-sm font-semibold text-[#1A1A1A] focus:outline-none dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               <option value="N5">N5 (Beginner)</option>
               <option value="N4">N4 (Elementary)</option>
@@ -147,7 +147,7 @@ export function ConjugationDrillSetup({
             <select
               value={verbType}
               onChange={(e) => setVerbType(e.target.value as any)}
-              className="mt-2 w-full rounded-xl border border-black/10 bg-[#FAFAF8] px-3.5 py-2.5 text-sm font-semibold text-[#1A1A1A] focus:outline-none dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+              className="mt-2 w-full rounded-xl border border-black/10 bg-[#FAFAF8] px-3.5 py-2.5 text-sm font-semibold text-[#1A1A1A] focus:outline-none dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               <option value="all">All Types</option>
               <option value="godan">Godan (Group 1)</option>

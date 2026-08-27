@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Play, Volume2, Search, Filter, ChevronLeft, ChevronRight, CheckCircle2, RotateCw } from "lucide-react";
+import { Play, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { playJapaneseAudio } from "@/lib/audio";
 import type { VocabWord, ProgressStatus } from "@/types";
 
@@ -13,13 +13,20 @@ const statusDisplayNames: Record<ProgressStatus, string> = {
   mastered: "Mastered",
 };
 
-const statusStyles: Record<ProgressStatus, string> = {
-  unlearned:
-    "bg-gray-100 text-gray-600 dark:bg-gray-800/60 dark:text-gray-300 border border-gray-200 dark:border-gray-700",
-  reviewing:
-    "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50",
-  mastered:
-    "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50",
+// Minimal status glyphs — no pastel pills. ○ unlearned · ● learning · ✓ mastered (vermillion)
+const statusGlyphs: Record<ProgressStatus, { glyph: string; className: string }> = {
+  unlearned: {
+    glyph: "○",
+    className: "text-[#6B6B6B] dark:text-[#A0A0A0]",
+  },
+  reviewing: {
+    glyph: "●",
+    className: "text-[#C84B31] dark:text-[#E85C40]",
+  },
+  mastered: {
+    glyph: "✓",
+    className: "text-[#C84B31] dark:text-[#E85C40]",
+  },
 };
 
 type VocabWithProgress = VocabWord & { status: ProgressStatus; progressId?: string };
@@ -73,7 +80,7 @@ export function VocabTable({
       current.map((item) => {
         if (item.id !== wordId) return item;
         const nextStatus = statusOrder[(statusOrder.indexOf(item.status) + 1) % statusOrder.length];
-        
+
         // Background sync
         fetch("/api/vocab", {
           method: "POST",
@@ -94,7 +101,7 @@ export function VocabTable({
       {/* Search and Filters Bar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-4 top-3.5 text-gray-400" />
+          <Search size={16} aria-hidden="true" className="absolute left-4 top-3.5 text-[#6B6B6B] dark:text-[#A0A0A0]" />
           <input
             type="text"
             placeholder="Search word, reading, or English meaning..."
@@ -103,7 +110,7 @@ export function VocabTable({
               setSearch(e.target.value);
               setPage(1);
             }}
-            className="w-full rounded-2xl border border-black/10 bg-white py-3 pl-11 pr-4 text-sm text-[#1A1A1A] outline-none transition focus:border-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]"
+            className="w-full rounded-2xl border border-black/10 bg-white py-3 pl-11 pr-4 text-sm text-[#1A1A1A] outline-none transition focus:border-[#C84B31] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8] dark:focus:border-[#E85C40]"
           />
         </div>
 
@@ -118,8 +125,8 @@ export function VocabTable({
               }}
               className={`rounded-xl px-3.5 py-2.5 text-xs font-bold capitalize transition ${
                 filter === f
-                  ? "bg-[var(--color-vermillion)] text-white shadow-xs"
-                  : "border border-black/10 bg-white text-[#6B6B6B] hover:bg-black/5 dark:border-white/10 dark:bg-[#161B22] dark:text-[#94A3B8] dark:hover:bg-white/5"
+                  ? "bg-[#C84B31] text-white dark:bg-[#E85C40]"
+                  : "border border-black/10 bg-white text-[#6B6B6B] hover:bg-black/5 dark:border-white/10 dark:bg-[#161B22] dark:text-[#A0A0A0] dark:hover:bg-white/5"
               }`}
             >
               {f === "all" ? `All (${items.length})` : f === "reviewing" ? `Learning (${learningCount})` : f === "mastered" ? `Mastered (${masteredCount})` : `Not learned`}
@@ -128,132 +135,180 @@ export function VocabTable({
         </div>
       </div>
 
-      {/* Vocabulary Table Container */}
-      <div className="overflow-hidden rounded-3xl border border-black/10 bg-white shadow-xs dark:border-white/10 dark:bg-[#161B22]">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[700px] text-left text-sm">
-            <thead className="border-b border-black/5 bg-[#FAFAF8] text-xs font-bold uppercase tracking-wider text-[#64748B] dark:border-white/5 dark:bg-[#1E232B] dark:text-[#94A3B8]">
-              <tr>
-                <th className="py-3.5 pl-5 pr-3">Expression</th>
-                <th className="px-3 py-3.5">Reading</th>
-                <th className="px-3 py-3.5">Meaning</th>
-                <th className="px-3 py-3.5">Audio</th>
-                <th className="px-3 py-3.5">Level</th>
-                <th className="py-3.5 pl-3 pr-5 text-right">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-black/5 dark:divide-white/5">
-              {paginatedItems.map((item) => (
-                <tr
-                  key={item.id}
-                  className="group transition hover:bg-[#FAFAF8] dark:hover:bg-[#1E232B]/60"
-                >
-                  {/* Expression */}
-                  <td className="py-3.5 pl-5 pr-3">
-                    <span className="font-serif text-lg font-bold text-[#1A1A1A] group-hover:text-[var(--color-vermillion)] dark:text-[#F0F4F8]">
-                      {item.word}
-                    </span>
-                  </td>
-
-                  {/* Reading */}
-                  <td className="px-3 py-3.5">
-                    <span className="font-medium text-[#475569] dark:text-[#CBD5E1]">
-                      {item.reading}
-                    </span>
-                  </td>
-
-                  {/* Meaning */}
-                  <td className="px-3 py-3.5 max-w-xs truncate">
-                    <span className="text-xs text-[#1A1A1A] dark:text-[#E2E8F0]">
-                      {item.meaning.join(", ")}
-                    </span>
-                  </td>
-
-                  {/* Audio */}
-                  <td className="px-3 py-3.5">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        playJapaneseAudio(item.word);
-                      }}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-black/5 text-gray-600 transition hover:bg-[var(--color-vermillion)] hover:text-white dark:bg-white/5 dark:text-gray-400 dark:hover:bg-[var(--color-vermillion)] dark:hover:text-white"
-                      title="Play Pronunciation"
-                    >
-                      <Play size={12} className="fill-current" />
-                    </button>
-                  </td>
-
-                  {/* Level Badge */}
-                  <td className="px-3 py-3.5">
-                    <span className="rounded-md bg-black/5 px-2 py-0.5 text-[11px] font-bold text-[#64748B] dark:bg-white/5 dark:text-[#94A3B8]">
-                      {item.level}
-                    </span>
-                  </td>
-
-                  {/* Status Toggle Button */}
-                  <td className="py-3.5 pl-3 pr-5 text-right">
-                    <button
-                      type="button"
-                      onClick={(e) => cycleStatus(item.id, e)}
-                      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold capitalize transition hover:scale-105 ${
-                        statusStyles[item.status]
-                      }`}
-                      title="Click to cycle status"
-                    >
-                      <RotateCw size={10} className="opacity-70" />
-                      <span>{statusDisplayNames[item.status]}</span>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-
-              {paginatedItems.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="py-12 text-center text-[#64748B] dark:text-[#94A3B8]">
-                    No vocabulary words matching your query.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Pagination Bar */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-black/5 px-5 py-3.5 dark:border-white/5">
-            <div className="text-xs text-[#64748B] dark:text-[#94A3B8]">
-              Showing <span className="font-bold">{(page - 1) * pageSize + 1}</span> to{" "}
-              <span className="font-bold">
-                {Math.min(page * pageSize, filtered.length)}
-              </span>{" "}
-              of <span className="font-bold">{filtered.length}</span> words
+      {/* Vocabulary Display: Mobile Cards + Desktop Table — no bounding box, flush to margins */}
+      {/* Mobile Card View */}
+      <div className="grid grid-cols-1 gap-3 md:hidden">
+        {paginatedItems.map((item) => (
+          <div
+            key={item.id}
+            className="flex items-center gap-3 rounded-2xl border border-black/5 bg-white p-3.5 dark:border-white/10 dark:bg-[#161B22]"
+          >
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="font-serif text-lg font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
+                  {item.word}
+                </span>
+                <span className="text-xs font-bold text-[#6B6B6B] dark:text-[#A0A0A0]">
+                  {item.level}
+                </span>
+              </div>
+              <div className="mt-0.5 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
+                {item.reading}
+              </div>
+              <div className="mt-0.5 truncate text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
+                {item.meaning.join(", ")}
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex shrink-0 items-center gap-2">
               <button
                 type="button"
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={page === 1}
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-black/10 bg-white text-gray-600 transition disabled:opacity-30 dark:border-white/10 dark:bg-[#161B22] dark:text-gray-300"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  playJapaneseAudio(item.word);
+                }}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-black/5 text-[#6B6B6B] transition hover:bg-[#C84B31] hover:text-white dark:bg-white/5 dark:text-[#A0A0A0] dark:hover:bg-[#E85C40]"
+                title="Play Pronunciation"
+                aria-label={`Play pronunciation of ${item.word}`}
               >
-                <ChevronLeft size={16} />
+                <Play size={12} className="fill-current" aria-hidden="true" />
               </button>
-              <span className="text-xs font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
-                {page} / {totalPages}
-              </span>
               <button
                 type="button"
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                disabled={page === totalPages}
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-black/10 bg-white text-gray-600 transition disabled:opacity-30 dark:border-white/10 dark:bg-[#161B22] dark:text-gray-300"
+                onClick={(e) => cycleStatus(item.id, e)}
+                className={`inline-flex items-center gap-1.5 px-1 py-1.5 text-xs font-semibold transition hover:underline ${statusGlyphs[item.status].className}`}
+                title="Click to cycle status"
+                aria-label={`${statusDisplayNames[item.status]} — click to change status`}
               >
-                <ChevronRight size={16} />
+                <span aria-hidden="true" className="text-sm leading-none">{statusGlyphs[item.status].glyph}</span>
+                <span>{statusDisplayNames[item.status]}</span>
               </button>
             </div>
           </div>
+        ))}
+
+        {paginatedItems.length === 0 && (
+          <div className="py-12 text-center text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
+            No vocabulary words matching your query.
+          </div>
         )}
       </div>
+
+      {/* Desktop Table View — typeset textbook table: bold headers, hairline rows, no chrome */}
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full text-left text-sm">
+          <thead className="border-y border-black/10 text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:border-white/10 dark:text-[#A0A0A0]">
+            <tr>
+              <th className="py-3.5 pl-1 pr-3">Expression</th>
+              <th className="px-3 py-3.5">Reading</th>
+              <th className="px-3 py-3.5">Meaning</th>
+              <th className="px-3 py-3.5">Audio</th>
+              <th className="px-3 py-3.5">Level</th>
+              <th className="py-3.5 pl-3 pr-1 text-right">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-black/5 dark:divide-white/5">
+            {paginatedItems.map((item) => (
+              <tr
+                key={item.id}
+                className="group transition hover:bg-[#FAFAF8] dark:hover:bg-[#1E232B]/60"
+              >
+                <td className="py-3.5 pl-1 pr-3">
+                  <span className="font-serif text-lg font-bold text-[#1A1A1A] group-hover:text-[#C84B31] dark:text-[#F0F4F8] dark:group-hover:text-[#E85C40]">
+                    {item.word}
+                  </span>
+                </td>
+                <td className="px-3 py-3.5">
+                  <span className="font-medium text-[#1A1A1A] dark:text-[#F0F4F8]">
+                    {item.reading}
+                  </span>
+                </td>
+                <td className="px-3 py-3.5 max-w-xs truncate">
+                  <span className="text-xs text-[#1A1A1A] dark:text-[#F0F4F8]">
+                    {item.meaning.join(", ")}
+                  </span>
+                </td>
+                <td className="px-3 py-3.5">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      playJapaneseAudio(item.word);
+                    }}
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-black/5 text-[#6B6B6B] transition hover:bg-[#C84B31] hover:text-white dark:bg-white/5 dark:text-[#A0A0A0] dark:hover:bg-[#E85C40] dark:hover:text-white"
+                    title="Play Pronunciation"
+                    aria-label={`Play pronunciation of ${item.word}`}
+                  >
+                    <Play size={12} className="fill-current" aria-hidden="true" />
+                  </button>
+                </td>
+                <td className="px-3 py-3.5">
+                  <span className="text-xs font-bold text-[#6B6B6B] dark:text-[#A0A0A0]">
+                    {item.level}
+                  </span>
+                </td>
+                <td className="py-3.5 pl-3 pr-1 text-right">
+                  <button
+                    type="button"
+                    onClick={(e) => cycleStatus(item.id, e)}
+                    className={`inline-flex items-center gap-1.5 px-1 py-1 text-xs font-semibold capitalize transition hover:underline ${statusGlyphs[item.status].className}`}
+                    title="Click to cycle status"
+                    aria-label={`${statusDisplayNames[item.status]} — click to change status`}
+                  >
+                    <span aria-hidden="true" className="text-sm leading-none">{statusGlyphs[item.status].glyph}</span>
+                    <span>{statusDisplayNames[item.status]}</span>
+                  </button>
+                </td>
+              </tr>
+            ))}
+
+            {paginatedItems.length === 0 && (
+              <tr>
+                <td colSpan={6} className="py-12 text-center text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
+                  No vocabulary words matching your query.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination Bar */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between border-t border-black/5 pt-3.5 dark:border-white/5">
+          <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
+            Showing <span className="font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">{(page - 1) * pageSize + 1}</span> to{" "}
+            <span className="font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
+              {Math.min(page * pageSize, filtered.length)}
+            </span>{" "}
+            of <span className="font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">{filtered.length}</span> words
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-black/10 bg-white text-[#6B6B6B] transition hover:border-black/20 disabled:opacity-30 dark:border-white/10 dark:bg-[#161B22] dark:text-[#A0A0A0]"
+              aria-label="Previous page"
+            >
+              <ChevronLeft size={16} aria-hidden="true" />
+            </button>
+            <span className="text-xs font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
+              {page} / {totalPages}
+            </span>
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-black/10 bg-white text-[#6B6B6B] transition hover:border-black/20 disabled:opacity-30 dark:border-white/10 dark:bg-[#161B22] dark:text-[#A0A0A0]"
+              aria-label="Next page"
+            >
+              <ChevronRight size={16} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

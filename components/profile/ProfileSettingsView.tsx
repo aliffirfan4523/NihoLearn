@@ -75,9 +75,9 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
         {/* Left Sidebar */}
         <div className="space-y-6 lg:col-span-4">
           {/* Mini User Card */}
-          <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+          <div className="rounded-2xl border border-black/10 bg-white p-5 shadow-xs dark:border-white/15 dark:bg-[#161B22]">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-tr from-pink-500 to-rose-500 font-bold text-white shadow-sm ring-2 ring-pink-500/20">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#C84B31] font-bold text-white dark:bg-[#E85C40]">
                 {initials}
               </div>
               <div className="min-w-0 flex-1">
@@ -98,7 +98,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
 
               <div className="flex items-center justify-between text-[#6B6B6B] dark:text-[#A0A0A0]">
                 <span>🎓 Level</span>
-                <span className="rounded bg-purple-500/15 px-1.5 py-0.5 font-bold text-purple-700 dark:text-purple-300">
+                <span className="rounded bg-[#2D5F8A]/10 px-1.5 py-0.5 font-bold text-[#2D5F8A] dark:bg-[#60A5FA]/15 dark:text-[#60A5FA]">
                   Beginner
                 </span>
               </div>
@@ -129,19 +129,19 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
 
               <div className="flex items-center justify-between text-[#6B6B6B] dark:text-[#A0A0A0]">
                 <span>🔊 Answer feedback</span>
-                <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="font-bold text-[#3D7D52] dark:text-[#34D399]">
                   {answerFeedback ? "On" : "Off"}
                 </span>
               </div>
 
               <div className="flex items-center justify-between text-[#6B6B6B] dark:text-[#A0A0A0]">
                 <span>🐱 Mascots</span>
-                <span className="text-gray-400">{mascots ? "On" : "Off"}</span>
+                <span className="text-[#6B6B6B] dark:text-[#A0A0A0]">{mascots ? "On" : "Off"}</span>
               </div>
 
               <div className="flex items-center justify-between text-[#6B6B6B] dark:text-[#A0A0A0]">
                 <span>👁️ Activity feed</span>
-                <span className="text-gray-400">{hideActivity ? "Hidden" : "Public"}</span>
+                <span className="text-[#6B6B6B] dark:text-[#A0A0A0]">{hideActivity ? "Hidden" : "Public"}</span>
               </div>
             </div>
 
@@ -152,7 +152,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
               </div>
               <a
                 href="#appearance"
-                className="block rounded-lg px-2 py-1 text-[var(--color-vermillion)] hover:bg-black/5 dark:hover:bg-white/5 font-bold"
+                className="block rounded-lg px-2 py-1 text-[#C84B31] hover:bg-black/5 dark:text-[#E85C40] dark:hover:bg-white/5 font-bold"
               >
                 🎨 Appearance &amp; Themes
               </a>
@@ -201,7 +201,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
           {/* Section 0: Appearance & Theme Customization */}
           <div
             id="appearance"
-            className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#161B22] space-y-6"
+            className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#161B22] space-y-6"
           >
             <div className="flex items-center justify-between border-b border-black/5 pb-4 dark:border-white/10">
               <div>
@@ -220,7 +220,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
           {/* Section 1: Profile Information */}
           <div
             id="profile-info"
-            className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#161B22] space-y-6"
+            className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#161B22] space-y-6"
           >
             <h2 className="text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
               Profile Information
@@ -228,10 +228,10 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
 
             {/* Avatar Centered */}
             <div className="flex flex-col items-center justify-center py-2">
-              <div className="flex h-24 w-24 cursor-pointer items-center justify-center rounded-full bg-gradient-to-tr from-pink-500 to-rose-500 text-3xl font-bold text-white shadow-lg ring-4 ring-pink-500/30 transition hover:scale-105">
+              <div className="flex h-24 w-24 cursor-pointer items-center justify-center rounded-full bg-[#C84B31] text-3xl font-bold text-white dark:bg-[#E85C40] transition hover:opacity-90">
                 {initials}
               </div>
-              <p className="mt-2 text-xs text-gray-400">Click on the image to change your profile picture</p>
+              <p className="mt-2 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Click on the image to change your profile picture</p>
             </div>
 
             {/* Username */}
@@ -240,7 +240,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
                 <label className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
                   Username
                 </label>
-                <span className="rounded bg-purple-500/15 px-2 py-0.5 text-[10px] font-bold text-purple-700 dark:text-purple-300">
+                <span className="rounded bg-[#2D5F8A]/10 px-2 py-0.5 text-[10px] font-bold text-[#2D5F8A] dark:bg-[#60A5FA]/15 dark:text-[#60A5FA]">
                   Can be changed
                 </span>
               </div>
@@ -248,9 +248,9 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="mt-2 w-full rounded-2xl border border-black/10 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#1A1A1A] focus:border-[#C84B31] focus:outline-none dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+                className="mt-2 w-full rounded-xl border border-black/10 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#1A1A1A] focus:border-[#C84B31] focus:outline-none dark:border-white/15 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
               />
-              <p className="mt-1 text-[11px] text-gray-400">Choose a unique username (minimum 3 characters)</p>
+              <p className="mt-1 text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">Choose a unique username (minimum 3 characters)</p>
             </div>
 
             {/* Daily Goals */}
@@ -260,29 +260,29 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
               </label>
               <div className="mt-2 grid grid-cols-2 gap-4">
                 <div>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">Vocab words / day</span>
+                  <span className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Vocab words / day</span>
                   <input
                     type="number"
                     value={vocabGoal}
                     min={1}
                     max={50}
                     onChange={(e) => setVocabGoal(Number(e.target.value))}
-                    className="mt-1 w-full rounded-2xl border border-black/10 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#1A1A1A] focus:border-[#C84B31] focus:outline-none dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+                    className="mt-1 w-full rounded-xl border border-black/10 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#1A1A1A] focus:border-[#C84B31] focus:outline-none dark:border-white/15 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                   />
                 </div>
                 <div>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">Grammar Points per Day</span>
+                  <span className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Grammar Points per Day</span>
                   <input
                     type="number"
                     value={grammarGoal}
                     min={1}
                     max={20}
                     onChange={(e) => setGrammarGoal(Number(e.target.value))}
-                    className="mt-1 w-full rounded-2xl border border-black/10 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#1A1A1A] focus:border-[#C84B31] focus:outline-none dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+                    className="mt-1 w-full rounded-xl border border-black/10 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#1A1A1A] focus:border-[#C84B31] focus:outline-none dark:border-white/15 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                   />
                 </div>
               </div>
-              <p className="mt-1 text-[11px] text-gray-400">Set your daily learning targets</p>
+              <p className="mt-1 text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">Set your daily learning targets</p>
             </div>
 
             {/* Email */}
@@ -291,13 +291,13 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
                 <label className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
                   Email
                 </label>
-                <span className="text-[11px] text-gray-400">Managed by Google</span>
+                <span className="text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">Managed by Google</span>
               </div>
               <input
                 type="email"
                 disabled
                 value={user.email}
-                className="mt-2 w-full rounded-2xl border border-black/5 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-gray-500 dark:border-white/10 dark:bg-[#252525] dark:text-gray-400"
+                className="mt-2 w-full rounded-xl border border-black/5 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#6B6B6B] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#A0A0A0]"
               />
             </div>
 
@@ -307,7 +307,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
                 <label className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
                   Review JLPT Levels
                 </label>
-                <span className="rounded bg-blue-500/15 px-2 py-0.5 text-[10px] font-bold text-blue-600 dark:text-blue-400">
+                <span className="rounded bg-[#2D5F8A]/10 px-2 py-0.5 text-[10px] font-bold text-[#2D5F8A] dark:bg-[#60A5FA]/15 dark:text-[#60A5FA]">
                   Review Settings
                 </span>
               </div>
@@ -321,8 +321,8 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
                       onClick={() => toggleLevel(lvl)}
                       className={`flex h-10 w-12 items-center justify-center rounded-xl border text-xs font-bold transition ${
                         isChecked
-                          ? "border-[#2D5F8A] bg-[#2D5F8A] text-white dark:border-[#4A86B8] dark:bg-[#4A86B8]"
-                          : "border-black/10 bg-[#FAFAF8] text-gray-500 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-gray-400"
+                          ? "border-[#2D5F8A] bg-[#2D5F8A] text-white dark:border-[#60A5FA] dark:bg-[#60A5FA]"
+                          : "border-black/10 bg-[#FAFAF8] text-[#6B6B6B] dark:border-white/15 dark:bg-[#1E232B] dark:text-[#A0A0A0]"
                       }`}
                     >
                       {lvl}
@@ -330,7 +330,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
                   );
                 })}
               </div>
-              <p className="mt-1 text-[11px] text-gray-400">
+              <p className="mt-1 text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">
                 Select which JLPT levels to include in your reviews. Only items from selected levels will appear.
               </p>
             </div>
@@ -341,13 +341,13 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
                 <div className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
                   Push Notifications
                 </div>
-                <div className="text-xs text-gray-400">Get a daily reminder to do your review</div>
+                <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Get a daily reminder to do your review</div>
               </div>
               <button
                 type="button"
                 onClick={() => setNotifications(!notifications)}
                 className={`h-6 w-11 rounded-full p-1 transition-colors ${
-                  notifications ? "bg-purple-600" : "bg-gray-300 dark:bg-gray-700"
+                  notifications ? "bg-[#C84B31]" : "bg-black/15 dark:bg-white/20"
                 }`}
               >
                 <div
@@ -363,9 +363,9 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Audio Speed</div>
-                  <div className="text-xs text-gray-400">Playback speed for all Japanese audio and TTS</div>
+                  <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Playback speed for all Japanese audio and TTS</div>
                 </div>
-                <span className="rounded bg-purple-500/15 px-2 py-0.5 text-xs font-bold text-purple-600 dark:text-purple-400">
+                <span className="rounded bg-[#2D5F8A]/10 px-2 py-0.5 text-xs font-bold text-[#2D5F8A] dark:bg-[#60A5FA]/15 dark:text-[#60A5FA]">
                   {audioSpeed}x
                 </span>
               </div>
@@ -377,9 +377,9 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
                 step="0.25"
                 value={audioSpeed}
                 onChange={(e) => setAudioSpeed(parseFloat(e.target.value))}
-                className="w-full accent-purple-600"
+                className="w-full accent-[#C84B31]"
               />
-              <div className="flex justify-between text-[10px] text-gray-400">
+              <div className="flex justify-between text-[10px] text-[#6B6B6B] dark:text-[#A0A0A0]">
                 <span>0.5x</span>
                 <span>0.75x</span>
                 <span>1x</span>
@@ -394,13 +394,13 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
             <div className="flex items-center justify-between border-t border-black/5 pt-4 dark:border-white/10">
               <div>
                 <div className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Answer Feedback</div>
-                <div className="text-xs text-gray-400">Play a sound and feedback on correct/wrong answers</div>
+                <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Play a sound and feedback on correct/wrong answers</div>
               </div>
               <button
                 type="button"
                 onClick={() => setAnswerFeedback(!answerFeedback)}
                 className={`h-6 w-11 rounded-full p-1 transition-colors ${
-                  answerFeedback ? "bg-purple-600" : "bg-gray-300 dark:bg-gray-700"
+                  answerFeedback ? "bg-[#C84B31]" : "bg-black/15 dark:bg-white/20"
                 }`}
               >
                 <div
@@ -415,13 +415,13 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
             <div className="flex items-center justify-between border-t border-black/5 pt-4 dark:border-white/10">
               <div>
                 <div className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Study Mascots</div>
-                <div className="text-xs text-gray-400">Show mascot reactions during practice and reviews</div>
+                <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Show mascot reactions during practice and reviews</div>
               </div>
               <button
                 type="button"
                 onClick={() => setMascots(!mascots)}
                 className={`h-6 w-11 rounded-full p-1 transition-colors ${
-                  mascots ? "bg-purple-600" : "bg-gray-300 dark:bg-gray-700"
+                  mascots ? "bg-[#C84B31]" : "bg-black/15 dark:bg-white/20"
                 }`}
               >
                 <div
@@ -436,13 +436,13 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
             <div className="flex items-center justify-between border-t border-black/5 pt-4 dark:border-white/10">
               <div>
                 <div className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Hide Activity Feed</div>
-                <div className="text-xs text-gray-400">Hide all your learning sessions from the friends feed</div>
+                <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Hide all your learning sessions from the friends feed</div>
               </div>
               <button
                 type="button"
                 onClick={() => setHideActivity(!hideActivity)}
                 className={`h-6 w-11 rounded-full p-1 transition-colors ${
-                  hideActivity ? "bg-purple-600" : "bg-gray-300 dark:bg-gray-700"
+                  hideActivity ? "bg-[#C84B31]" : "bg-black/15 dark:bg-white/20"
                 }`}
               >
                 <div
@@ -457,13 +457,13 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
             <div className="flex items-center justify-between border-t border-black/5 pt-4 dark:border-white/10">
               <div>
                 <div className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Block Friend Requests</div>
-                <div className="text-xs text-gray-400">Stop anyone from sending you new friend requests</div>
+                <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Stop anyone from sending you new friend requests</div>
               </div>
               <button
                 type="button"
                 onClick={() => setBlockFriends(!blockFriends)}
                 className={`h-6 w-11 rounded-full p-1 transition-colors ${
-                  blockFriends ? "bg-purple-600" : "bg-gray-300 dark:bg-gray-700"
+                  blockFriends ? "bg-[#C84B31]" : "bg-black/15 dark:bg-white/20"
                 }`}
               >
                 <div
@@ -486,7 +486,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
               <button
                 type="button"
                 onClick={handleSave}
-                className="rounded-2xl bg-purple-600 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-purple-700"
+                className="min-h-[44px] rounded-xl bg-[#C84B31] px-6 py-3 text-sm font-bold text-white shadow-xs transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C84B31]/50 dark:bg-[#E85C40]"
               >
                 Save Changes
               </button>
@@ -496,7 +496,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
           {/* Section 2: Language */}
           <div
             id="language"
-            className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A] space-y-5"
+            className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#161B22] space-y-5"
           >
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Language</h2>
@@ -521,44 +521,44 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
               <select
                 value={displayLanguage}
                 onChange={(e) => setDisplayLanguage(e.target.value)}
-                className="mt-2 w-full rounded-2xl border border-black/10 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#1A1A1A] focus:outline-none dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+                className="mt-2 w-full rounded-xl border border-black/10 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#1A1A1A] focus:outline-none dark:border-white/15 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
               >
                 <option value="en">GB English (Recommended)</option>
                 <option value="ms">MY Bahasa Melayu</option>
                 <option value="id">ID Bahasa Indonesia</option>
                 <option value="ja">JP 日本語</option>
               </select>
-              <p className="mt-1 text-[11px] text-gray-400">The page will reload to apply the selected language</p>
+              <p className="mt-1 text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">The page will reload to apply the selected language</p>
             </div>
           </div>
 
           {/* Section 3: Connected Accounts */}
           <div
             id="connected-accounts"
-            className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A] space-y-4"
+            className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/15 dark:bg-[#161B22] space-y-4"
           >
             <h2 className="text-lg font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Connected Accounts</h2>
 
-            <div className="flex items-center justify-between rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/10 dark:bg-[#2A2A2A]">
+            <div className="flex items-center justify-between rounded-xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/10 dark:bg-[#1E232B]">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2D5F8A] text-white dark:bg-[#60A5FA]">
                   <DiscordIcon size={20} />
                 </div>
                 <div>
                   <div className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Discord</div>
-                  <div className="text-xs text-gray-400">Not connected</div>
+                  <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Not connected</div>
                 </div>
               </div>
 
               <button
                 type="button"
-                className="rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-indigo-700"
+                className="rounded-xl bg-[#2D5F8A] px-4 py-2 text-xs font-bold text-white shadow-xs hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D5F8A]/50 dark:bg-[#60A5FA]"
               >
                 Connect
               </button>
             </div>
 
-            <p className="text-[11px] text-gray-400">
+            <p className="text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">
               Link your Discord account to access community leaderboards and bot commands in our Discord server.
             </p>
           </div>
@@ -566,7 +566,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
           {/* Section 4: Danger Zone */}
           <div
             id="danger-zone"
-            className="rounded-3xl border-2 border-rose-500/40 bg-white p-7 shadow-xs dark:border-rose-500/50 dark:bg-[#1A1A1A] space-y-6"
+            className="rounded-2xl border-2 border-rose-500/40 bg-white p-7 shadow-xs dark:border-rose-500/50 dark:bg-[#161B22] space-y-6"
           >
             <div className="flex items-center gap-2">
               <ShieldAlert size={20} className="text-rose-500" />
@@ -586,32 +586,32 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
               <select
                 value={proficiencyLevel}
                 onChange={(e) => setProficiencyLevel(e.target.value)}
-                className="mt-2 w-full rounded-2xl border border-black/10 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#1A1A1A] focus:outline-none dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+                className="mt-2 w-full rounded-xl border border-black/10 bg-[#FAFAF8] px-4 py-3 text-sm font-semibold text-[#1A1A1A] focus:outline-none dark:border-white/15 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
               >
                 <option value="beginner">Complete Beginner</option>
                 <option value="n5">N5 (Elementary)</option>
                 <option value="n4">N4 (Pre-Intermediate)</option>
                 <option value="n3">N3 (Intermediate)</option>
               </select>
-              <p className="mt-1 text-[11px] text-gray-400">This will reset your learning progress to match the new level</p>
+              <p className="mt-1 text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">This will reset your learning progress to match the new level</p>
             </div>
 
             {/* Kana Progress Reset / Known */}
             <div className="border-t border-rose-500/20 pt-4 space-y-2">
               <div className="text-sm font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Kana Progress</div>
-              <p className="text-xs text-gray-400">Mark all kanas as known or reset all progress to start fresh.</p>
+              <p className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Mark all kanas as known or reset all progress to start fresh.</p>
               <div className="flex gap-3 pt-1">
                 <button
                   type="button"
                   onClick={() => alert("All 204 Kana marked as known!")}
-                  className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-xs font-bold text-[#1A1A1A] shadow-xs hover:border-[#C84B31] dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+                  className="flex-1 min-h-[44px] rounded-xl border border-black/10 bg-[#FAFAF8] py-3 text-xs font-bold text-[#1A1A1A] shadow-xs hover:border-[#C84B31] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C84B31]/50 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                 >
                   Mark All as Known
                 </button>
                 <button
                   type="button"
                   onClick={() => alert("Kana progress reset to 0%!")}
-                  className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-xs font-bold text-[#1A1A1A] shadow-xs hover:border-rose-500 hover:text-rose-500 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+                  className="flex-1 min-h-[44px] rounded-xl border border-black/10 bg-[#FAFAF8] py-3 text-xs font-bold text-[#1A1A1A] shadow-xs hover:border-rose-500 hover:text-rose-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                 >
                   Mark All as Unknown
                 </button>
@@ -620,7 +620,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
 
             {/* Delete Account */}
             <div className="flex items-center justify-between border-t border-rose-500/20 pt-4">
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
                 Once you delete your account, there is no going back. Please be certain.
               </p>
               <button
@@ -630,7 +630,7 @@ export function ProfileSettingsView({ user }: ProfileSettingsViewProps) {
                     alert("Account deletion request submitted.");
                   }
                 }}
-                className="rounded-2xl bg-rose-600 px-5 py-3 text-xs font-bold text-white shadow-md transition hover:bg-rose-700"
+                className="min-h-[44px] rounded-xl bg-rose-600 px-5 py-3 text-xs font-bold text-white shadow-xs transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50"
               >
                 Delete Account
               </button>

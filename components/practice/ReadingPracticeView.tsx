@@ -64,11 +64,11 @@ export function ReadingPracticeView() {
           <div
             key={story.id}
             onClick={() => setActiveStory(story)}
-            className="group relative cursor-pointer rounded-3xl border border-black/10 bg-white p-6 shadow-xs transition hover:-translate-y-1 hover:border-[#C84B31] hover:shadow-md dark:border-white/15 dark:bg-[#1A1A1A] dark:hover:border-[#E85C40]"
+            className="group relative cursor-pointer rounded-2xl border border-black/10 bg-white p-6 shadow-xs transition hover:-translate-y-1 hover:border-[#C84B31] hover:shadow-xs dark:border-white/15 dark:bg-[#1A1A1A] dark:hover:border-[#E85C40]"
           >
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FAFAF8] text-3xl shadow-xs transition group-hover:scale-110 dark:bg-[#2A2A2A]">
+                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FAFAF8] text-3xl shadow-xs transition dark:bg-[#1E232B]">
                   {story.pixelArtEmoji}
                 </span>
                 <div>

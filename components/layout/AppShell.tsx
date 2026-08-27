@@ -38,7 +38,7 @@ export function AppShell({
       </main>
       <footer className="border-t border-black/10 px-4 py-3 text-center text-xs text-[#6B6B6B] dark:border-white/10 dark:text-[#A0A0A0]">
         This app is still in early development. Any issues? Email{" "}
-        <a href="mailto:aliffirfan4523@gmail.com" className="font-medium underline">aliffirfan4523@gmail.com</a>
+        <a href="mailto:aliffirfan4523@gmail.com" className="font-medium text-[#2D5F8A] underline underline-offset-2 hover:opacity-80 dark:text-[#60A5FA]">aliffirfan4523@gmail.com</a>
       </footer>
       <BottomNavbar />
     </div>

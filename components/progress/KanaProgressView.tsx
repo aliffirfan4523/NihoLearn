@@ -97,7 +97,7 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
 
         <Link
           href="/practice/kana"
-          className="flex items-center gap-2 rounded-2xl bg-[#C84B31] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#b03e26] dark:bg-[#E85C40]"
+          className="flex items-center gap-2 rounded-2xl bg-[#C84B31] px-5 py-2.5 text-sm font-bold text-white shadow-xs transition hover:opacity-90 dark:bg-[#E85C40]"
         >
           <RotateCw size={16} />
           <span>Practice Kana</span>
@@ -118,11 +118,11 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
 
             <div className="space-y-3">
               {/* Basic Hiragana Accordion */}
-              <div className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+              <div className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-xs dark:border-white/15 dark:bg-[#161B22]">
                 <button
                   type="button"
                   onClick={() => toggleSection("hira_basic")}
-                  className="flex w-full items-center justify-between p-4.5 text-left font-bold text-sm text-[#1A1A1A] hover:bg-[#FAFAF8] dark:text-[#FAFAFA] dark:hover:bg-[#2A2A2A]"
+                  className="flex w-full items-center justify-between p-4.5 text-left font-bold text-sm text-[#1A1A1A] hover:bg-[#FAFAF8] dark:text-[#FAFAFA] dark:hover:bg-[#1E232B]"
                 >
                   <div className="flex items-center gap-3">
                     <span className="font-serif text-lg text-[#C84B31] dark:text-[#E85C40]">あ</span>
@@ -134,7 +134,7 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                   <div className="flex items-center gap-2">
                     <span
                       className={`text-xs font-bold ${
-                        basicHiraPct > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-gray-400"
+                        basicHiraPct > 0 ? "text-[#3D7D52] dark:text-[#34D399]" : "text-[#6B6B6B] dark:text-[#A0A0A0]"
                       }`}
                     >
                       {basicHiraPct}%
@@ -144,7 +144,7 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                 </button>
 
                 {openSections.hira_basic && (
-                  <div className="border-t border-black/5 p-4 bg-[#FAFAF8] dark:border-white/10 dark:bg-[#2A2A2A]">
+                  <div className="border-t border-black/5 p-4 bg-[#F4F4F0] dark:border-white/10 dark:bg-[#1E232B]">
                     <div className="grid grid-cols-5 gap-2 sm:grid-cols-10">
                       {basicHira.map((k) => {
                         const isMastered = masteredIds.has(k.id);
@@ -153,14 +153,14 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                             key={k.id}
                             type="button"
                             onClick={() => setSelectedKana({ ...k, status: isMastered ? "mastered" : "unlearned" } as any)}
-                            className={`flex flex-col items-center justify-center rounded-xl p-2 shadow-2xs transition hover:scale-105 ${
+                            className={`flex flex-col items-center justify-center rounded-xl p-2 transition hover:border-[#C84B31]/50 dark:hover:border-[#E85C40]/50 ${
                               isMastered
-                                ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-900 dark:text-emerald-300"
-                                : "bg-white border border-black/5 text-[#1A1A1A] dark:bg-[#1A1A1A] dark:border-white/10 dark:text-[#FAFAFA]"
+                                ? "bg-[#3D7D52]/10 border border-[#3D7D52]/30 text-[#1A1A1A] dark:bg-[#34D399]/15 dark:border-[#34D399]/40 dark:text-[#F0F4F8]"
+                                : "bg-white border border-black/5 text-[#1A1A1A] dark:bg-[#161B22] dark:border-white/10 dark:text-[#FAFAFA]"
                             }`}
                           >
                             <span className="font-serif text-lg font-bold">{k.character}</span>
-                            <span className="text-[10px] text-gray-400">{k.romaji}</span>
+                            <span className="text-[10px] text-[#6B6B6B] dark:text-[#A0A0A0]">{k.romaji}</span>
                           </button>
                         );
                       })}
@@ -170,11 +170,11 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
               </div>
 
               {/* Dakuten Hiragana Accordion */}
-              <div className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+              <div className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-xs dark:border-white/15 dark:bg-[#161B22]">
                 <button
                   type="button"
                   onClick={() => toggleSection("hira_dakuten")}
-                  className="flex w-full items-center justify-between p-4.5 text-left font-bold text-sm text-[#1A1A1A] hover:bg-[#FAFAF8] dark:text-[#FAFAFA] dark:hover:bg-[#2A2A2A]"
+                  className="flex w-full items-center justify-between p-4.5 text-left font-bold text-sm text-[#1A1A1A] hover:bg-[#FAFAF8] dark:text-[#FAFAFA] dark:hover:bg-[#1E232B]"
                 >
                   <div className="flex items-center gap-3">
                     <span className="font-serif text-lg text-[#2D5F8A] dark:text-[#4A86B8]">が</span>
@@ -186,7 +186,7 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                   <div className="flex items-center gap-2">
                     <span
                       className={`text-xs font-bold ${
-                        dakutenHiraPct > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-gray-400"
+                        dakutenHiraPct > 0 ? "text-[#3D7D52] dark:text-[#34D399]" : "text-[#6B6B6B] dark:text-[#A0A0A0]"
                       }`}
                     >
                       {dakutenHiraPct}%
@@ -196,7 +196,7 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                 </button>
 
                 {openSections.hira_dakuten && (
-                  <div className="border-t border-black/5 p-4 bg-[#FAFAF8] dark:border-white/10 dark:bg-[#2A2A2A]">
+                  <div className="border-t border-black/5 p-4 bg-[#F4F4F0] dark:border-white/10 dark:bg-[#1E232B]">
                     <div className="grid grid-cols-5 gap-2">
                       {dakutenHira.map((k) => {
                         const isMastered = masteredIds.has(k.id);
@@ -205,14 +205,14 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                             key={k.id}
                             type="button"
                             onClick={() => setSelectedKana({ ...k, status: isMastered ? "mastered" : "unlearned" } as any)}
-                            className={`flex flex-col items-center justify-center rounded-xl p-2 shadow-2xs transition hover:scale-105 ${
+                            className={`flex flex-col items-center justify-center rounded-xl p-2 transition hover:border-[#C84B31]/50 dark:hover:border-[#E85C40]/50 ${
                               isMastered
-                                ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-900 dark:text-emerald-300"
-                                : "bg-white border border-black/5 text-[#1A1A1A] dark:bg-[#1A1A1A] dark:border-white/10 dark:text-[#FAFAFA]"
+                                ? "bg-[#3D7D52]/10 border border-[#3D7D52]/30 text-[#1A1A1A] dark:bg-[#34D399]/15 dark:border-[#34D399]/40 dark:text-[#F0F4F8]"
+                                : "bg-white border border-black/5 text-[#1A1A1A] dark:bg-[#161B22] dark:border-white/10 dark:text-[#FAFAFA]"
                             }`}
                           >
                             <span className="font-serif text-lg font-bold">{k.character}</span>
-                            <span className="text-[10px] text-gray-400">{k.romaji}</span>
+                            <span className="text-[10px] text-[#6B6B6B] dark:text-[#A0A0A0]">{k.romaji}</span>
                           </button>
                         );
                       })}
@@ -222,11 +222,11 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
               </div>
 
               {/* Combination Hiragana Accordion */}
-              <div className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+              <div className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-xs dark:border-white/15 dark:bg-[#161B22]">
                 <button
                   type="button"
                   onClick={() => toggleSection("hira_combination")}
-                  className="flex w-full items-center justify-between p-4.5 text-left font-bold text-sm text-[#1A1A1A] hover:bg-[#FAFAF8] dark:text-[#FAFAFA] dark:hover:bg-[#2A2A2A]"
+                  className="flex w-full items-center justify-between p-4.5 text-left font-bold text-sm text-[#1A1A1A] hover:bg-[#FAFAF8] dark:text-[#FAFAFA] dark:hover:bg-[#1E232B]"
                 >
                   <div className="flex items-center gap-3">
                     <span className="font-serif text-lg text-purple-600 dark:text-purple-400">きゃ</span>
@@ -238,7 +238,7 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                   <div className="flex items-center gap-2">
                     <span
                       className={`text-xs font-bold ${
-                        combiHiraPct > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-gray-400"
+                        combiHiraPct > 0 ? "text-[#3D7D52] dark:text-[#34D399]" : "text-[#6B6B6B] dark:text-[#A0A0A0]"
                       }`}
                     >
                       {combiHiraPct}%
@@ -248,7 +248,7 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                 </button>
 
                 {openSections.hira_combination && (
-                  <div className="border-t border-black/5 p-4 bg-[#FAFAF8] dark:border-white/10 dark:bg-[#2A2A2A]">
+                  <div className="border-t border-black/5 p-4 bg-[#F4F4F0] dark:border-white/10 dark:bg-[#1E232B]">
                     <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
                       {combiHira.map((k) => {
                         const isMastered = masteredIds.has(k.id);
@@ -257,14 +257,14 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                             key={k.id}
                             type="button"
                             onClick={() => setSelectedKana({ ...k, status: isMastered ? "mastered" : "unlearned" } as any)}
-                            className={`flex flex-col items-center justify-center rounded-xl p-2 shadow-2xs transition hover:scale-105 ${
+                            className={`flex flex-col items-center justify-center rounded-xl p-2 transition hover:border-[#C84B31]/50 dark:hover:border-[#E85C40]/50 ${
                               isMastered
-                                ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-900 dark:text-emerald-300"
-                                : "bg-white border border-black/5 text-[#1A1A1A] dark:bg-[#1A1A1A] dark:border-white/10 dark:text-[#FAFAFA]"
+                                ? "bg-[#3D7D52]/10 border border-[#3D7D52]/30 text-[#1A1A1A] dark:bg-[#34D399]/15 dark:border-[#34D399]/40 dark:text-[#F0F4F8]"
+                                : "bg-white border border-black/5 text-[#1A1A1A] dark:bg-[#161B22] dark:border-white/10 dark:text-[#FAFAFA]"
                             }`}
                           >
                             <span className="font-serif text-base font-bold">{k.character}</span>
-                            <span className="text-[10px] text-gray-400">{k.romaji}</span>
+                            <span className="text-[10px] text-[#6B6B6B] dark:text-[#A0A0A0]">{k.romaji}</span>
                           </button>
                         );
                       })}
@@ -286,11 +286,11 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
 
             <div className="space-y-3">
               {/* Basic Katakana */}
-              <div className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+              <div className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-xs dark:border-white/15 dark:bg-[#161B22]">
                 <button
                   type="button"
                   onClick={() => toggleSection("kata_basic")}
-                  className="flex w-full items-center justify-between p-4.5 text-left font-bold text-sm text-[#1A1A1A] hover:bg-[#FAFAF8] dark:text-[#FAFAFA] dark:hover:bg-[#2A2A2A]"
+                  className="flex w-full items-center justify-between p-4.5 text-left font-bold text-sm text-[#1A1A1A] hover:bg-[#FAFAF8] dark:text-[#FAFAFA] dark:hover:bg-[#1E232B]"
                 >
                   <div className="flex items-center gap-3">
                     <span className="font-serif text-lg text-[#C84B31] dark:text-[#E85C40]">ア</span>
@@ -302,7 +302,7 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                   <div className="flex items-center gap-2">
                     <span
                       className={`text-xs font-bold ${
-                        basicKataPct > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-gray-400"
+                        basicKataPct > 0 ? "text-[#3D7D52] dark:text-[#34D399]" : "text-[#6B6B6B] dark:text-[#A0A0A0]"
                       }`}
                     >
                       {basicKataPct}%
@@ -312,7 +312,7 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                 </button>
 
                 {openSections.kata_basic && (
-                  <div className="border-t border-black/5 p-4 bg-[#FAFAF8] dark:border-white/10 dark:bg-[#2A2A2A]">
+                  <div className="border-t border-black/5 p-4 bg-[#F4F4F0] dark:border-white/10 dark:bg-[#1E232B]">
                     <div className="grid grid-cols-5 gap-2 sm:grid-cols-10">
                       {basicKata.map((k) => {
                         const isMastered = masteredIds.has(k.id);
@@ -321,14 +321,14 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                             key={k.id}
                             type="button"
                             onClick={() => setSelectedKana({ ...k, status: isMastered ? "mastered" : "unlearned" } as any)}
-                            className={`flex flex-col items-center justify-center rounded-xl p-2 shadow-2xs transition hover:scale-105 ${
+                            className={`flex flex-col items-center justify-center rounded-xl p-2 transition hover:border-[#C84B31]/50 dark:hover:border-[#E85C40]/50 ${
                               isMastered
-                                ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-900 dark:text-emerald-300"
-                                : "bg-white border border-black/5 text-[#1A1A1A] dark:bg-[#1A1A1A] dark:border-white/10 dark:text-[#FAFAFA]"
+                                ? "bg-[#3D7D52]/10 border border-[#3D7D52]/30 text-[#1A1A1A] dark:bg-[#34D399]/15 dark:border-[#34D399]/40 dark:text-[#F0F4F8]"
+                                : "bg-white border border-black/5 text-[#1A1A1A] dark:bg-[#161B22] dark:border-white/10 dark:text-[#FAFAFA]"
                             }`}
                           >
                             <span className="font-serif text-lg font-bold">{k.character}</span>
-                            <span className="text-[10px] text-gray-400">{k.romaji}</span>
+                            <span className="text-[10px] text-[#6B6B6B] dark:text-[#A0A0A0]">{k.romaji}</span>
                           </button>
                         );
                       })}
@@ -338,11 +338,11 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
               </div>
 
               {/* Dakuten Katakana */}
-              <div className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+              <div className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-xs dark:border-white/15 dark:bg-[#161B22]">
                 <button
                   type="button"
                   onClick={() => toggleSection("kata_dakuten")}
-                  className="flex w-full items-center justify-between p-4.5 text-left font-bold text-sm text-[#1A1A1A] hover:bg-[#FAFAF8] dark:text-[#FAFAFA] dark:hover:bg-[#2A2A2A]"
+                  className="flex w-full items-center justify-between p-4.5 text-left font-bold text-sm text-[#1A1A1A] hover:bg-[#FAFAF8] dark:text-[#FAFAFA] dark:hover:bg-[#1E232B]"
                 >
                   <div className="flex items-center gap-3">
                     <span className="font-serif text-lg text-[#2D5F8A] dark:text-[#4A86B8]">ガ</span>
@@ -354,7 +354,7 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                   <div className="flex items-center gap-2">
                     <span
                       className={`text-xs font-bold ${
-                        dakutenKataPct > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-gray-400"
+                        dakutenKataPct > 0 ? "text-[#3D7D52] dark:text-[#34D399]" : "text-[#6B6B6B] dark:text-[#A0A0A0]"
                       }`}
                     >
                       {dakutenKataPct}%
@@ -364,7 +364,7 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                 </button>
 
                 {openSections.kata_dakuten && (
-                  <div className="border-t border-black/5 p-4 bg-[#FAFAF8] dark:border-white/10 dark:bg-[#2A2A2A]">
+                  <div className="border-t border-black/5 p-4 bg-[#F4F4F0] dark:border-white/10 dark:bg-[#1E232B]">
                     <div className="grid grid-cols-5 gap-2">
                       {dakutenKata.map((k) => {
                         const isMastered = masteredIds.has(k.id);
@@ -373,14 +373,14 @@ export function KanaProgressView({ stats, kana }: { stats?: KanaProgressStats; k
                             key={k.id}
                             type="button"
                             onClick={() => setSelectedKana({ ...k, status: isMastered ? "mastered" : "unlearned" } as any)}
-                            className={`flex flex-col items-center justify-center rounded-xl p-2 shadow-2xs transition hover:scale-105 ${
+                            className={`flex flex-col items-center justify-center rounded-xl p-2 transition hover:border-[#C84B31]/50 dark:hover:border-[#E85C40]/50 ${
                               isMastered
-                                ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-900 dark:text-emerald-300"
-                                : "bg-white border border-black/5 text-[#1A1A1A] dark:bg-[#1A1A1A] dark:border-white/10 dark:text-[#FAFAFA]"
+                                ? "bg-[#3D7D52]/10 border border-[#3D7D52]/30 text-[#1A1A1A] dark:bg-[#34D399]/15 dark:border-[#34D399]/40 dark:text-[#F0F4F8]"
+                                : "bg-white border border-black/5 text-[#1A1A1A] dark:bg-[#161B22] dark:border-white/10 dark:text-[#FAFAFA]"
                             }`}
                           >
                             <span className="font-serif text-lg font-bold">{k.character}</span>
-                            <span className="text-[10px] text-gray-400">{k.romaji}</span>
+                            <span className="text-[10px] text-[#6B6B6B] dark:text-[#A0A0A0]">{k.romaji}</span>
                           </button>
                         );
                       })}

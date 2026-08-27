@@ -393,7 +393,7 @@ export function WordAssociationEngine() {
     return (
       <div className="mx-auto max-w-2xl space-y-8 animate-in fade-in duration-200">
         <div className="text-center space-y-2">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)]">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40]">
             <Puzzle size={28} />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#F0F4F8]">
@@ -416,7 +416,7 @@ export function WordAssociationEngine() {
           note="Tip: tapping cards and answering questions both play the word's pronunciation — use it to reinforce the reading."
         />
 
-        <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+        <div className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           {/* Mode Selector */}
           <div>
             <label className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
@@ -428,7 +428,7 @@ export function WordAssociationEngine() {
                 onClick={() => setMode("matrix_match")}
                 className={`flex flex-col items-start gap-1 rounded-2xl p-4 text-left transition ${
                   mode === "matrix_match"
-                    ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                    ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                     : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                 }`}
               >
@@ -444,7 +444,7 @@ export function WordAssociationEngine() {
                 onClick={() => setMode("antonyms_opposites")}
                 className={`flex flex-col items-start gap-1 rounded-2xl p-4 text-left transition ${
                   mode === "antonyms_opposites"
-                    ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                    ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                     : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                 }`}
               >
@@ -460,7 +460,7 @@ export function WordAssociationEngine() {
                 onClick={() => setMode("category_sort")}
                 className={`flex flex-col items-start gap-1 rounded-2xl p-4 text-left transition ${
                   mode === "category_sort"
-                    ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                    ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                     : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                 }`}
               >
@@ -486,7 +486,7 @@ export function WordAssociationEngine() {
                   onClick={() => setLevel(lvl)}
                   className={`rounded-2xl py-2.5 text-xs font-bold transition ${
                     level === lvl
-                      ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                   }`}
                 >
@@ -508,7 +508,7 @@ export function WordAssociationEngine() {
                   onClick={() => setCardCount(12)}
                   className={`rounded-2xl py-3 text-xs font-bold transition ${
                     cardCount === 12
-                      ? "bg-[var(--color-vermillion)] text-white"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                   }`}
                 >
@@ -519,7 +519,7 @@ export function WordAssociationEngine() {
                   onClick={() => setCardCount(16)}
                   className={`rounded-2xl py-3 text-xs font-bold transition ${
                     cardCount === 16
-                      ? "bg-[var(--color-vermillion)] text-white"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                   }`}
                 >
@@ -534,7 +534,7 @@ export function WordAssociationEngine() {
             type="button"
             onClick={handleStartPractice}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-4 text-sm font-bold text-white shadow-md transition hover:opacity-90 active:scale-[0.99] cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-4 text-sm font-bold text-white shadow-md transition hover:opacity-90 cursor-pointer"
           >
             {isLoading ? (
               <span>Shuffling Cards...</span>
@@ -559,13 +559,13 @@ export function WordAssociationEngine() {
   if (isFinished) {
     return (
       <div className="mx-auto max-w-2xl space-y-6 animate-in fade-in duration-300">
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/10 dark:bg-[#161B22] space-y-6">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)]">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40]">
             <Trophy size={40} />
           </div>
 
           <div>
-            <span className="rounded-full bg-[var(--color-vermillion)]/10 px-3 py-1 text-xs font-bold text-[var(--color-vermillion)]">
+            <span className="rounded-full bg-[#C84B31]/10 dark:bg-[#E85C40]/10 px-3 py-1 text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
               Association Matrix Clear!
             </span>
             <h2 className="mt-3 text-3xl font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
@@ -580,11 +580,11 @@ export function WordAssociationEngine() {
           <div className="grid grid-cols-3 gap-3">
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1E232B]">
               <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] block">Total Score</span>
-              <span className="text-2xl font-bold text-[var(--color-vermillion)]">{score} pts</span>
+              <span className="text-2xl font-bold text-[#C84B31] dark:text-[#E85C40]">{score} pts</span>
             </div>
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1E232B]">
               <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] block">Max Combo</span>
-              <span className="text-2xl font-bold text-orange-500 flex items-center justify-center gap-1">
+              <span className="text-2xl font-bold text-amber-500 flex items-center justify-center gap-1">
                 <Flame size={20} />
                 {maxCombo}x
               </span>
@@ -603,7 +603,7 @@ export function WordAssociationEngine() {
             <button
               type="button"
               onClick={handleStartPractice}
-              className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white transition hover:opacity-90 shadow-md cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white transition hover:opacity-90 shadow-md cursor-pointer"
             >
               <RotateCcw size={16} />
               <span>Play Another Round</span>
@@ -642,13 +642,13 @@ export function WordAssociationEngine() {
           </div>
 
           {combo > 1 && (
-            <div className="flex items-center gap-1 rounded-full bg-orange-500/15 px-3 py-1 text-xs font-bold text-orange-600 dark:text-orange-400 animate-bounce">
+            <div className="flex items-center gap-1 rounded-full bg-amber-500/15 px-3 py-1 text-xs font-bold text-amber-600 dark:text-amber-400 animate-bounce">
               <Flame size={14} />
               <span>{combo}x Combo!</span>
             </div>
           )}
 
-          <div className="rounded-full bg-[var(--color-vermillion)]/10 px-3 py-1 text-xs font-bold text-[var(--color-vermillion)]">
+          <div className="rounded-full bg-[#C84B31]/10 dark:bg-[#E85C40]/10 px-3 py-1 text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
             {score} pts
           </div>
         </div>
@@ -656,7 +656,7 @@ export function WordAssociationEngine() {
 
       {/* GAMEPLAY MODE 1: MATRIX MATCH */}
       {mode === "matrix_match" && (
-        <div className="rounded-3xl border border-black/10 bg-white p-6 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-4">
+        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-4">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8]">
               Select 2 matching cards (Japanese word & corresponding opposite / pair):
@@ -673,17 +673,17 @@ export function WordAssociationEngine() {
               const isMismatched = mismatchedCardIds.includes(card.id);
 
               let style =
-                "border-black/10 bg-[#FAFAF8] hover:border-[var(--color-vermillion)] hover:bg-[var(--color-vermillion)]/5 text-[#1A1A1A] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
+                "border-black/10 bg-[#FAFAF8] hover:border-[#C84B31] dark:border-[#E85C40] hover:bg-[#C84B31]/5 dark:bg-[#E85C40]/5 text-[#1A1A1A] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
 
               if (card.isMatched) {
                 style =
                   "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 opacity-60 pointer-events-none scale-[0.98]";
               } else if (isMismatched) {
                 style =
-                  "border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300 animate-shake";
+                  "border-red-500 bg-red-500/15 text-red-700 dark:text-red-300 animate-shake";
               } else if (isSelected) {
                 style =
-                  "border-[var(--color-vermillion)] bg-[var(--color-vermillion)]/15 text-[var(--color-vermillion)] shadow-md scale-[1.02]";
+                  "border-[#C84B31] dark:border-[#E85C40] bg-[#C84B31]/15 dark:bg-[#E85C40]/15 text-[#C84B31] dark:text-[#E85C40] shadow-md scale-[1.02]";
               }
 
               return (
@@ -712,9 +712,9 @@ export function WordAssociationEngine() {
 
       {/* GAMEPLAY MODE 2: ANTONYM OPPOSITES */}
       {mode === "antonyms_opposites" && antonymQuestions[antonymIndex] && (
-        <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+        <div className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           <div className="flex items-center justify-between">
-            <span className="rounded-full border border-[var(--color-vermillion)]/30 bg-[var(--color-vermillion)]/10 px-3 py-0.5 text-xs font-bold text-[var(--color-vermillion)]">
+            <span className="rounded-full border border-[#C84B31]/30 dark:border-[#E85C40]/30 bg-[#C84B31]/10 dark:bg-[#E85C40]/10 px-3 py-0.5 text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
               Opposite Antonym Drill
             </span>
             <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8]">
@@ -733,7 +733,7 @@ export function WordAssociationEngine() {
               <button
                 type="button"
                 onClick={() => playJapaneseAudio(antonymQuestions[antonymIndex].pair.wordA.kanji)}
-                className="rounded-xl border border-black/10 bg-white p-2 text-[#1A1A1A] shadow-xs hover:text-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]"
+                className="rounded-xl border border-black/10 bg-white p-2 text-[#1A1A1A] shadow-xs hover:text-[#C84B31] dark:text-[#E85C40] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]"
               >
                 <Volume2 size={16} />
               </button>
@@ -750,13 +750,13 @@ export function WordAssociationEngine() {
               const isTarget = opt.kanji === antonymQuestions[antonymIndex].pair.wordB.kanji;
 
               let style =
-                "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[var(--color-vermillion)] hover:bg-[var(--color-vermillion)]/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
+                "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-[#E85C40] hover:bg-[#C84B31]/5 dark:bg-[#E85C40]/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
 
               if (antonymIsAnswered) {
                 if (isTarget) {
                   style = "border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 shadow-xs";
                 } else if (isSelected && !isTarget) {
-                  style = "border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300";
+                  style = "border-red-500 bg-red-500/15 text-red-700 dark:text-red-300";
                 } else {
                   style = "opacity-40 border-black/5 bg-[#FAFAF8] dark:bg-[#1E232B] dark:border-white/5";
                 }
@@ -777,7 +777,7 @@ export function WordAssociationEngine() {
                     </div>
                   </div>
                   {antonymIsAnswered && isTarget && <CheckCircle2 size={20} className="text-emerald-500" />}
-                  {antonymIsAnswered && isSelected && !isTarget && <XCircle size={20} className="text-rose-500" />}
+                  {antonymIsAnswered && isSelected && !isTarget && <XCircle size={20} className="text-red-500" />}
                 </button>
               );
             })}
@@ -787,7 +787,7 @@ export function WordAssociationEngine() {
             <button
               type="button"
               onClick={handleNextAntonym}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 active:scale-[0.99] cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 cursor-pointer"
             >
               <span>{antonymIndex + 1 >= antonymQuestions.length ? "Finish & View Results" : "Next Word Pair"}</span>
               <ArrowRight size={16} />
@@ -798,9 +798,9 @@ export function WordAssociationEngine() {
 
       {/* GAMEPLAY MODE 3: CATEGORY SORT */}
       {mode === "category_sort" && categoryQuestions[categoryIndex] && (
-        <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+        <div className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           <div className="flex items-center justify-between">
-            <span className="rounded-full border border-[var(--color-vermillion)]/30 bg-[var(--color-vermillion)]/10 px-3 py-0.5 text-xs font-bold text-[var(--color-vermillion)]">
+            <span className="rounded-full border border-[#C84B31]/30 dark:border-[#E85C40]/30 bg-[#C84B31]/10 dark:bg-[#E85C40]/10 px-3 py-0.5 text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
               Semantic Category Sort
             </span>
             <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8]">
@@ -826,13 +826,13 @@ export function WordAssociationEngine() {
               const isTarget = themeObj.id === categoryQuestions[categoryIndex].correctTheme.id;
 
               let style =
-                "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[var(--color-vermillion)] hover:bg-[var(--color-vermillion)]/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
+                "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-[#E85C40] hover:bg-[#C84B31]/5 dark:bg-[#E85C40]/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
 
               if (categoryIsAnswered) {
                 if (isTarget) {
                   style = "border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 shadow-xs";
                 } else if (isSelected && !isTarget) {
-                  style = "border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300";
+                  style = "border-red-500 bg-red-500/15 text-red-700 dark:text-red-300";
                 } else {
                   style = "opacity-40 border-black/5 bg-[#FAFAF8] dark:bg-[#1E232B] dark:border-white/5";
                 }
@@ -856,7 +856,7 @@ export function WordAssociationEngine() {
                     </div>
                   </div>
                   {categoryIsAnswered && isTarget && <CheckCircle2 size={20} className="text-emerald-500" />}
-                  {categoryIsAnswered && isSelected && !isTarget && <XCircle size={20} className="text-rose-500" />}
+                  {categoryIsAnswered && isSelected && !isTarget && <XCircle size={20} className="text-red-500" />}
                 </button>
               );
             })}
@@ -866,7 +866,7 @@ export function WordAssociationEngine() {
             <button
               type="button"
               onClick={handleNextCategory}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 active:scale-[0.99] cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 cursor-pointer"
             >
               <span>{categoryIndex + 1 >= categoryQuestions.length ? "Finish & View Results" : "Next Word"}</span>
               <ArrowRight size={16} />

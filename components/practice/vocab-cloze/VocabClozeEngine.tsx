@@ -341,8 +341,8 @@ export function VocabClozeEngine() {
             isAnswered
               ? isCorrect
                 ? "border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
-                : "border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300"
-              : "border-dashed border-[var(--color-vermillion)] bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)] animate-pulse"
+                : "border-red-500 bg-red-500/15 text-red-700 dark:text-red-300"
+              : "border-dashed border-[#C84B31] dark:border-[#E85C40] bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40] animate-pulse"
           }`}
         >
           {isAnswered ? currentQ?.targetWord.word : "______"}
@@ -357,13 +357,13 @@ export function VocabClozeEngine() {
     return (
       <div className="mx-auto max-w-2xl space-y-8 animate-in fade-in duration-200">
         <div className="text-center space-y-2">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)]">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40]">
             <Edit3 size={28} />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#F0F4F8]">
             Word Fill-in-the-Blank
           </h1>
-          <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">
+          <p className="text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
             Test your contextual vocabulary mastery. Read the natural sentence and pick the missing word from clues.
           </p>
         </div>
@@ -380,10 +380,10 @@ export function VocabClozeEngine() {
           note="Tip: pay attention to the particles around the blank — they tell you the grammatical role of the missing word."
         />
 
-        <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+        <div className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           {/* JLPT Level */}
           <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+            <label className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
               Select JLPT Level
             </label>
             <div className="mt-2.5 grid grid-cols-6 gap-2">
@@ -394,7 +394,7 @@ export function VocabClozeEngine() {
                   onClick={() => setLevel(lvl)}
                   className={`rounded-2xl py-2.5 text-xs font-bold transition ${
                     level === lvl
-                      ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8] dark:hover:bg-white/5"
                   }`}
                 >
@@ -406,7 +406,7 @@ export function VocabClozeEngine() {
 
           {/* Question Count */}
           <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+            <label className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
               Questions per Round
             </label>
             <div className="mt-2.5 grid grid-cols-4 gap-2">
@@ -417,7 +417,7 @@ export function VocabClozeEngine() {
                   onClick={() => setQuestionCount(count)}
                   className={`rounded-2xl py-2.5 text-xs font-bold transition ${
                     questionCount === count
-                      ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8] dark:hover:bg-white/5"
                   }`}
                 >
@@ -431,13 +431,13 @@ export function VocabClozeEngine() {
           <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 text-xs dark:border-white/5 dark:bg-[#1E232B] flex items-center justify-between">
             <div>
               <span className="font-bold text-[#1A1A1A] dark:text-[#F0F4F8] block">Show English Translation</span>
-              <span className="text-[#64748B] dark:text-[#94A3B8]">Display the English meaning as a supporting hint</span>
+              <span className="text-[#6B6B6B] dark:text-[#A0A0A0]">Display the English meaning as a supporting hint</span>
             </div>
             <button
               type="button"
               onClick={() => setShowEnglishHint(!showEnglishHint)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                showEnglishHint ? "bg-[var(--color-vermillion)]" : "bg-gray-300 dark:bg-gray-700"
+                showEnglishHint ? "bg-[#C84B31] dark:bg-[#E85C40]" : "bg-gray-300 dark:bg-gray-700"
               }`}
             >
               <span
@@ -453,7 +453,7 @@ export function VocabClozeEngine() {
             type="button"
             onClick={handleStartPractice}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-4 text-sm font-bold text-white shadow-md transition hover:opacity-90 active:scale-[0.99] cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-4 text-sm font-bold text-white shadow-md transition hover:opacity-90 cursor-pointer"
           >
             {isLoading ? (
               <span>Preparing Cloze Drills...</span>
@@ -480,19 +480,19 @@ export function VocabClozeEngine() {
 
     return (
       <div className="mx-auto max-w-2xl space-y-6 animate-in fade-in duration-300">
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/10 dark:bg-[#161B22] space-y-6">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)]">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40]">
             <Trophy size={40} />
           </div>
 
           <div>
-            <span className="rounded-full bg-[var(--color-vermillion)]/10 px-3 py-1 text-xs font-bold text-[var(--color-vermillion)]">
+            <span className="rounded-full bg-[#C84B31]/10 dark:bg-[#E85C40]/10 px-3 py-1 text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
               {level} Cloze Practice Complete
             </span>
             <h2 className="mt-3 text-3xl font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
               {accuracy >= 80 ? "素晴らしい！ Outstanding!" : accuracy >= 50 ? "よくできました！ Good Job!" : "がんばりました！ Keep Practicing!"}
             </h2>
-            <p className="mt-1 text-sm text-[#64748B] dark:text-[#94A3B8]">
+            <p className="mt-1 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
               You correctly identified {score} out of {questions.length} context words.
             </p>
           </div>
@@ -500,18 +500,18 @@ export function VocabClozeEngine() {
           {/* Stats Bar */}
           <div className="grid grid-cols-3 gap-3">
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1E232B]">
-              <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] block">Accuracy</span>
-              <span className="text-2xl font-bold text-[var(--color-vermillion)]">{accuracy}%</span>
+              <span className="text-xs font-bold text-[#6B6B6B] dark:text-[#A0A0A0] block">Accuracy</span>
+              <span className="text-2xl font-bold text-[#C84B31] dark:text-[#E85C40]">{accuracy}%</span>
             </div>
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1E232B]">
-              <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] block">Max Streak</span>
-              <span className="text-2xl font-bold text-orange-500 flex items-center justify-center gap-1">
+              <span className="text-xs font-bold text-[#6B6B6B] dark:text-[#A0A0A0] block">Max Streak</span>
+              <span className="text-2xl font-bold text-amber-500 flex items-center justify-center gap-1">
                 <Flame size={20} />
                 {maxStreak}
               </span>
             </div>
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1E232B]">
-              <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] block">Score</span>
+              <span className="text-xs font-bold text-[#6B6B6B] dark:text-[#A0A0A0] block">Score</span>
               <span className="text-2xl font-bold text-emerald-500">
                 {score}/{questions.length}
               </span>
@@ -520,7 +520,7 @@ export function VocabClozeEngine() {
 
           {/* Answer Review List */}
           <div className="text-left space-y-3 pt-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
               Sentence Review ({history.length})
             </h3>
             <div className="max-h-72 space-y-2 overflow-y-auto pr-1">
@@ -530,7 +530,7 @@ export function VocabClozeEngine() {
                   className={`flex items-center justify-between rounded-2xl border p-3.5 text-xs transition ${
                     item.isCorrect
                       ? "border-emerald-500/20 bg-emerald-500/5 dark:bg-emerald-500/10"
-                      : "border-rose-500/20 bg-rose-500/5 dark:bg-rose-500/10"
+                      : "border-red-500/20 bg-red-500/5 dark:bg-red-500/10"
                   }`}
                 >
                   <div className="space-y-1 max-w-[75%]">
@@ -539,13 +539,13 @@ export function VocabClozeEngine() {
                       <button
                         type="button"
                         onClick={() => playJapaneseAudio(item.question.fullSentence)}
-                        className="rounded-lg p-1 text-[#64748B] hover:text-[var(--color-vermillion)] dark:text-[#94A3B8]"
+                        className="rounded-lg p-1 text-[#6B6B6B] hover:text-[#C84B31] dark:text-[#A0A0A0] dark:hover:text-[#E85C40]"
                       >
                         <Volume2 size={13} />
                       </button>
                     </div>
-                    <div className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">
-                      Target: <span className="font-bold text-[var(--color-vermillion)]">{item.question.targetWord.word}</span> ({item.question.targetWord.reading}) — {item.question.targetWord.meaning}
+                    <div className="text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">
+                      Target: <span className="font-bold text-[#C84B31] dark:text-[#E85C40]">{item.question.targetWord.word}</span> ({item.question.targetWord.reading}) — {item.question.targetWord.meaning}
                     </div>
                   </div>
 
@@ -555,7 +555,7 @@ export function VocabClozeEngine() {
                         <Check size={14} /> Correct
                       </span>
                     ) : (
-                      <span className="flex items-center gap-1 font-bold text-rose-600 dark:text-rose-400">
+                      <span className="flex items-center gap-1 font-bold text-red-600 dark:text-red-400">
                         <X size={14} /> Picked: {item.userAnswer}
                       </span>
                     )}
@@ -570,7 +570,7 @@ export function VocabClozeEngine() {
             <button
               type="button"
               onClick={handleStartPractice}
-              className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white transition hover:opacity-90 shadow-md cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white transition hover:opacity-90 shadow-md cursor-pointer"
             >
               <RotateCcw size={16} />
               <span>Practice Again</span>
@@ -605,7 +605,7 @@ export function VocabClozeEngine() {
 
         <div className="flex items-center gap-3">
           {streak > 1 && (
-            <div className="flex items-center gap-1 rounded-full bg-orange-500/10 px-3 py-1 text-xs font-bold text-orange-600 dark:text-orange-400 animate-bounce">
+            <div className="flex items-center gap-1 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-600 dark:text-amber-400 animate-bounce">
               <Flame size={14} />
               <span>{streak} Streak!</span>
             </div>
@@ -620,23 +620,23 @@ export function VocabClozeEngine() {
       {/* Progress Bar */}
       <div className="h-2 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/5">
         <div
-          className="h-full rounded-full bg-[var(--color-vermillion)] transition-all duration-300 ease-out"
+          className="h-full rounded-full bg-[#C84B31] dark:bg-[#E85C40] transition-all duration-300 ease-out"
           style={{ width: `${progressPercent}%` }}
         />
       </div>
 
       {/* Main Cloze Card */}
-      <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+      <div className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
         {/* Level Tag & Audio Button */}
         <div className="flex items-center justify-between">
-          <span className="rounded-full border border-[var(--color-vermillion)]/30 bg-[var(--color-vermillion)]/10 px-3 py-0.5 text-xs font-bold text-[var(--color-vermillion)]">
+          <span className="rounded-full border border-[#C84B31]/30 dark:border-[#E85C40]/30 bg-[#C84B31]/10 dark:bg-[#E85C40]/10 px-3 py-0.5 text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
             {currentQ.level} Context Drill
           </span>
 
           <button
             type="button"
             onClick={() => playJapaneseAudio(isAnswered ? currentQ.fullSentence : currentQ.sentenceWithBlank)}
-            className="flex items-center gap-1.5 rounded-xl border border-black/10 bg-[#FAFAF8] px-3 py-1.5 text-xs font-bold text-[#1A1A1A] transition hover:bg-[var(--color-vermillion)]/10 hover:text-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
+            className="flex items-center gap-1.5 rounded-xl border border-black/10 bg-[#FAFAF8] px-3 py-1.5 text-xs font-bold text-[#1A1A1A] transition hover:bg-[#C84B31]/10 dark:bg-[#E85C40]/10 hover:text-[#C84B31] dark:text-[#E85C40] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
             title="Listen to Japanese sentence"
           >
             <Volume2 size={15} />
@@ -651,8 +651,8 @@ export function VocabClozeEngine() {
 
         {/* English Translation / Hint */}
         {showEnglishHint && (
-          <div className="flex items-center justify-center gap-2 text-xs font-semibold text-[#64748B] dark:text-[#94A3B8]">
-            <BookOpen size={14} className="text-[var(--color-vermillion)]" />
+          <div className="flex items-center justify-center gap-2 text-xs font-semibold text-[#6B6B6B] dark:text-[#A0A0A0]">
+            <BookOpen size={14} className="text-[#C84B31] dark:text-[#E85C40]" />
             <span>{currentQ.englishTranslation}</span>
           </div>
         )}
@@ -669,7 +669,7 @@ export function VocabClozeEngine() {
               <button
                 type="button"
                 onClick={() => setRevealedHint(true)}
-                className="inline-flex items-center gap-1 text-xs font-bold text-[#64748B] hover:text-[var(--color-vermillion)] dark:text-[#94A3B8]"
+                className="inline-flex items-center gap-1 text-xs font-bold text-[#6B6B6B] hover:text-[#C84B31] dark:text-[#A0A0A0] dark:hover:text-[#E85C40]"
               >
                 <HelpCircle size={13} />
                 <span>Show contextual clue</span>
@@ -685,7 +685,7 @@ export function VocabClozeEngine() {
             const isTarget = opt.word === currentQ.targetWord.word;
 
             let cardStyle =
-              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[var(--color-vermillion)] hover:bg-[var(--color-vermillion)]/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
+              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-[#E85C40] hover:bg-[#C84B31]/5 dark:bg-[#E85C40]/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
 
             if (isAnswered) {
               if (isTarget) {
@@ -693,7 +693,7 @@ export function VocabClozeEngine() {
                   "border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 shadow-xs";
               } else if (isSelected && !isTarget) {
                 cardStyle =
-                  "border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300";
+                  "border-red-500 bg-red-500/15 text-red-700 dark:text-red-300";
               } else {
                 cardStyle = "opacity-40 border-black/5 bg-[#FAFAF8] dark:bg-[#1E232B] dark:border-white/5";
               }
@@ -709,12 +709,12 @@ export function VocabClozeEngine() {
               >
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
-                    <span className="flex h-5 w-5 items-center justify-center rounded-lg bg-black/5 text-[11px] font-bold text-[#64748B] dark:bg-white/5 dark:text-[#94A3B8]">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-lg bg-black/5 text-[11px] font-bold text-[#6B6B6B] dark:bg-white/5 dark:text-[#A0A0A0]">
                       {idx + 1}
                     </span>
                     <span className="text-lg font-bold">{opt.word}</span>
                   </div>
-                  <div className="pl-7 text-xs text-[#64748B] dark:text-[#94A3B8]">
+                  <div className="pl-7 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
                     {opt.reading} • {opt.meaning}
                   </div>
                 </div>
@@ -726,14 +726,14 @@ export function VocabClozeEngine() {
                       e.stopPropagation();
                       playJapaneseAudio(opt.word);
                     }}
-                    className="rounded-lg p-1 text-[#64748B] hover:text-[var(--color-vermillion)] dark:text-[#94A3B8] opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="rounded-lg p-1 text-[#6B6B6B] hover:text-[#C84B31] dark:text-[#A0A0A0] dark:hover:text-[#E85C40] opacity-0 group-hover:opacity-100 transition-opacity"
                     title="Pronounce word"
                   >
                     <Volume2 size={14} />
                   </button>
 
                   {isAnswered && isTarget && <CheckCircle2 size={20} className="text-emerald-500" />}
-                  {isAnswered && isSelected && !isTarget && <XCircle size={20} className="text-rose-500" />}
+                  {isAnswered && isSelected && !isTarget && <XCircle size={20} className="text-red-500" />}
                 </div>
               </button>
             );
@@ -751,15 +751,15 @@ export function VocabClozeEngine() {
                       <CheckCircle2 size={16} /> 正解！ Correct Word Choice!
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-sm font-bold text-rose-600 dark:text-rose-400">
+                    <span className="inline-flex items-center gap-1 text-sm font-bold text-red-600 dark:text-red-400">
                       <XCircle size={16} /> 不正解 Incorrect
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                <p className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
                   Full sentence: <span className="font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">{currentQ.fullSentence}</span>
                 </p>
-                <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                <p className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
                   Reading: {currentQ.reading}
                 </p>
               </div>
@@ -767,7 +767,7 @@ export function VocabClozeEngine() {
               <button
                 type="button"
                 onClick={() => playJapaneseAudio(currentQ.fullSentence)}
-                className="rounded-xl border border-black/10 bg-white p-2 text-[#1A1A1A] shadow-xs hover:text-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]"
+                className="rounded-xl border border-black/10 bg-white p-2 text-[#1A1A1A] shadow-xs hover:text-[#C84B31] dark:text-[#E85C40] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]"
               >
                 <Volume2 size={16} />
               </button>
@@ -776,7 +776,7 @@ export function VocabClozeEngine() {
             <button
               type="button"
               onClick={handleNextQuestion}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 active:scale-[0.99] cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 cursor-pointer"
             >
               <span>{currentIndex + 1 >= questions.length ? "Finish Drill & View Results" : "Next Question (Enter)"}</span>
               <ArrowRight size={16} />

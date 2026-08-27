@@ -244,16 +244,16 @@ export function FuriganaDrillEngine() {
         <div className="space-y-1">
           <Link
             href="/practice"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#64748B] hover:text-[var(--color-vermillion)] dark:text-[#94A3B8]"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6B6B6B] hover:text-[#C84B31] dark:text-[#A0A0A0] dark:hover:text-[#E85C40]"
           >
             <ArrowLeft size={14} />
             <span>Back to Practice Dojo</span>
           </Link>
           <h1 className="text-3xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#F0F4F8] flex items-center gap-2">
-            <EyeOff className="text-[var(--color-vermillion)]" size={28} />
+            <EyeOff className="text-[#C84B31] dark:text-[#E85C40]" size={28} />
             <span>Furigana Removal Drill</span>
           </h1>
-          <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+          <p className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
             Practice unassisted Japanese reading. Tap masked kanji to test reading recall or listen to pronunciation.
           </p>
         </div>
@@ -267,7 +267,7 @@ export function FuriganaDrillEngine() {
               onClick={() => handleSelectPassage(p.id)}
               className={`rounded-2xl px-3.5 py-2 text-xs font-bold whitespace-nowrap transition cursor-pointer ${
                 selectedPassageId === p.id
-                  ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                  ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                   : "border border-black/10 bg-white text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]"
               }`}
             >
@@ -298,8 +298,8 @@ export function FuriganaDrillEngine() {
             onClick={() => setDisplayMode("interactive_drill")}
             className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition ${
               displayMode === "interactive_drill"
-                ? "bg-white text-[var(--color-vermillion)] shadow-xs dark:bg-[#1E232B]"
-                : "text-[#64748B] dark:text-[#94A3B8]"
+                ? "bg-white text-[#C84B31] dark:text-[#E85C40] shadow-xs dark:bg-[#1E232B]"
+                : "text-[#6B6B6B] dark:text-[#A0A0A0]"
             }`}
           >
             <MousePointerClick size={14} />
@@ -311,8 +311,8 @@ export function FuriganaDrillEngine() {
             onClick={() => setDisplayMode("completely_hidden")}
             className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition ${
               displayMode === "completely_hidden"
-                ? "bg-white text-[var(--color-vermillion)] shadow-xs dark:bg-[#1E232B]"
-                : "text-[#64748B] dark:text-[#94A3B8]"
+                ? "bg-white text-[#C84B31] dark:text-[#E85C40] shadow-xs dark:bg-[#1E232B]"
+                : "text-[#6B6B6B] dark:text-[#A0A0A0]"
             }`}
           >
             <EyeOff size={14} />
@@ -324,8 +324,8 @@ export function FuriganaDrillEngine() {
             onClick={() => setDisplayMode("hover_only")}
             className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition ${
               displayMode === "hover_only"
-                ? "bg-white text-[var(--color-vermillion)] shadow-xs dark:bg-[#1E232B]"
-                : "text-[#64748B] dark:text-[#94A3B8]"
+                ? "bg-white text-[#C84B31] dark:text-[#E85C40] shadow-xs dark:bg-[#1E232B]"
+                : "text-[#6B6B6B] dark:text-[#A0A0A0]"
             }`}
           >
             <Eye size={14} />
@@ -337,8 +337,8 @@ export function FuriganaDrillEngine() {
             onClick={() => setDisplayMode("all_visible")}
             className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition ${
               displayMode === "all_visible"
-                ? "bg-white text-[var(--color-vermillion)] shadow-xs dark:bg-[#1E232B]"
-                : "text-[#64748B] dark:text-[#94A3B8]"
+                ? "bg-white text-[#C84B31] dark:text-[#E85C40] shadow-xs dark:bg-[#1E232B]"
+                : "text-[#6B6B6B] dark:text-[#A0A0A0]"
             }`}
           >
             <BookOpen size={14} />
@@ -349,8 +349,8 @@ export function FuriganaDrillEngine() {
         {/* Drill Score & Quick Actions */}
         <div className="flex items-center gap-2">
           {displayMode === "interactive_drill" && (
-            <div className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] px-2">
-              Recalled: <span className="text-[var(--color-vermillion)]">{Object.keys(revealedKanjiMap).length}</span> / {allKanjiTokens.length} Kanji
+            <div className="text-xs font-bold text-[#6B6B6B] dark:text-[#A0A0A0] px-2">
+              Recalled: <span className="text-[#C84B31] dark:text-[#E85C40]">{Object.keys(revealedKanjiMap).length}</span> / {allKanjiTokens.length} Kanji
             </div>
           )}
 
@@ -373,20 +373,20 @@ export function FuriganaDrillEngine() {
       </div>
 
       {/* Reading Passage Container */}
-      <div className="rounded-3xl border border-black/10 bg-white p-7 sm:p-9 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-7">
+      <div className="rounded-2xl border border-black/10 bg-white p-7 sm:p-9 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-7">
         {/* Story Metadata */}
         <div className="flex items-start justify-between border-b border-black/5 pb-4 dark:border-white/5">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="rounded-full bg-[var(--color-vermillion)]/10 px-2.5 py-0.5 text-xs font-bold text-[var(--color-vermillion)]">
+              <span className="rounded-full bg-[#C84B31]/10 dark:bg-[#E85C40]/10 px-2.5 py-0.5 text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
                 JLPT {passage.level}
               </span>
-              <span className="text-xs text-[#64748B] dark:text-[#94A3B8]">• {passage.category}</span>
+              <span className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">• {passage.category}</span>
             </div>
             <h2 className="text-2xl font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
               {passage.title}
             </h2>
-            <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+            <p className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
               {passage.summary}
             </p>
           </div>
@@ -394,7 +394,7 @@ export function FuriganaDrillEngine() {
           <button
             type="button"
             onClick={() => playJapaneseAudio(passage.sentences.map((s) => s.japanese).join(" "))}
-            className="flex items-center gap-1.5 rounded-xl border border-black/10 bg-[#FAFAF8] px-3.5 py-2 text-xs font-bold text-[#1A1A1A] transition hover:bg-[var(--color-vermillion)]/10 hover:text-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
+            className="flex items-center gap-1.5 rounded-xl border border-black/10 bg-[#FAFAF8] px-3.5 py-2 text-xs font-bold text-[#1A1A1A] transition hover:bg-[#C84B31]/10 dark:bg-[#E85C40]/10 hover:text-[#C84B31] dark:text-[#E85C40] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
           >
             <Volume2 size={15} />
             <span>Listen All</span>
@@ -425,7 +425,7 @@ export function FuriganaDrillEngine() {
                           displayMode === "interactive_drill"
                             ? isRevealed
                               ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 font-bold"
-                              : "border-b-2 border-dashed border-[var(--color-vermillion)] hover:bg-[var(--color-vermillion)]/10 text-[#1A1A1A] dark:text-[#F0F4F8]"
+                              : "border-b-2 border-dashed border-[#C84B31] dark:border-[#E85C40] hover:bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#1A1A1A] dark:text-[#F0F4F8]"
                             : displayMode === "completely_hidden"
                             ? "hover:bg-black/5 dark:hover:bg-white/5"
                             : "hover:bg-black/5 dark:hover:bg-white/5"
@@ -436,7 +436,7 @@ export function FuriganaDrillEngine() {
                         {displayMode === "all_visible" && (
                           <ruby>
                             {token.surface}
-                            <rt className="text-[11px] font-normal text-[#64748B] dark:text-[#94A3B8]">
+                            <rt className="text-[11px] font-normal text-[#6B6B6B] dark:text-[#A0A0A0]">
                               {token.reading}
                             </rt>
                           </ruby>
@@ -465,7 +465,7 @@ export function FuriganaDrillEngine() {
                                   {token.reading}
                                 </span>
                               ) : (
-                                <span className="text-[var(--color-vermillion)] text-[10px]">●</span>
+                                <span className="text-[#C84B31] dark:text-[#E85C40] text-[10px]">●</span>
                               )}
                             </rt>
                           </ruby>
@@ -479,7 +479,7 @@ export function FuriganaDrillEngine() {
                 <button
                   type="button"
                   onClick={() => playJapaneseAudio(sentence.japanese)}
-                  className="rounded-lg p-1.5 text-[#64748B] hover:text-[var(--color-vermillion)] dark:text-[#94A3B8] opacity-60 hover:opacity-100 transition"
+                  className="rounded-lg p-1.5 text-[#6B6B6B] hover:text-[#C84B31] dark:text-[#A0A0A0] dark:hover:text-[#E85C40] opacity-60 hover:opacity-100 transition"
                   title="Listen to this sentence"
                 >
                   <Volume2 size={16} />
@@ -487,7 +487,7 @@ export function FuriganaDrillEngine() {
               </div>
 
               {/* Translation snippet underneath */}
-              <div className="mt-1 text-xs text-[#64748B] dark:text-[#94A3B8]">
+              <div className="mt-1 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
                 {sentence.translation}
               </div>
             </div>
@@ -497,7 +497,7 @@ export function FuriganaDrillEngine() {
         {/* Comprehension Quiz Section */}
         <div className="border-t border-black/5 pt-6 dark:border-white/5 space-y-4">
           <div className="flex items-center gap-2 font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
-            <CheckCircle2 size={18} className="text-[var(--color-vermillion)]" />
+            <CheckCircle2 size={18} className="text-[#C84B31] dark:text-[#E85C40]" />
             <span>Story Comprehension Check</span>
           </div>
 
@@ -518,18 +518,18 @@ export function FuriganaDrillEngine() {
                       const isCorrect = q.correctIndex === oIdx;
 
                       let style =
-                        "border-black/10 bg-white text-[#1A1A1A] hover:border-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]";
+                        "border-black/10 bg-white text-[#1A1A1A] hover:border-[#C84B31] dark:border-[#E85C40] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]";
 
                       if (isSubmitted) {
                         if (isCorrect) {
                           style = "border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-bold";
                         } else if (isSelected && !isCorrect) {
-                          style = "border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300";
+                          style = "border-red-500 bg-red-500/15 text-red-700 dark:text-red-300";
                         } else {
                           style = "opacity-40 border-black/5";
                         }
                       } else if (isSelected) {
-                        style = "border-[var(--color-vermillion)] bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)] font-bold";
+                        style = "border-[#C84B31] dark:border-[#E85C40] bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40] font-bold";
                       }
 
                       return (
@@ -547,7 +547,7 @@ export function FuriganaDrillEngine() {
                   </div>
 
                   {isSubmitted && (
-                    <div className="pt-1 text-[11px] text-[#64748B] dark:text-[#94A3B8]">
+                    <div className="pt-1 text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">
                       💡 {q.explanation}
                     </div>
                   )}
@@ -560,7 +560,7 @@ export function FuriganaDrillEngine() {
             <button
               type="button"
               onClick={handleSubmitQuiz}
-              className="w-full rounded-2xl bg-[var(--color-vermillion)] py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90 cursor-pointer"
+              className="w-full rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3 text-xs font-bold text-white shadow-md transition hover:opacity-90 cursor-pointer"
             >
               Submit Comprehension Answers
             </button>
@@ -579,11 +579,11 @@ export function FuriganaDrillEngine() {
           onClick={() => setActiveKanjiModal(null)}
         >
           <div
-            className="w-full max-w-sm rounded-3xl border border-black/10 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#161B22] space-y-5"
+            className="w-full max-w-sm rounded-2xl border border-black/10 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#161B22] space-y-5"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <span className="rounded-full bg-[var(--color-vermillion)]/10 px-2.5 py-0.5 text-xs font-bold text-[var(--color-vermillion)]">
+              <span className="rounded-full bg-[#C84B31]/10 dark:bg-[#E85C40]/10 px-2.5 py-0.5 text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
                 Kanji Reading Recall
               </span>
               <button
@@ -600,7 +600,7 @@ export function FuriganaDrillEngine() {
                 {activeKanjiModal.surface}
               </div>
               {activeKanjiModal.meaning && (
-                <div className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
                   Meaning: {activeKanjiModal.meaning}
                 </div>
               )}
@@ -613,13 +613,13 @@ export function FuriganaDrillEngine() {
                 const isTarget = opt === activeKanjiModal.reading;
 
                 let style =
-                  "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
+                  "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-[#E85C40] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
 
                 if (recallIsAnswered) {
                   if (isTarget) {
                     style = "border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-bold";
                   } else if (isSelected && !isTarget) {
-                    style = "border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300";
+                    style = "border-red-500 bg-red-500/15 text-red-700 dark:text-red-300";
                   } else {
                     style = "opacity-40 border-black/5";
                   }
@@ -643,7 +643,7 @@ export function FuriganaDrillEngine() {
               <button
                 type="button"
                 onClick={() => setActiveKanjiModal(null)}
-                className="w-full rounded-2xl bg-[var(--color-vermillion)] py-3 text-xs font-bold text-white transition hover:opacity-90"
+                className="w-full rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3 text-xs font-bold text-white transition hover:opacity-90"
               >
                 Continue Reading
               </button>

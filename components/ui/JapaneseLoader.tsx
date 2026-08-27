@@ -33,7 +33,7 @@ export function JapaneseLoader({ message }: { message?: string }) {
   }, []);
 
   return (
-    <div className="flex min-h-[280px] flex-col items-center justify-center rounded-3xl border border-black/10 bg-white/50 p-8 backdrop-blur-sm dark:border-white/10 dark:bg-[#161920]/80">
+    <div className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl border border-black/10 bg-white/50 p-8 backdrop-blur-sm dark:border-white/15 dark:bg-[#161B22]/80">
       {/* Animated pulsing Kanji badge */}
       <div className="relative flex h-20 w-20 items-center justify-center">
         {/* Glowing ring animation */}
@@ -41,7 +41,7 @@ export function JapaneseLoader({ message }: { message?: string }) {
         <div className="absolute inset-0 rounded-3xl border-2 border-dashed border-[#C84B31]/40 animate-spin duration-3000 dark:border-[#E85C40]/40" />
 
         {/* Center Kanji character */}
-        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-white font-serif text-3xl font-bold text-[#C84B31] shadow-md transition-transform duration-300 dark:bg-[#1E232E] dark:text-[#E85C40]">
+        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-white font-serif text-3xl font-bold text-[#C84B31] shadow-xs transition-transform duration-300 dark:bg-[#1E232B] dark:text-[#E85C40]">
           {KANJI_ANIMATION_POOL[kanjiIndex]}
         </div>
       </div>

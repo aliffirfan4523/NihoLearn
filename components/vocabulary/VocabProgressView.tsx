@@ -570,7 +570,7 @@ export function VocabProgressView({
 
               <div className="overflow-hidden rounded-3xl border border-black/10 bg-white shadow-xs dark:border-white/10 dark:bg-[#161B22]">
                 <div className="overflow-x-auto">
-                  <table className="w-full min-w-[760px] text-left text-xs">
+                  <table className="w-full min-w-[760px] text-left text-xs [&_td:first-child]:sticky [&_td:first-child]:left-0 [&_td:first-child]:z-10 [&_td:first-child]:bg-white [&_td:first-child]:dark:bg-[#161B22] [&_th:first-child]:sticky [&_th:first-child]:left-0 [&_th:first-child]:z-10 [&_th:first-child]:bg-[#FAFAF8] [&_th:first-child]:dark:bg-[#1E232B]">
                     <thead className="border-b border-black/5 bg-[#FAFAF8] text-[11px] font-bold uppercase tracking-wider text-[#64748B] dark:border-white/5 dark:bg-[#1E232B] dark:text-[#94A3B8]">
                       <tr>
                         <th className="py-3.5 pl-5 pr-2">Word</th>

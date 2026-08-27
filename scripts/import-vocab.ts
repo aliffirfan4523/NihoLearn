@@ -66,9 +66,9 @@ function parseCsvFile(filePath: string): VocabCsvRow[] {
 }
 
 async function main() {
-  console.log("🚀 Starting JLPT Vocabulary Import from public/jlpt-word-list/src/...");
+  console.log("🚀 Starting JLPT Vocabulary Import from data/jlpt-word-list/src/...");
 
-  const baseDir = path.join(process.cwd(), "public", "jlpt-word-list", "src");
+  const baseDir = path.join(process.cwd(), "data", "jlpt-word-list", "src");
   const levels = [
     { file: "n5.csv", level: "N5" },
     { file: "n4.csv", level: "N4" },

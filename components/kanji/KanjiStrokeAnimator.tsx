@@ -135,7 +135,7 @@ export function KanjiStrokeAnimator({
     <div className="flex flex-col items-center justify-center">
       <div
         onClick={handleStartAnimation}
-        className="group relative flex h-36 w-36 cursor-pointer items-center justify-center rounded-3xl border border-black/10 bg-[#FAFAF8] p-3 shadow-inner transition hover:border-[#C84B31]/50 hover:bg-[#F4F4F0] dark:border-white/10 dark:bg-[#12151B] dark:hover:border-[#E85C40]/50 dark:hover:bg-[#181C24]"
+        className="group relative flex h-36 w-36 cursor-pointer items-center justify-center rounded-2xl border border-black/10 bg-[#F4F4F0] p-3 shadow-xs transition hover:border-[#C84B31]/50 hover:bg-white dark:border-white/15 dark:bg-[#1E232B] dark:hover:border-[#E85C40]/50 dark:hover:bg-[#161B22]"
       >
         {strokes.length > 0 ? (
           <svg
@@ -185,7 +185,7 @@ export function KanjiStrokeAnimator({
                     fill="currentColor"
                     fontWeight="bold"
                     fontFamily="sans-serif"
-                    className="select-none text-[#64748B] dark:text-[#94A3B8] opacity-80"
+                    className="select-none text-[#6B6B6B] dark:text-[#A0A0A0] opacity-80"
                   >
                     {s.number.num}
                   </text>
@@ -193,13 +193,13 @@ export function KanjiStrokeAnimator({
               })}
           </svg>
         ) : (
-          <div className="font-serif text-7xl font-bold text-[#1A1A1A] transition group-hover:scale-105 dark:text-white">
+          <div className="font-serif text-7xl font-bold text-[#1A1A1A] transition dark:text-[#F0F4F8]">
             {character}
           </div>
         )}
 
         {/* Play Overlay Indicator */}
-        <div className="absolute bottom-2 right-2 rounded-full bg-black/10 p-1 text-gray-700 opacity-0 transition group-hover:opacity-100 dark:bg-black/60 dark:text-gray-300">
+        <div className="absolute bottom-2 right-2 rounded-full bg-black/10 p-1 text-[#6B6B6B] opacity-0 transition group-hover:opacity-100 dark:bg-black/60 dark:text-[#A0A0A0]">
           <Play size={10} className="fill-current" />
         </div>
       </div>
@@ -207,7 +207,7 @@ export function KanjiStrokeAnimator({
       <button
         type="button"
         onClick={handleStartAnimation}
-        className="mt-2.5 flex items-center gap-1.5 text-xs italic text-[#64748B] transition hover:text-[#C84B31] dark:text-[#8E9CAE] dark:hover:text-[#E85C40]"
+        className="mt-2.5 flex items-center gap-1.5 text-xs italic text-[#6B6B6B] transition hover:text-[#C84B31] dark:text-[#A0A0A0] dark:hover:text-[#E85C40]"
       >
         <Sparkles size={12} className="text-[#C84B31] dark:text-[#E85C40]" />
         <span>Click to see stroke order animation</span>

@@ -283,13 +283,13 @@ export function ReverseTranslationEngine() {
     return (
       <div className="mx-auto max-w-2xl space-y-8 animate-in fade-in duration-200">
         <div className="text-center space-y-2">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)]">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40]">
             <RotateCw size={28} />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#F0F4F8]">
             Reverse Translation Recall
           </h1>
-          <p className="text-sm text-[#64748B] dark:text-[#94A3B8]">
+          <p className="text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
             See the English meaning and recall the Japanese expression. Test your active production memory!
           </p>
         </div>
@@ -306,10 +306,10 @@ export function ReverseTranslationEngine() {
           note="Tip: set your JLPT level, theme, and question count first — warm up in Multiple Choice, then switch to Typing Recall for a real challenge."
         />
 
-        <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+        <div className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
           {/* Mode Selector */}
           <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+            <label className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
               Input Mode
             </label>
             <div className="mt-2.5 grid grid-cols-2 gap-3">
@@ -318,7 +318,7 @@ export function ReverseTranslationEngine() {
                 onClick={() => setMode("multiple_choice")}
                 className={`flex items-center justify-center gap-2 rounded-2xl p-3.5 text-xs font-bold transition ${
                   mode === "multiple_choice"
-                    ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                    ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                     : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                 }`}
               >
@@ -331,7 +331,7 @@ export function ReverseTranslationEngine() {
                 onClick={() => setMode("typing")}
                 className={`flex items-center justify-center gap-2 rounded-2xl p-3.5 text-xs font-bold transition ${
                   mode === "typing"
-                    ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                    ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                     : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                 }`}
               >
@@ -343,7 +343,7 @@ export function ReverseTranslationEngine() {
 
           {/* JLPT Level */}
           <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+            <label className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
               Select JLPT Level
             </label>
             <div className="mt-2.5 grid grid-cols-6 gap-2">
@@ -354,7 +354,7 @@ export function ReverseTranslationEngine() {
                   onClick={() => setLevel(lvl)}
                   className={`rounded-2xl py-2.5 text-xs font-bold transition ${
                     level === lvl
-                      ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                   }`}
                 >
@@ -366,7 +366,7 @@ export function ReverseTranslationEngine() {
 
           {/* Theme Selector */}
           <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+            <label className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
               Vocabulary Category Theme
             </label>
             <div className="mt-2.5 grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -375,7 +375,7 @@ export function ReverseTranslationEngine() {
                 onClick={() => setTheme("all")}
                 className={`rounded-xl py-2 px-3 text-xs font-bold text-left transition ${
                   theme === "all"
-                    ? "bg-[var(--color-vermillion)] text-white"
+                    ? "bg-[#C84B31] dark:bg-[#E85C40] text-white"
                     : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                 }`}
               >
@@ -388,7 +388,7 @@ export function ReverseTranslationEngine() {
                   onClick={() => setTheme(t.id)}
                   className={`rounded-xl py-2 px-3 text-xs font-bold text-left truncate transition ${
                     theme === t.id
-                      ? "bg-[var(--color-vermillion)] text-white"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                   }`}
                 >
@@ -400,7 +400,7 @@ export function ReverseTranslationEngine() {
 
           {/* Question Count */}
           <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+            <label className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
               Number of Questions
             </label>
             <div className="mt-2.5 grid grid-cols-4 gap-2">
@@ -411,7 +411,7 @@ export function ReverseTranslationEngine() {
                   onClick={() => setQuestionCount(count)}
                   className={`rounded-2xl py-2.5 text-xs font-bold transition ${
                     questionCount === count
-                      ? "bg-[var(--color-vermillion)] text-white shadow-xs"
+                      ? "bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs"
                       : "border border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:bg-black/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]"
                   }`}
                 >
@@ -426,7 +426,7 @@ export function ReverseTranslationEngine() {
             type="button"
             onClick={handleStartPractice}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-4 text-sm font-bold text-white shadow-md transition hover:opacity-90 active:scale-[0.99] cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-4 text-sm font-bold text-white shadow-md transition hover:opacity-90 cursor-pointer"
           >
             {isLoading ? (
               <span>Preparing Words...</span>
@@ -453,19 +453,19 @@ export function ReverseTranslationEngine() {
 
     return (
       <div className="mx-auto max-w-2xl space-y-6 animate-in fade-in duration-300">
-        <div className="rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/10 dark:bg-[#161B22] space-y-6">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-[var(--color-vermillion)]/10 text-[var(--color-vermillion)]">
+        <div className="rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-[#C84B31]/10 dark:bg-[#E85C40]/10 text-[#C84B31] dark:text-[#E85C40]">
             <Trophy size={40} />
           </div>
 
           <div>
-            <span className="rounded-full bg-[var(--color-vermillion)]/10 px-3 py-1 text-xs font-bold text-[var(--color-vermillion)]">
+            <span className="rounded-full bg-[#C84B31]/10 dark:bg-[#E85C40]/10 px-3 py-1 text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
               {level} Reverse Translation Drill Complete
             </span>
             <h2 className="mt-3 text-3xl font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
               {accuracy >= 80 ? "素晴らしい！ Perfect Recall!" : accuracy >= 50 ? "よくできました！ Great Memory!" : "練習を続けましょう！ Keep Going!"}
             </h2>
-            <p className="mt-1 text-sm text-[#64748B] dark:text-[#94A3B8]">
+            <p className="mt-1 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">
               You correctly produced {score} out of {vocabPool.length} Japanese expressions.
             </p>
           </div>
@@ -473,18 +473,18 @@ export function ReverseTranslationEngine() {
           {/* Stats Bar */}
           <div className="grid grid-cols-3 gap-3">
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1E232B]">
-              <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] block">Accuracy</span>
-              <span className="text-2xl font-bold text-[var(--color-vermillion)]">{accuracy}%</span>
+              <span className="text-xs font-bold text-[#6B6B6B] dark:text-[#A0A0A0] block">Accuracy</span>
+              <span className="text-2xl font-bold text-[#C84B31] dark:text-[#E85C40]">{accuracy}%</span>
             </div>
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1E232B]">
-              <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] block">Max Streak</span>
-              <span className="text-2xl font-bold text-orange-500 flex items-center justify-center gap-1">
+              <span className="text-xs font-bold text-[#6B6B6B] dark:text-[#A0A0A0] block">Max Streak</span>
+              <span className="text-2xl font-bold text-amber-500 flex items-center justify-center gap-1">
                 <Flame size={20} />
                 {maxStreak}
               </span>
             </div>
             <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-4 dark:border-white/5 dark:bg-[#1E232B]">
-              <span className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] block">Score</span>
+              <span className="text-xs font-bold text-[#6B6B6B] dark:text-[#A0A0A0] block">Score</span>
               <span className="text-2xl font-bold text-emerald-500">
                 {score}/{vocabPool.length}
               </span>
@@ -493,7 +493,7 @@ export function ReverseTranslationEngine() {
 
           {/* Answer Review */}
           <div className="text-left space-y-3 pt-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
               Review Expressions ({history.length})
             </h3>
             <div className="max-h-72 space-y-2 overflow-y-auto pr-1">
@@ -503,22 +503,22 @@ export function ReverseTranslationEngine() {
                   className={`flex items-center justify-between rounded-2xl border p-3.5 text-xs transition ${
                     item.isCorrect
                       ? "border-emerald-500/20 bg-emerald-500/5 dark:bg-emerald-500/10"
-                      : "border-rose-500/20 bg-rose-500/5 dark:bg-rose-500/10"
+                      : "border-red-500/20 bg-red-500/5 dark:bg-red-500/10"
                   }`}
                 >
                   <div className="space-y-1">
                     <div className="font-bold text-[#1A1A1A] dark:text-[#F0F4F8] flex items-center gap-2">
-                      <span className="text-[var(--color-vermillion)]">{item.item.word}</span>
-                      <span className="text-[#64748B] dark:text-[#94A3B8]">({item.item.reading})</span>
+                      <span className="text-[#C84B31] dark:text-[#E85C40]">{item.item.word}</span>
+                      <span className="text-[#6B6B6B] dark:text-[#A0A0A0]">({item.item.reading})</span>
                       <button
                         type="button"
                         onClick={() => playJapaneseAudio(item.item.word)}
-                        className="rounded-lg p-1 text-[#64748B] hover:text-[var(--color-vermillion)] dark:text-[#94A3B8]"
+                        className="rounded-lg p-1 text-[#6B6B6B] hover:text-[#C84B31] dark:text-[#A0A0A0] dark:hover:text-[#E85C40]"
                       >
                         <Volume2 size={13} />
                       </button>
                     </div>
-                    <div className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">
+                    <div className="text-[11px] text-[#6B6B6B] dark:text-[#A0A0A0]">
                       Meaning: {item.item.meaning.join(", ")}
                     </div>
                   </div>
@@ -529,7 +529,7 @@ export function ReverseTranslationEngine() {
                         <Check size={14} /> Correct
                       </span>
                     ) : (
-                      <span className="text-rose-600 dark:text-rose-400 flex items-center gap-1">
+                      <span className="text-red-600 dark:text-red-400 flex items-center gap-1">
                         <X size={14} /> Answered: {item.userAnswer || "None"}
                       </span>
                     )}
@@ -544,7 +544,7 @@ export function ReverseTranslationEngine() {
             <button
               type="button"
               onClick={handleStartPractice}
-              className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white transition hover:opacity-90 shadow-md cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white transition hover:opacity-90 shadow-md cursor-pointer"
             >
               <RotateCcw size={16} />
               <span>Practice Again</span>
@@ -579,7 +579,7 @@ export function ReverseTranslationEngine() {
 
         <div className="flex items-center gap-3">
           {streak > 1 && (
-            <div className="flex items-center gap-1 rounded-full bg-orange-500/10 px-3 py-1 text-xs font-bold text-orange-600 dark:text-orange-400 animate-bounce">
+            <div className="flex items-center gap-1 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-600 dark:text-amber-400 animate-bounce">
               <Flame size={14} />
               <span>{streak} Streak!</span>
             </div>
@@ -594,26 +594,26 @@ export function ReverseTranslationEngine() {
       {/* Progress Bar */}
       <div className="h-2 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/5">
         <div
-          className="h-full rounded-full bg-[var(--color-vermillion)] transition-all duration-300 ease-out"
+          className="h-full rounded-full bg-[#C84B31] dark:bg-[#E85C40] transition-all duration-300 ease-out"
           style={{ width: `${progressPercent}%` }}
         />
       </div>
 
       {/* English Prompt Card */}
-      <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
+      <div className="rounded-2xl border border-black/10 bg-white p-7 shadow-xs dark:border-white/10 dark:bg-[#161B22] space-y-6">
         <div className="flex items-center justify-between">
-          <span className="rounded-full border border-[var(--color-vermillion)]/30 bg-[var(--color-vermillion)]/10 px-3 py-0.5 text-xs font-bold text-[var(--color-vermillion)]">
+          <span className="rounded-full border border-[#C84B31]/30 dark:border-[#E85C40]/30 bg-[#C84B31]/10 dark:bg-[#E85C40]/10 px-3 py-0.5 text-xs font-bold text-[#C84B31] dark:text-[#E85C40]">
             {currentItem.level} • {currentItem.partOfSpeech || "Vocabulary"}
           </span>
 
-          <span className="text-xs font-semibold text-[#64748B] dark:text-[#94A3B8]">
+          <span className="text-xs font-semibold text-[#6B6B6B] dark:text-[#A0A0A0]">
             Recall the Japanese expression
           </span>
         </div>
 
         {/* English Definition Display */}
         <div className="rounded-2xl border border-black/5 bg-[#FAFAF8] p-7 text-center dark:border-white/5 dark:bg-[#1E232B] space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
             English Meaning
           </span>
           <h2 className="text-2xl sm:text-3xl font-bold text-[#1A1A1A] dark:text-[#F0F4F8] capitalize">
@@ -629,14 +629,14 @@ export function ReverseTranslationEngine() {
               const isTarget = opt.id === currentItem.id;
 
               let cardStyle =
-                "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[var(--color-vermillion)] hover:bg-[var(--color-vermillion)]/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
+                "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-[#E85C40] hover:bg-[#C84B31]/5 dark:bg-[#E85C40]/5 dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]";
 
               if (isAnswered) {
                 if (isTarget) {
                   cardStyle =
                     "border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 shadow-xs";
                 } else if (isSelected && !isTarget) {
-                  cardStyle = "border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300";
+                  cardStyle = "border-red-500 bg-red-500/15 text-red-700 dark:text-red-300";
                 } else {
                   cardStyle = "opacity-40 border-black/5 bg-[#FAFAF8] dark:bg-[#1E232B] dark:border-white/5";
                 }
@@ -652,19 +652,19 @@ export function ReverseTranslationEngine() {
                 >
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-lg bg-black/5 text-[11px] font-bold text-[#64748B] dark:bg-white/5 dark:text-[#94A3B8]">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-lg bg-black/5 text-[11px] font-bold text-[#6B6B6B] dark:bg-white/5 dark:text-[#A0A0A0]">
                         {idx + 1}
                       </span>
                       <span className="text-xl font-bold">{opt.word}</span>
                     </div>
-                    <div className="pl-7 text-xs text-[#64748B] dark:text-[#94A3B8]">
+                    <div className="pl-7 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
                       {opt.reading} {opt.romaji ? `(${opt.romaji})` : ""}
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
                     {isAnswered && isTarget && <CheckCircle2 size={20} className="text-emerald-500" />}
-                    {isAnswered && isSelected && !isTarget && <XCircle size={20} className="text-rose-500" />}
+                    {isAnswered && isSelected && !isTarget && <XCircle size={20} className="text-red-500" />}
                   </div>
                 </button>
               );
@@ -676,7 +676,7 @@ export function ReverseTranslationEngine() {
         {mode === "typing" && (
           <form onSubmit={handleCheckTyping} className="space-y-4">
             <div className="space-y-2">
-              <label className="text-xs font-bold text-[#64748B] dark:text-[#94A3B8] block">
+              <label className="text-xs font-bold text-[#6B6B6B] dark:text-[#A0A0A0] block">
                 Type in Kana, Kanji, or Romaji:
               </label>
               <div className="relative">
@@ -687,12 +687,12 @@ export function ReverseTranslationEngine() {
                   disabled={isAnswered}
                   onChange={(e) => setTypedInput(e.target.value)}
                   placeholder="e.g. たべる or taberu or 食べる"
-                  className="w-full rounded-2xl border border-black/10 bg-[#FAFAF8] px-5 py-4 text-lg font-bold text-[#1A1A1A] outline-hidden transition focus:border-[var(--color-vermillion)] focus:bg-white dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8] dark:focus:bg-[#161B22]"
+                  className="w-full rounded-2xl border border-black/10 bg-[#FAFAF8] px-5 py-4 text-lg font-bold text-[#1A1A1A] outline-hidden transition focus:border-[#C84B31] dark:border-[#E85C40] focus:bg-white dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8] dark:focus:bg-[#161B22]"
                 />
                 {!isAnswered && typedInput.trim() && (
                   <button
                     type="submit"
-                    className="absolute right-3 top-3 rounded-xl bg-[var(--color-vermillion)] px-4 py-2 text-xs font-bold text-white transition hover:opacity-90"
+                    className="absolute right-3 top-3 rounded-xl bg-[#C84B31] dark:bg-[#E85C40] px-4 py-2 text-xs font-bold text-white transition hover:opacity-90"
                   >
                     Submit
                   </button>
@@ -713,15 +713,15 @@ export function ReverseTranslationEngine() {
                       <CheckCircle2 size={16} /> 正解！ Correct Expression!
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-sm font-bold text-rose-600 dark:text-rose-400">
+                    <span className="inline-flex items-center gap-1 text-sm font-bold text-red-600 dark:text-red-400">
                       <XCircle size={16} /> 不正解 Incorrect
                     </span>
                   )}
                 </div>
                 <div className="text-sm font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
-                  Target Japanese: <span className="text-[var(--color-vermillion)] text-lg">{currentItem.word}</span> ({currentItem.reading})
+                  Target Japanese: <span className="text-[#C84B31] dark:text-[#E85C40] text-lg">{currentItem.word}</span> ({currentItem.reading})
                 </div>
-                <div className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
                   Romaji: {currentItem.romaji}
                 </div>
               </div>
@@ -729,7 +729,7 @@ export function ReverseTranslationEngine() {
               <button
                 type="button"
                 onClick={() => playJapaneseAudio(currentItem.word)}
-                className="rounded-xl border border-black/10 bg-white p-2.5 text-[#1A1A1A] shadow-xs hover:text-[var(--color-vermillion)] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]"
+                className="rounded-xl border border-black/10 bg-white p-2.5 text-[#1A1A1A] shadow-xs hover:text-[#C84B31] dark:text-[#E85C40] dark:border-white/10 dark:bg-[#161B22] dark:text-[#F0F4F8]"
               >
                 <Volume2 size={18} />
               </button>
@@ -738,7 +738,7 @@ export function ReverseTranslationEngine() {
             <button
               type="button"
               onClick={handleNextQuestion}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-vermillion)] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 active:scale-[0.99] cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] py-3.5 text-xs font-bold text-white shadow-md transition hover:opacity-90 cursor-pointer"
             >
               <span>{currentIndex + 1 >= vocabPool.length ? "Finish & View Results" : "Next Word (Enter)"}</span>
               <ArrowRight size={16} />

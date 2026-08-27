@@ -1,6 +1,6 @@
 "use client";
 
-import { X, Play, RotateCw, Volume2, Sparkles, BookOpen } from "lucide-react";
+import { X, Play, RotateCw, Volume2 } from "lucide-react";
 import type { KanaCharacter } from "@/types";
 import { getStrokes, strokeColors } from "@/components/kana/strokeData";
 import { getKanaExample } from "@/lib/data/kana-mnemonics";
@@ -22,11 +22,11 @@ function StrokePreview({ character }: { character: string }) {
 
     if (totalStrokesCount === 0) {
       return (
-        <div className="flex h-56 flex-col items-center justify-center gap-3 rounded-3xl border border-black/5 bg-[#FAFAF8] p-4 text-center dark:border-white/10 dark:bg-[#2A2A2A]">
+        <div className="flex h-56 flex-col items-center justify-center gap-3 rounded-2xl border border-black/5 bg-[#F4F4F0] p-4 text-center dark:border-white/10 dark:bg-[#1E232B]">
           <div className="font-serif text-6xl font-bold leading-none text-[#C84B31]/15 dark:text-[#E85C40]/25">
             {character}
           </div>
-          <span className="text-xs text-gray-400 dark:text-gray-500">
+          <span className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
             Combination character
           </span>
         </div>
@@ -34,7 +34,7 @@ function StrokePreview({ character }: { character: string }) {
     }
 
     return (
-      <div className="flex h-56 flex-col items-center justify-center rounded-3xl border border-black/5 bg-[#FAFAF8] p-4 text-center dark:border-white/10 dark:bg-[#2A2A2A]">
+      <div className="flex h-56 flex-col items-center justify-center rounded-2xl border border-black/5 bg-[#F4F4F0] p-4 text-center dark:border-white/10 dark:bg-[#1E232B]">
         <svg viewBox="0 0 218 109" className="h-36 w-60" aria-label={`${character} stroke order`}>
           <g transform="translate(0, 0)">
             {s1.map((d, i) => (
@@ -72,7 +72,7 @@ function StrokePreview({ character }: { character: string }) {
             })}
           </g>
         </svg>
-        <span className="mt-2 text-xs text-gray-400 dark:text-gray-500">
+        <span className="mt-2 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
           {totalStrokesCount} strokes ({s1.length} + {s2.length}) · drawn in order
         </span>
       </div>
@@ -84,11 +84,11 @@ function StrokePreview({ character }: { character: string }) {
 
   if (!hasStrokes) {
     return (
-      <div className="flex h-56 flex-col items-center justify-center gap-3 rounded-3xl border border-black/5 bg-[#FAFAF8] p-4 text-center dark:border-white/10 dark:bg-[#2A2A2A]">
+      <div className="flex h-56 flex-col items-center justify-center gap-3 rounded-2xl border border-black/5 bg-[#F4F4F0] p-4 text-center dark:border-white/10 dark:bg-[#1E232B]">
         <div className="font-serif text-7xl font-bold leading-none text-[#C84B31]/15 dark:text-[#E85C40]/25">
           {character}
         </div>
-        <span className="text-xs text-gray-400 dark:text-gray-500">
+        <span className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
           Stroke animation
         </span>
       </div>
@@ -96,7 +96,7 @@ function StrokePreview({ character }: { character: string }) {
   }
 
   return (
-    <div className="flex h-56 flex-col items-center justify-center rounded-3xl border border-black/5 bg-[#FAFAF8] p-4 text-center dark:border-white/10 dark:bg-[#2A2A2A]">
+    <div className="flex h-56 flex-col items-center justify-center rounded-2xl border border-black/5 bg-[#F4F4F0] p-4 text-center dark:border-white/10 dark:bg-[#1E232B]">
       <svg viewBox="0 0 109 109" className="h-36 w-36" aria-label={`${character} stroke order`}>
         {strokes.map((d, i) => (
           <path
@@ -113,7 +113,7 @@ function StrokePreview({ character }: { character: string }) {
           />
         ))}
       </svg>
-      <span className="mt-2 text-xs text-gray-400 dark:text-gray-500">
+      <span className="mt-2 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
         {strokes.length} stroke{strokes.length > 1 ? "s" : ""} · drawn in order
       </span>
     </div>
@@ -124,18 +124,18 @@ function ExampleWordCard({ item }: { item: KanaCharacter }) {
   const example = getKanaExample(item.character, item.romaji);
 
   return (
-    <div className="relative flex h-56 flex-col justify-between overflow-hidden rounded-3xl border border-black/10 bg-white p-5 shadow-xs dark:border-white/15 dark:bg-[#2A2A2A]">
+    <div className="relative flex h-56 flex-col justify-between overflow-hidden rounded-2xl border border-black/10 bg-white p-5 shadow-xs dark:border-white/15 dark:bg-[#161B22]">
       {/* Top Header Tag */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="rounded-full bg-purple-500/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300">
+          <span className="rounded-full bg-[#2D5F8A]/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2D5F8A] dark:bg-[#60A5FA]/15 dark:text-[#60A5FA]">
             語彙例 · Example Word
           </span>
         </div>
         <button
           type="button"
           onClick={() => speak(example.word)}
-          className="flex items-center gap-1 rounded-xl bg-black/5 px-2.5 py-1 text-xs font-semibold text-[#1A1A1A] hover:bg-purple-600 hover:text-white transition dark:bg-white/10 dark:text-[#FAFAFA] dark:hover:bg-purple-600"
+          className="flex items-center gap-1 rounded-xl bg-black/5 px-2.5 py-1 text-xs font-semibold text-[#1A1A1A] hover:bg-[#C84B31] hover:text-white transition dark:bg-white/10 dark:text-[#F0F4F8] dark:hover:bg-[#E85C40]"
           aria-label={`Play audio for ${example.word}`}
         >
           <Volume2 size={13} />
@@ -145,13 +145,13 @@ function ExampleWordCard({ item }: { item: KanaCharacter }) {
 
       {/* Main Vocabulary Word Showcase */}
       <div className="flex items-center gap-4 my-auto">
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-purple-500/15 to-pink-500/15 text-3xl shadow-xs ring-1 ring-purple-500/20">
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#F4F4F0] text-3xl shadow-xs ring-1 ring-black/10 dark:bg-[#1E232B] dark:ring-white/10">
           {example.emoji}
         </div>
 
         <div className="space-y-0.5 min-w-0">
           <div className="flex items-baseline gap-2">
-            <h3 className="font-serif text-2xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">
+            <h3 className="font-serif text-2xl font-bold text-[#1A1A1A] dark:text-[#F0F4F8]">
               {example.word}
             </h3>
             {example.kanji && example.kanji !== example.word && (
@@ -161,11 +161,11 @@ function ExampleWordCard({ item }: { item: KanaCharacter }) {
             )}
           </div>
 
-          <div className="text-xs font-semibold text-[#7C3AED] dark:text-[#A78BFA]">
+          <div className="text-xs font-semibold text-[#2D5F8A] dark:text-[#60A5FA]">
             {example.wordRomaji}
           </div>
 
-          <div className="text-xs font-medium text-[#1A1A1A] dark:text-[#FAFAFA]">
+          <div className="text-xs font-medium text-[#1A1A1A] dark:text-[#F0F4F8]">
             {example.meaning}
           </div>
         </div>
@@ -178,15 +178,15 @@ function ExampleWordCard({ item }: { item: KanaCharacter }) {
           <button
             type="button"
             onClick={() => speak(example.secondaryWord!.word)}
-            className="flex items-center gap-1 font-bold text-[#1A1A1A] hover:text-[#7C3AED] dark:text-[#FAFAFA] dark:hover:text-[#A78BFA]"
+            className="flex items-center gap-1 font-bold text-[#1A1A1A] hover:text-[#C84B31] dark:text-[#F0F4F8] dark:hover:text-[#E85C40]"
           >
             <span>{example.secondaryWord.emoji}</span>
             <span className="font-serif">{example.secondaryWord.word}</span>
-            <span className="text-[10px] font-normal text-gray-400">({example.secondaryWord.meaning})</span>
+            <span className="text-[10px] font-normal text-[#6B6B6B] dark:text-[#A0A0A0]">({example.secondaryWord.meaning})</span>
           </button>
         </div>
       ) : (
-        <div className="text-[10px] text-gray-400 italic">
+        <div className="text-[10px] text-[#6B6B6B] dark:text-[#A0A0A0] italic">
           High-frequency JLPT vocabulary
         </div>
       )}
@@ -205,13 +205,13 @@ export function KanaFlashcardModal({ item, onClose }: { item: KanaCharacter; onC
       aria-modal="true"
     >
       <div
-        className="relative max-h-[92vh] w-full max-w-2xl overflow-auto rounded-3xl border border-black/10 bg-white p-6 md:p-8 shadow-2xl dark:border-white/15 dark:bg-[#1A1A1A] animate-in zoom-in-95 duration-150"
+        className="relative max-h-[92vh] w-full max-w-2xl overflow-auto rounded-2xl border border-black/10 bg-white p-6 md:p-8 shadow-2xl dark:border-white/15 dark:bg-[#161B22] animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-5 top-5 rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-[#2A2A2A] dark:hover:text-gray-200"
+          className="absolute right-5 top-5 rounded-full p-2 text-[#6B6B6B] hover:bg-black/5 hover:text-[#1A1A1A] dark:text-[#A0A0A0] dark:hover:bg-white/10 dark:hover:text-[#F0F4F8]"
           aria-label="Close kana flashcard"
         >
           <X size={20} />
@@ -219,15 +219,15 @@ export function KanaFlashcardModal({ item, onClose }: { item: KanaCharacter; onC
 
         {/* Character Title & Sound Play Button */}
         <header className="text-center">
-          <div className="font-serif text-7xl md:text-8xl font-bold leading-none text-[#1A1A1A] dark:text-[#FAFAFA]">
+          <div className="font-serif text-7xl md:text-8xl font-bold leading-none text-[#1A1A1A] dark:text-[#F0F4F8]">
             {item.character}
           </div>
-          <div className="mt-3 flex items-center justify-center gap-3 text-lg font-bold text-gray-500 dark:text-[#A0A0A0]">
+          <div className="mt-3 flex items-center justify-center gap-3 text-lg font-bold text-[#6B6B6B] dark:text-[#A0A0A0]">
             <span>{item.romaji}</span>
             <button
               type="button"
               onClick={() => speak(item.character)}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#7C3AED] text-white shadow-md transition hover:scale-110 hover:bg-[#6D28D9]"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#C84B31] text-white shadow-xs transition hover:opacity-90 dark:bg-[#E85C40]"
               aria-label={`Play pronunciation for ${item.character}`}
             >
               <Play size={16} fill="currentColor" />
@@ -244,11 +244,11 @@ export function KanaFlashcardModal({ item, onClose }: { item: KanaCharacter; onC
         </div>
 
         {/* Mnemonic Memory Hook Banner */}
-        <div className="mt-5 rounded-2xl border border-purple-500/20 bg-purple-500/5 p-4 text-xs leading-relaxed text-[#1A1A1A] dark:border-purple-500/30 dark:bg-purple-500/10 dark:text-[#FAFAFA]">
+        <div className="mt-5 rounded-2xl border border-black/5 bg-[#F4F4F0] p-4 text-xs leading-relaxed text-[#1A1A1A] dark:border-white/10 dark:bg-[#1E232B] dark:text-[#F0F4F8]">
           <div className="flex items-start gap-2.5">
             <span className="text-base leading-none">💡</span>
             <div>
-              <strong className="text-purple-700 dark:text-purple-300">Memory Mnemonic:</strong>{" "}
+              <strong className="text-[#2D5F8A] dark:text-[#60A5FA]">Memory Mnemonic:</strong>{" "}
               <span>{example.mnemonic}</span>
             </div>
           </div>
@@ -261,7 +261,7 @@ export function KanaFlashcardModal({ item, onClose }: { item: KanaCharacter; onC
               <div className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
                 Accuracy
               </div>
-              <div className="mt-1 text-2xl md:text-3xl font-bold text-[#7C3AED] dark:text-[#A78BFA]">
+              <div className="mt-1 text-2xl md:text-3xl font-bold text-[#C84B31] dark:text-[#E85C40]">
                 {item.status === "mastered"
                   ? `${item.accuracy ?? 100}%`
                   : item.status === "reviewing"
@@ -270,7 +270,7 @@ export function KanaFlashcardModal({ item, onClose }: { item: KanaCharacter; onC
                   ? `${item.accuracy}%`
                   : "0%"}
               </div>
-              <div className="mt-1 text-xs text-gray-400 dark:text-gray-500">
+              <div className="mt-1 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
                 {item.status === "mastered"
                   ? `${item.correctAnswers ?? 5}/${item.totalAnswers ?? 5} total`
                   : item.status === "reviewing"
@@ -285,14 +285,14 @@ export function KanaFlashcardModal({ item, onClose }: { item: KanaCharacter; onC
               <div className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
                 Streak
               </div>
-              <div className="mt-1 text-2xl md:text-3xl font-bold text-[#7C3AED] dark:text-[#A78BFA]">
+              <div className="mt-1 text-2xl md:text-3xl font-bold text-[#C84B31] dark:text-[#E85C40]">
                 {item.status === "mastered"
                   ? (item.streak ?? 5)
                   : item.status === "reviewing"
                   ? (item.streak ?? 2)
                   : (item.streak ?? 0)}
               </div>
-              <div className="mt-1 text-xs text-gray-400 dark:text-gray-500">
+              <div className="mt-1 text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">
                 Best:{" "}
                 {item.status === "mastered"
                   ? (item.bestStreak ?? 10)
@@ -312,7 +312,7 @@ export function StrokeReplayButton() {
   return (
     <button
       type="button"
-      className="flex items-center gap-1 text-xs text-gray-400 hover:text-[#7C3AED]"
+      className="flex items-center gap-1 text-xs text-[#6B6B6B] hover:text-[#C84B31] dark:text-[#A0A0A0] dark:hover:text-[#E85C40]"
     >
       <RotateCw size={12} /> Replay
     </button>

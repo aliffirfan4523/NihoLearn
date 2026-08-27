@@ -41,9 +41,31 @@ export type AuthedUser = {
 };
 
 /**
+ * Type for Supabase JWT payload
+ */
+interface SupabaseJwtPayload {
+  sub: string; // User ID
+  exp: number; // Expiration timestamp
+  email?: string;
+  user_metadata?: {
+    full_name?: string;
+    name?: string;
+    avatar_url?: string;
+    knows_kana?: boolean;
+    daily_vocab_goal?: number;
+    daily_grammar_goal?: number;
+    japanese_level?: string;
+    profile_completed?: boolean;
+  };
+  app_metadata?: {
+    provider?: string;
+  };
+}
+
+/**
  * Helper: Parses a JWT token payload without network overhead.
  */
-function parseJwtPayload(token: string): any | null {
+function parseJwtPayload(token: string): SupabaseJwtPayload | null {
   try {
     const parts = token.split(".");
     if (parts.length !== 3) return null;

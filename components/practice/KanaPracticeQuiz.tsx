@@ -221,14 +221,14 @@ export function KanaPracticeQuiz({
   if (isFinished) {
     const accuracy = Math.round((score / questions.length) * 100);
     return (
-      <div className="mx-auto max-w-md rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/15 text-amber-500 shadow-sm">
+      <div className="mx-auto max-w-md rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500 shadow-sm">
           <Trophy size={40} />
         </div>
         <h2 className="mt-5 text-2xl font-bold text-[#1A1A1A] dark:text-[#FAFAFA]">Session Complete!</h2>
         <p className="mt-1 text-sm text-[#6B6B6B] dark:text-[#A0A0A0]">Here is your practice summary:</p>
 
-        <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#2A2A2A]">
+        <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 dark:bg-[#1E232B]">
           <div>
             <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Score</div>
             <div className="mt-1 text-xl font-bold text-[#C84B31] dark:text-[#E85C40]">
@@ -241,7 +241,7 @@ export function KanaPracticeQuiz({
           </div>
           <div>
             <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Best Streak</div>
-            <div className="mt-1 text-xl font-bold text-purple-600 dark:text-purple-400">{maxStreak}</div>
+            <div className="mt-1 text-xl font-bold text-[#2D5F8A] dark:text-[#60A5FA]">{maxStreak}</div>
           </div>
         </div>
 
@@ -249,7 +249,7 @@ export function KanaPracticeQuiz({
           <button
             type="button"
             onClick={onExit}
-            className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+            className="flex-1 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3 text-sm font-bold text-[#1A1A1A] transition hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
           >
             Change Settings
           </button>
@@ -291,7 +291,7 @@ export function KanaPracticeQuiz({
         </button>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-xs font-bold text-orange-600 dark:text-orange-400">
+          <div className="flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-400">
             <Flame size={16} />
             <span>{streak}</span>
           </div>
@@ -301,7 +301,7 @@ export function KanaPracticeQuiz({
         </div>
       </div>
 
-      <div className="h-2 w-full overflow-hidden rounded-full bg-[#F0F0F0] dark:bg-[#2A2A2A]">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-[#F0F0F0] dark:bg-[#1E232B]">
         <div
           className="h-full bg-[#C84B31] transition-all duration-300 dark:bg-[#E85C40]"
           style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
@@ -309,7 +309,7 @@ export function KanaPracticeQuiz({
       </div>
 
       {/* Main Question Card */}
-      <div className="relative rounded-3xl border border-black/10 bg-white p-8 text-center shadow-lg dark:border-white/15 dark:bg-[#1A1A1A]">
+      <div className="relative rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
         <div className="text-xs font-bold uppercase tracking-wider text-[#6B6B6B] dark:text-[#A0A0A0]">
           {currentQ.mode.includes("audio")
             ? "Listen and Answer"
@@ -324,7 +324,7 @@ export function KanaPracticeQuiz({
             <button
               type="button"
               onClick={() => playKanaAudio(currentQ.target.character)}
-              className="flex h-24 w-24 items-center justify-center rounded-3xl bg-[#7C3AED] text-white shadow-lg transition hover:scale-105 hover:bg-[#6D28D9]"
+              className="flex h-24 w-24 items-center justify-center rounded-2xl bg-[#C84B31] dark:bg-[#E85C40] text-white shadow-xs transition hover:opacity-90"
               aria-label="Play audio"
             >
               <Volume2 size={40} />
@@ -370,7 +370,7 @@ export function KanaPracticeQuiz({
               disabled={status !== "idle"}
               onChange={(e) => setTypedInput(e.target.value)}
               placeholder="Type romaji (e.g. ka, shi)..."
-              className="w-full rounded-2xl border border-black/15 bg-[#FAFAF8] px-4 py-3.5 text-center font-mono text-xl font-bold focus:border-[#C84B31] focus:outline-none focus:ring-2 focus:ring-[#C84B31]/30 dark:border-white/20 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+              className="w-full rounded-2xl border border-black/15 bg-[#FAFAF8] px-4 py-3.5 text-center font-mono text-xl font-bold focus:border-[#C84B31] focus:outline-none focus:ring-2 focus:ring-[#C84B31]/30 dark:border-white/20 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             />
             {status === "idle" && (
               <button
@@ -393,13 +393,13 @@ export function KanaPracticeQuiz({
               const isChosen = selectedChoice === option;
 
               let btnStyle =
-                "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]";
+                "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]";
 
               if (status !== "idle") {
                 if (isTarget) {
                   btnStyle = "border-emerald-500 bg-emerald-500 text-white font-bold";
                 } else if (isChosen && !isTarget) {
-                  btnStyle = "border-rose-500 bg-rose-500 text-white font-bold";
+                  btnStyle = "border-red-500 bg-red-500 text-white font-bold";
                 } else {
                   btnStyle = "opacity-40 border-black/5 dark:border-white/5";
                 }
@@ -430,7 +430,7 @@ export function KanaPracticeQuiz({
               className={`flex items-center justify-between rounded-2xl p-4 ${
                 status === "correct"
                   ? "bg-emerald-500/15 text-emerald-800 dark:text-emerald-300"
-                  : "bg-rose-500/15 text-rose-800 dark:text-rose-300"
+                  : "bg-red-500/15 text-red-800 dark:text-red-300"
               }`}
             >
               <div className="flex items-center gap-2">

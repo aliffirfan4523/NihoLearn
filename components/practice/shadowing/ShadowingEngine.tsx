@@ -294,7 +294,7 @@ export function ShadowingEngine() {
       />
 
       {/* Conversation Info Banner */}
-      <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
+      <div className="rounded-2xl border border-black/10 bg-white p-5 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
@@ -310,7 +310,7 @@ export function ShadowingEngine() {
             </h1>
           </div>
 
-          <div className="flex items-center gap-1 text-xs font-bold text-orange-600 dark:text-orange-400">
+          <div className="flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-400">
             <Flame size={16} />
             <span>{shadowedCount} lines practiced</span>
           </div>
@@ -394,7 +394,7 @@ export function ShadowingEngine() {
       </div>
 
       {/* Shadowing Master Controls Bar */}
-      <div className="rounded-3xl border border-black/10 bg-white p-6 shadow-xl dark:border-white/15 dark:bg-[#1A1A1A]">
+      <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
         {/* Playback & Loop Controls */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/5 pb-5 dark:border-white/5">
           {/* Main Continuous Autoplay Button */}
@@ -424,7 +424,7 @@ export function ShadowingEngine() {
                 className={`rounded-xl px-2.5 py-1 text-xs font-bold transition ${
                   playbackSpeed === spd
                     ? "bg-black text-white dark:bg-white dark:text-black shadow-2xs"
-                    : "border border-black/10 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#A0A0A0]"
+                    : "border border-black/10 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#A0A0A0]"
                 }`}
               >
                 {spd}x
@@ -439,7 +439,7 @@ export function ShadowingEngine() {
             className={`flex items-center gap-1 rounded-xl border px-3 py-1.5 text-xs font-bold transition ${
               isRepeatActive
                 ? "border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
-                : "border-black/10 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#A0A0A0]"
+                : "border-black/10 bg-[#FAFAF8] text-[#6B6B6B] hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#A0A0A0]"
             }`}
             title="Loop entire conversation"
           >
@@ -454,7 +454,7 @@ export function ShadowingEngine() {
             <button
               type="button"
               onClick={() => setShowFurigana((f) => !f)}
-              className="flex items-center gap-1 rounded-lg border border-black/10 bg-[#FAFAF8] px-2.5 py-1 font-semibold text-gray-700 hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-gray-300"
+              className="flex items-center gap-1 rounded-lg border border-black/10 bg-[#FAFAF8] px-2.5 py-1 font-semibold text-gray-700 hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-gray-300"
             >
               {showFurigana ? <EyeOff size={13} /> : <Eye size={13} />}
               <span>{showFurigana ? "Hide Furigana" : "Show Furigana"}</span>
@@ -463,7 +463,7 @@ export function ShadowingEngine() {
             <button
               type="button"
               onClick={() => setShowEnglish((e) => !e)}
-              className="flex items-center gap-1 rounded-lg border border-black/10 bg-[#FAFAF8] px-2.5 py-1 font-semibold text-gray-700 hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-gray-300"
+              className="flex items-center gap-1 rounded-lg border border-black/10 bg-[#FAFAF8] px-2.5 py-1 font-semibold text-gray-700 hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-gray-300"
             >
               {showEnglish ? <EyeOff size={13} /> : <Eye size={13} />}
               <span>{showEnglish ? "Hide English" : "Show English"}</span>
@@ -476,7 +476,7 @@ export function ShadowingEngine() {
               type="button"
               disabled={currentLineIndex === 0}
               onClick={handlePrevLine}
-              className="rounded-xl border border-black/10 bg-[#FAFAF8] px-3 py-1 text-xs font-bold text-[#1A1A1A] disabled:opacity-40 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+              className="rounded-xl border border-black/10 bg-[#FAFAF8] px-3 py-1 text-xs font-bold text-[#1A1A1A] disabled:opacity-40 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               Prev Line
             </button>
@@ -487,7 +487,7 @@ export function ShadowingEngine() {
               type="button"
               disabled={currentLineIndex === activeExercise.lines.length - 1}
               onClick={handleNextLine}
-              className="rounded-xl border border-black/10 bg-[#FAFAF8] px-3 py-1 text-xs font-bold text-[#1A1A1A] disabled:opacity-40 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+              className="rounded-xl border border-black/10 bg-[#FAFAF8] px-3 py-1 text-xs font-bold text-[#1A1A1A] disabled:opacity-40 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               Next Line
             </button>
@@ -500,7 +500,7 @@ export function ShadowingEngine() {
             <div className="flex items-center gap-2">
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-xl ${
-                  isRecording ? "bg-rose-500 text-white animate-pulse" : "bg-purple-500/15 text-purple-600 dark:text-purple-400"
+                  isRecording ? "bg-red-500 text-white animate-pulse" : "bg-purple-500/15 text-purple-600 dark:text-purple-400"
                 }`}
               >
                 <Mic size={16} />
@@ -520,7 +520,7 @@ export function ShadowingEngine() {
                 <button
                   type="button"
                   onClick={startRecording}
-                  className="flex items-center gap-1 rounded-xl bg-rose-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-rose-600 transition"
+                  className="flex items-center gap-1 rounded-xl bg-red-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-red-600 transition"
                 >
                   <Mic size={14} />
                   <span>Record Shadowing</span>

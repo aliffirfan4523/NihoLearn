@@ -231,12 +231,12 @@ export function DailyChallengeEngine() {
 
     return (
       <div className="mx-auto max-w-xl space-y-6">
-        <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-white p-8 text-center shadow-xl dark:border-white/15 dark:bg-[#1A1A1A]">
+        <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-white p-8 text-center shadow-xs dark:border-white/15 dark:bg-[#1A1A1A]">
           {/* Confetti Celebration Particle Flare */}
           <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-amber-400/20 blur-2xl" />
           <div className="pointer-events-none absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-purple-500/20 blur-2xl" />
 
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/15 text-amber-500 shadow-xs">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500 shadow-xs">
             <Trophy size={42} />
           </div>
 
@@ -252,7 +252,7 @@ export function DailyChallengeEngine() {
             Challenge Date: {todayStr}
           </p>
 
-          <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 text-center dark:bg-[#2A2A2A]">
+          <div className="mt-6 grid grid-cols-3 gap-3 rounded-2xl bg-[#FAFAF8] p-4 text-center dark:bg-[#1E232B]">
             <div>
               <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Score</div>
               <div className="mt-1 font-mono text-2xl font-bold text-[#C84B31] dark:text-[#E85C40]">
@@ -267,7 +267,7 @@ export function DailyChallengeEngine() {
             </div>
             <div>
               <div className="text-xs text-[#6B6B6B] dark:text-[#A0A0A0]">Daily Streak</div>
-              <div className="mt-1 font-mono text-2xl font-bold text-orange-500">
+              <div className="mt-1 font-mono text-2xl font-bold text-amber-500">
                 {streak} 🔥
               </div>
             </div>
@@ -302,7 +302,7 @@ export function DailyChallengeEngine() {
                         {isCorrect ? (
                           <CheckCircle2 size={14} className="shrink-0 text-emerald-500" />
                         ) : (
-                          <XCircle size={14} className="shrink-0 text-rose-500" />
+                          <XCircle size={14} className="shrink-0 text-red-500" />
                         )}
                         <span>
                           Q{idx + 1}. {q.prompt}
@@ -323,7 +323,7 @@ export function DailyChallengeEngine() {
             <button
               type="button"
               onClick={handleShare}
-              className="flex items-center justify-center gap-1.5 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3.5 px-4 text-xs font-bold text-[#1A1A1A] hover:bg-black/5 dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]"
+              className="flex items-center justify-center gap-1.5 rounded-2xl border border-black/10 bg-[#FAFAF8] py-3.5 px-4 text-xs font-bold text-[#1A1A1A] hover:bg-black/5 dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]"
             >
               {copiedLink ? <Check size={16} className="text-emerald-500" /> : <Share2 size={16} />}
               <span>{copiedLink ? "Copied!" : "Share"}</span>
@@ -353,7 +353,7 @@ export function DailyChallengeEngine() {
         </Link>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 rounded-xl bg-orange-500/15 px-2.5 py-1 text-xs font-bold text-orange-600 dark:text-orange-400">
+          <div className="flex items-center gap-1 rounded-xl bg-amber-500/15 px-2.5 py-1 text-xs font-bold text-amber-600 dark:text-amber-400">
             <Flame size={15} />
             <span>{streak} Day Streak</span>
           </div>
@@ -396,7 +396,7 @@ export function DailyChallengeEngine() {
             let dotStyle = "bg-black/10 dark:bg-white/10";
             if (isCurrent) dotStyle = "bg-[#C84B31] dark:bg-[#E85C40] ring-2 ring-[#C84B31]/30";
             else if (answer?.correct) dotStyle = "bg-emerald-500";
-            else if (answer && !answer.correct) dotStyle = "bg-rose-500";
+            else if (answer && !answer.correct) dotStyle = "bg-red-500";
 
             return (
               <div
@@ -409,7 +409,7 @@ export function DailyChallengeEngine() {
       </div>
 
       {/* Main Question Card */}
-      <div className="rounded-3xl border border-black/10 bg-white p-6 shadow-xl dark:border-white/15 dark:bg-[#1A1A1A] sm:p-8">
+      <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-xs dark:border-white/15 dark:bg-[#1A1A1A] sm:p-8">
         {/* Category Label */}
         <div className="text-center">
           <span className="rounded-full bg-black/5 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#6B6B6B] dark:bg-white/10 dark:text-[#A0A0A0]">
@@ -440,7 +440,7 @@ export function DailyChallengeEngine() {
               <button
                 type="button"
                 onClick={() => playJapaneseAudio(currentQ.audioText!)}
-                className="flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500 text-white shadow-lg transition hover:scale-105 hover:bg-amber-600"
+                className="flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-xs transition hover:bg-amber-600"
                 aria-label="Replay audio"
               >
                 <Volume2 size={36} />
@@ -456,7 +456,7 @@ export function DailyChallengeEngine() {
             const isCorrect = option === currentQ.correctAnswer;
 
             let btnStyle =
-              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-white/15 dark:bg-[#2A2A2A] dark:text-[#FAFAFA]";
+              "border-black/10 bg-[#FAFAF8] text-[#1A1A1A] hover:border-[#C84B31] dark:border-white/15 dark:bg-[#1E232B] dark:text-[#FAFAFA]";
 
             if (isChosen && !isAnswerSubmitted) {
               btnStyle =
@@ -467,7 +467,7 @@ export function DailyChallengeEngine() {
               if (isCorrect) {
                 btnStyle = "border-emerald-500 bg-emerald-500 text-white font-bold";
               } else if (isChosen && !isCorrect) {
-                btnStyle = "border-rose-500 bg-rose-500 text-white font-bold";
+                btnStyle = "border-red-500 bg-red-500 text-white font-bold";
               } else {
                 btnStyle = "opacity-40 border-black/5 dark:border-white/5";
               }
